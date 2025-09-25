@@ -5,24 +5,37 @@ public class PlayerController : MonoBehaviour
     [Header("# Player Setting")]
     [Tooltip("플레이어 이동속도")]
     public float moveSpeed = 5.0f;
+    [Tooltip("플레이어 회전속도")]
+    public float rotationSpeed = 15.0f;
+
+    [Header("# Mouse Settings")]
+    [Tooltip("마우스 위치를 인식할 바닥 레이어")]
+    public LayerMask groundLayer;
 
     private Rigidbody _rigidBody;
+
     private Vector3 _movement;
+    private Quaternion _rotation;
+
+    private Camera _mainCamera;
 
     void Awake()
     {
         // 컴포넌트 가져오기
         _rigidBody = GetComponent<Rigidbody>();
+        _mainCamera = Camera.main;
     }
 
     void Update()
     {
         CalculateMovement();
+        CalculateRotation();
     }
 
     void FixedUpdate()
     {
         PlayerMove();
+        PlayerRotate();
     }
 
     /// <summary>
@@ -44,5 +57,33 @@ public class PlayerController : MonoBehaviour
     void PlayerMove()
     {
         _rigidBody.linearVelocity = _movement * moveSpeed;
+    }
+
+    /// <summary>
+    /// 마우스 커서 방향으로의 목표 회전 값을 계산합니다.
+    /// </summary>
+    void CalculateRotation()
+    {
+        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayer))
+        {
+            Vector3 lookDirection = hit.point - transform.position;
+            lookDirection.y = 0;
+
+            // 목표 회전 값을 계산해서 변수에 저장만 해둡니다.
+            _rotation = Quaternion.LookRotation(lookDirection);
+        }
+    }
+
+    /// <summary>
+    /// 계산된 방향으로 플레이어를 회전시킵니다. (Rigidbody를 이용)
+    /// </summary>
+    void PlayerRotate()
+    {
+        // Slerp를 사용하여 부드러운 회전
+        Quaternion newRotation = Quaternion.Slerp(_rigidBody.rotation, _rotation, rotationSpeed * Time.fixedDeltaTime);
+        _rigidBody.MoveRotation(newRotation);
     }
 }
