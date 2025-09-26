@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour
             lookDirection.y = 0;
 
             // 목표 회전 값을 계산해서 변수에 저장만 해둡니다.
-            _rotation = Quaternion.LookRotation(lookDirection);
+            _rotation = Quaternion.LookRotation(lookDirection).normalized;
         }
     }
 
@@ -83,7 +83,7 @@ public class PlayerController : MonoBehaviour
     void PlayerRotate()
     {
         // Slerp를 사용하여 부드러운 회전
-        Quaternion newRotation = Quaternion.Slerp(_rigidBody.rotation, _rotation, rotationSpeed * Time.fixedDeltaTime);
+        Quaternion newRotation = Quaternion.Slerp(_rigidBody.rotation, _rotation, rotationSpeed * Time.fixedDeltaTime).normalized;
         _rigidBody.MoveRotation(newRotation);
     }
 }
