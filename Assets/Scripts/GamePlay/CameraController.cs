@@ -29,6 +29,9 @@ public class CameraController : MonoBehaviour
     public float fadeSpeed = 5f;
     [Tooltip("장애물 감지하는 반경")]
     public float dectectRadius = 3f;
+    [Tooltip("투명해지는 정도")]
+    [Range(0.0f, 1.0f)]
+    public float obstacleIntensity = 0.5f;
 
     private List<Renderer> _fadedRenderers = new List<Renderer>();
 
@@ -103,7 +106,7 @@ public class CameraController : MonoBehaviour
         {
             if (!_fadedRenderers.Contains(renderer))
             {
-                StartCoroutine(FadeMaterial(renderer, 0.15f)); // 투명하게
+                StartCoroutine(FadeMaterial(renderer, 0.3f)); // 반투명하게
                 _fadedRenderers.Add(renderer);
             }
         }
