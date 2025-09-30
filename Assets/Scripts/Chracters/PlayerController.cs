@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
 
     private Rigidbody _rigidBody;
+    private Animator _animator;
 
     private Vector3 _movement;
     private Quaternion _rotation;
@@ -23,6 +24,8 @@ public class PlayerController : MonoBehaviour
     {
         // 컴포넌트 가져오기
         _rigidBody = GetComponent<Rigidbody>();
+        _animator = GetComponent<Animator>();
+
         _mainCamera = Camera.main;
 
         _rigidBody.freezeRotation = true; // 물리엔진에 의한 회전 방지
@@ -62,12 +65,17 @@ public class PlayerController : MonoBehaviour
         if (_movement.magnitude > 0.01f)
         {
             _rigidBody.linearVelocity = _movement * moveSpeed;
+            // 애니메이션 설정
+            _animator.SetBool("isRunning", true);
         }
         else
         {
             // 입력이 없을 때는 속도를 0으로 설정하여 멈춤 (but! y축 움직임은 유지 ex) 점프, 떨어짐등)
             Vector3 currentVelocity = _rigidBody.linearVelocity;
             _rigidBody.linearVelocity = new Vector3(0, currentVelocity.y, 0);
+
+            // 애니메이션 설정
+            _animator.SetBool("isRunning", false);
         }
     }
 
