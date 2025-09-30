@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
         // 컴포넌트 가져오기
         _rigidBody = GetComponent<Rigidbody>();
         _mainCamera = Camera.main;
+
+        _rigidBody.freezeRotation = true; // 물리엔진에 의한 회전 방지
     }
 
     void Update()
@@ -56,7 +58,17 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void PlayerMove()
     {
-        _rigidBody.linearVelocity = _movement * moveSpeed;
+        // 입력이 있을 때만 이동 속도를 적용 (미끄러짐 방지)
+        if (_movement.magnitude > 0.01f)
+        {
+            _rigidBody.linearVelocity = _movement * moveSpeed;
+        }
+        else
+        {
+            // 입력이 없을 때는 속도를 0으로 설정하여 멈춤 (but! y축 움직임은 유지 ex) 점프, 떨어짐등)
+            Vector3 currentVelocity = _rigidBody.linearVelocity;
+            _rigidBody.linearVelocity = new Vector3(0, currentVelocity.y, 0);
+        }
     }
 
     /// <summary>

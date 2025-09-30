@@ -106,7 +106,7 @@ public class CameraController : MonoBehaviour
         {
             if (!_fadedRenderers.Contains(renderer))
             {
-                StartCoroutine(FadeMaterial(renderer, 0.3f)); // 반투명하게
+                StartCoroutine(FadeMaterial(renderer, obstacleIntensity)); // 반투명하게
                 _fadedRenderers.Add(renderer);
             }
         }
@@ -118,9 +118,6 @@ public class CameraController : MonoBehaviour
     private IEnumerator FadeMaterial(Renderer renderer, float targetAlpha)
     {
         Material material = renderer.material;
-
-        if (targetAlpha < 1.0f) material.SetFloat("_Surface", 1);   // 셰이더의 Surface타입을 Transparent로 (알파값 설정가능)
-        else material.SetFloat("_Surface", 0);  // 셰이더의 Surface타입을 다시 Opaque로 변경
 
         Color startColor = material.color;
         Color endColor = new Color(startColor.r, startColor.g, startColor.b, targetAlpha);
