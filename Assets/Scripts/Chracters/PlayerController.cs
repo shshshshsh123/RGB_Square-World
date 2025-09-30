@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
         // 컴포넌트 가져오기
         _rigidBody = GetComponent<Rigidbody>();
         _mainCamera = Camera.main;
+
+        _rigidBody.freezeRotation = true; // 물리엔진에 의한 회전 방지
     }
 
     void Update()
