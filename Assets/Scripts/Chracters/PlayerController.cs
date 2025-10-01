@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
@@ -35,6 +37,9 @@ public class PlayerController : MonoBehaviour
     {
         CalculateMovement();
         CalculateRotation();
+
+        // Test
+        TestFunction();
     }
 
     void FixedUpdate()
@@ -105,5 +110,13 @@ public class PlayerController : MonoBehaviour
         // Slerp를 사용하여 부드러운 회전
         Quaternion newRotation = Quaternion.Slerp(_rigidBody.rotation, _rotation, rotationSpeed * Time.fixedDeltaTime).normalized;
         _rigidBody.MoveRotation(newRotation);
+    }
+
+    void TestFunction()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            ObjectPooler.Instance.SpawnFromPool("Dummy", transform.position + transform.forward * 2, Quaternion.identity);
+        }
     }
 }
