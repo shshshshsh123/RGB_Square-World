@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("# Player Setting")]
     [Tooltip("플레이어 이동속도")]
-    public float moveSpeed = 5.0f;
+    public float moveSpeed = 7.5f;
     [Tooltip("플레이어 회전속도")]
     public float rotationSpeed = 15.0f;
 
@@ -89,16 +89,30 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void CalculateRotation()
     {
-        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+        //// 이동중일때
+        //if (_movement.magnitude > 0.1f)
+        //{
+        //    // 목표 회전 값을 이동 방향으로 설정합니다.
+        //    _rotation = Quaternion.LookRotation(_movement);
+        //}
 
+        //// 멈춰있을때
+        //else
+        //{
+
+        //}
+        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayer))
         {
             Vector3 lookDirection = hit.point - transform.position;
             lookDirection.y = 0;
 
-            // 목표 회전 값을 계산해서 변수에 저장만 해둡니다.
-            _rotation = Quaternion.LookRotation(lookDirection).normalized;
+            // 목표 회전 값을 계산해서 변수에 저장 (마우스가 플레이어 위치와 거의 같다면 회전하지 않음)
+            if (lookDirection.sqrMagnitude > 0.01f)
+            {
+                _rotation = Quaternion.LookRotation(lookDirection);
+            }
         }
     }
 
