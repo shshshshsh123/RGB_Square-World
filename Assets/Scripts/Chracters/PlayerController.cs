@@ -14,6 +14,10 @@ public class PlayerController : MonoBehaviour
     [Tooltip("마우스 위치를 인식할 바닥 레이어")]
     public LayerMask groundLayer;
 
+    [Header("# Attack Settings")]
+    [Tooltip("기본공격 딜레이")]
+    public float basicAttackDelay = 0.5f;
+
     private Rigidbody _rigidBody;
     private Animator _animator;
 
@@ -89,18 +93,6 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void CalculateRotation()
     {
-        //// 이동중일때
-        //if (_movement.magnitude > 0.1f)
-        //{
-        //    // 목표 회전 값을 이동 방향으로 설정합니다.
-        //    _rotation = Quaternion.LookRotation(_movement);
-        //}
-
-        //// 멈춰있을때
-        //else
-        //{
-
-        //}
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayer))
@@ -128,7 +120,21 @@ public class PlayerController : MonoBehaviour
 
     void TestFunction()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (basicAttackDelay >= 0) basicAttackDelay -= Time.deltaTime;
+
+        if (Input.GetMouseButton(0))
+        {
+            if (basicAttackDelay <= 0)
+            {
+                ObjectPooler.Instance.SpawnFromPool("BasicSlash", transform.position + transform.up * 0.64f, _rotation);
+                basicAttackDelay = 0.5f;
+            }
+        }
+        else if (Input.GetMouseButtonDown(1))
+        {
+            GameManager.Instance.IncreaseMaxHp(Random.Range(80f, 550f));
+        }
+        else if (Input.GetMouseButtonDown(2))
         {
             ObjectPooler.Instance.SpawnFromPool("Dummy", transform.position + transform.forward * 2, Quaternion.identity);
         }

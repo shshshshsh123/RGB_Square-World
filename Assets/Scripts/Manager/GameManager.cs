@@ -13,10 +13,12 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private float _playerCurrentHp;
 
     public static event Action<float, float> OnPlayerHpChanged;
+    public static event Action<float> OnPlayerMaxHpChanged; // 새로운 최대 체력 변경 이벤트
 
     void Start()
     {
-        
+        IncreaseMaxHp(500f);
+        _playerCurrentHp = _playerMaxHp;
     }
 
     public void PlayerTakeDamage(float damage, GameObject damageSource)
@@ -47,6 +49,15 @@ public class GameManager : Singleton<GameManager>
         // 모든 검증을 통과했을 때만 실제 데미지 적용
         _playerCurrentHp -= damage;
         _playerCurrentHp = Mathf.Clamp(_playerCurrentHp, 0, _playerMaxHp);
+        OnPlayerHpChanged?.Invoke(_playerCurrentHp, _playerMaxHp);
+    }
+
+
+    public void IncreaseMaxHp(float amount)
+    {
+        _playerMaxHp = amount;
+        // 최대 체력이 변경되었음을 모든 구독자에게 알리기
+        OnPlayerMaxHpChanged?.Invoke(_playerMaxHp);
         OnPlayerHpChanged?.Invoke(_playerCurrentHp, _playerMaxHp);
     }
 }
