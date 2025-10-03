@@ -14,15 +14,12 @@ public class PlayerController : MonoBehaviour
     [Tooltip("마우스 위치를 인식할 바닥 레이어")]
     public LayerMask groundLayer;
 
-    [Header("# Attack Settings")]
-    [Tooltip("기본공격 딜레이")]
-    public float basicAttackDelay = 0.5f;
-
     private Rigidbody _rigidBody;
     private Animator _animator;
 
     private Vector3 _movement;
     private Quaternion _rotation;
+    public Quaternion Rotation => _rotation;
 
     private Camera _mainCamera;
 
@@ -120,17 +117,7 @@ public class PlayerController : MonoBehaviour
 
     void TestFunction()
     {
-        if (basicAttackDelay >= 0) basicAttackDelay -= Time.deltaTime;
-
-        if (Input.GetMouseButton(0))
-        {
-            if (basicAttackDelay <= 0)
-            {
-                ObjectPooler.Instance.SpawnFromPool("BasicSlash", transform.position + transform.up * 0.64f, _rotation);
-                basicAttackDelay = 0.5f;
-            }
-        }
-        else if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1))
         {
             GameManager.Instance.IncreaseMaxHp(Random.Range(80f, 550f));
         }

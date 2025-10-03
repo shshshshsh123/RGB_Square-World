@@ -10,12 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fedb5f64938252c45be525e5916d1e91, type: 3}
-  m_Name: BasicSlah
+  m_Name: BasicSlash
   m_EditorClassIdentifier: 
-  weaponName: BasicSlash
+  weaponType: 0
+  weaponTag: BasicSlash
   weaponIcon: {fileID: 0}
   weaponDescription: 
+  attackPositionOffset: {x: 0, y: 1, z: 0}
   damage: 10
   attackDelay: 0.5
+  lifeTime: 0.5
   projectileSpeed: 0
   projectilePrefab: {fileID: 5503505460791601945, guid: a360efa07fce47847a8e5f7b10d6d418, type: 3}

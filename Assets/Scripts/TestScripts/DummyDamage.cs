@@ -13,6 +13,12 @@ public class DummyDamage : MonoBehaviour
         }
     }
 
+    public void TakeDamage(float damage)
+    {
+        hitTimes++;
+        Debug.Log($"끼에에에엑! {gameObject.name}가 {damage}만큼의 데미지를 입었습니다! 맞은횟수: {hitTimes}");
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other != null)
@@ -20,11 +26,6 @@ public class DummyDamage : MonoBehaviour
             if (other.CompareTag("Player"))
             {
                 GameManager.Instance.PlayerTakeDamage(10f, gameObject);
-            }
-            else if (other.CompareTag("PlayerAttack"))
-            {
-                hitTimes++;
-                Debug.Log($"끼에에에엑! {gameObject.name}가 맞은횟수: {hitTimes}");
             }
         }
     }

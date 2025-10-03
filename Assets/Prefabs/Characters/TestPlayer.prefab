@@ -633,6 +633,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a864481855260214aa095bd5787107fa, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3954373501605888515}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a864481855260214aa095bd5787107fa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1882279140966794363}
   m_SourcePrefab: {fileID: 100100000, guid: a864481855260214aa095bd5787107fa, type: 3}
 --- !u!4 &8645111654643952410 stripped
 Transform:
@@ -711,3 +714,18 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &1882279140966794363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8985327303841296800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cdaafcf8ab7aa040a0483302a74baf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponDataList:
+  - {fileID: 11400000, guid: 987404a6c9ee90f4ba563dda50c7edd5, type: 2}
+  currentWeapon: {fileID: 11400000, guid: 987404a6c9ee90f4ba563dda50c7edd5, type: 2}
