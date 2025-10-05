@@ -8552,7 +8552,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 260445c80c7b65b48af5f115e6cb25c8, type: 3}
       propertyPath: m_Name
-      value: SchoolModel
+      value: SchoolBuilding
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
