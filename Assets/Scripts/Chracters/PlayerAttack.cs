@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
+using UnityEngine.UI;
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class PlayerAttack : MonoBehaviour
     public float chargeAttackRange = 10.0f; // 범위
     public string chargeSlashEffectTag = "ChargeSlashEffect"; // 차지공격 이펙트 태그 (오브젝트풀링용)
     public TrailRenderer chargeAttackTrail; // 차지공격시 나오는 궤적 이펙트
+    public Image chargeAttackKeyDownImage; // 차지공격 키 누르고 있는 동안 채워지는 이미지 (UI)
     private bool _isCharging = false;
     private float _chargeTimer = 0.0f;
 
@@ -28,6 +30,11 @@ public class PlayerAttack : MonoBehaviour
     void Awake()
     {
         _playerController = GetComponent<PlayerController>();
+    }
+
+    void Start()
+    {
+        chargeAttackKeyDownImage.fillAmount = 0f;
     }
 
     void Update()
@@ -77,6 +84,7 @@ public class PlayerAttack : MonoBehaviour
         {
             // Time.timeScale에 영향을 받지 않는 unscaledDeltaTime을 사용합니다.
             _chargeTimer += Time.unscaledDeltaTime;
+            chargeAttackKeyDownImage.fillAmount = Mathf.Clamp01(_chargeTimer / chargeAttackTimeRequire);
 
             if (_isCharging && _chargeTimer >= chargeAttackTimeRequire)
             {
@@ -93,10 +101,20 @@ public class PlayerAttack : MonoBehaviour
             // 차지 실패 또는 취소
             _isCharging = false;
             _chargeTimer = 0f;
+            chargeAttackKeyDownImage.fillAmount = 0f;
         }
 
         IEnumerator PerformChargeAttack()
         {
+            // 0. UI 반짝임 한번만
+            Color originalColor = chargeAttackKeyDownImage.color;
+            chargeAttackKeyDownImage.color = Color.red;
+            chargeAttackKeyDownImage.rectTransform.localScale = Vector3.one * 1.2f;
+            yield return new WaitForSecondsRealtime(0.3f);
+            chargeAttackKeyDownImage.color = originalColor;
+            chargeAttackKeyDownImage.fillAmount = 0f;
+            chargeAttackKeyDownImage.rectTransform.localScale = Vector3.one;
+
             // 1. 범위 내의 적 탐색
             Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, chargeAttackRange, LayerMask.GetMask("Enemy"));
 
@@ -153,6 +171,10 @@ public class PlayerAttack : MonoBehaviour
 
             // 5. 원래 위치로 돌아오기 + 데미지주기
             transform.position = originalPosition;
+
+            // 돌아오고 잠깐 있다가 데미지 주기 (간지용)
+            yield return new WaitForSecondsRealtime(0.2f);
+
             GetComponent<Collider>().enabled = true; // 콜라이더 다시 활성화
 
             foreach (Transform uniqueTarget in targets)
