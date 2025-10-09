@@ -383,6 +383,9 @@ MonoBehaviour:
   - tag: DoubleSlash
     prefab: {fileID: 3600389243222657682, guid: d337e48e9f687e84ab4210dadde4d936, type: 3}
     initalSize: 3
+  - tag: ChargeSlashEffect
+    prefab: {fileID: 158789456559184324, guid: 7a67dc3f83390d74ea657bda6b315ab7, type: 3}
+    initalSize: 3
 --- !u!4 &1541234524
 Transform:
   m_ObjectHideFlags: 0
@@ -533,7 +536,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 127
+    m_Bits: 639
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

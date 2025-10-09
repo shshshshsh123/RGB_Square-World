@@ -4,6 +4,11 @@ public class DummyDamage : MonoBehaviour
 {
     int hitTimes = 0;
 
+    void OnEnable()
+    {
+        hitTimes = 0;
+    }
+
     void Update()
     {
         if (hitTimes >= 5)
