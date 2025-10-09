@@ -9,6 +9,7 @@ public class MonsterFollow : MonoBehaviour
     void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
+        _player = GameObject.FindGameObjectWithTag("Player")?.transform;
     }
 
     void Update()
@@ -18,5 +19,4 @@ public class MonsterFollow : MonoBehaviour
             _agent.SetDestination(_player.position); // 플레이어 위치로 이동
         }
     }
-
 }

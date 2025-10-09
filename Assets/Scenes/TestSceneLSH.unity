@@ -916,7 +916,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pools:
   - tag: Dummy
-    prefab: {fileID: 2062547871201332621, guid: 85daff219e750f845a028df6672557ba, type: 3}
+    prefab: {fileID: 717552205417201984, guid: 41e4c32ea1099dd4aa332cad219a8b35, type: 3}
     initalSize: 10
   - tag: BasicSlash
     prefab: {fileID: 5503505460791601945, guid: a360efa07fce47847a8e5f7b10d6d418, type: 3}

@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 8826341838482877501}
   - component: {fileID: 8111528835192688326}
   - component: {fileID: 2100244786463547281}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TestMonster
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 717552205417201984}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20, y: 1, z: 50.075}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -67,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c0606315d993f124887131e510802f93, type: 2}
+  - {fileID: 2100000, guid: f66bad5c81da43e4ba831e5dfee0b54d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -146,4 +146,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc8510f1a76ffe9438b1c9fb17dff183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 5488773059691385983, guid: 85daff219e750f845a028df6672557ba, type: 3}
+  _player: {fileID: 8645111654643952410, guid: 9204696eca25536478d9fe50cb63e9eb, type: 3}
