@@ -14,7 +14,6 @@ public class PlayerAttack : MonoBehaviour
     public WeaponData currentWeapon; // 현재 장착된 무기 데이터
 
     [Header("# 차지공격(근접)")]
-    public KeyCode chargeAttackKey = KeyCode.E; // 차지공격 키 (나중에는 PlayerInput등으로 처리할듯?)
     public float chargeAttackTimeRequire = 2.0f; // 몇초 눌러야지 발동??
     public int chargeAttackTarget = 3; // 몇명 때리나요? (강화하면 올라감)
     public float chargeAttackRange = 10.0f; // 범위
@@ -73,14 +72,14 @@ public class PlayerAttack : MonoBehaviour
     void HandleChargeAttack()
     {
         // 차지 공격 키 처음 누르면 타이머 시작
-        if (Input.GetKeyDown(chargeAttackKey))
+        if (Input.GetMouseButtonDown(1))
         {
             _isCharging = true;
             _chargeTimer = 0.0f;
         }
 
         // 차지 공격 키를 누르고 있는 동안
-        if (Input.GetKey(chargeAttackKey) && _isCharging)
+        if (Input.GetMouseButton(1) && _isCharging)
         {
             // Time.timeScale에 영향을 받지 않는 unscaledDeltaTime을 사용합니다.
             _chargeTimer += Time.unscaledDeltaTime;
@@ -93,10 +92,9 @@ public class PlayerAttack : MonoBehaviour
                 _isCharging = false;
                 _chargeTimer = 0f;
             }
-            // TODO: 차지공격 UI에 표시하기
         }
 
-        if (Input.GetKeyUp(chargeAttackKey))
+        if (Input.GetMouseButtonUp(1))
         {
             // 차지 실패 또는 취소
             _isCharging = false;
