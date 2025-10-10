@@ -704,7 +704,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a864481855260214aa095bd5787107fa, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a864481855260214aa095bd5787107fa, type: 3}
       propertyPath: m_LocalPosition.z
@@ -882,7 +882,8 @@ MonoBehaviour:
   currentWeapon: {fileID: 11400000, guid: 987404a6c9ee90f4ba563dda50c7edd5, type: 2}
   chargeAttackKey: 101
   chargeAttackTimeRequire: 2
-  chargeAttackTarget: 3
+  chargeAttackTarget: 10
   chargeAttackRange: 10
   chargeSlashEffectTag: ChargeSlashEffect
   chargeAttackTrail: {fileID: 3217898328203354281}
+  chargeAttackKeyDownImage: {fileID: 0}
