@@ -164,7 +164,8 @@ public class PlayerAttack : MonoBehaviour
 
                 // 타겟을 바라보며 슬래시 이펙트 생성
                 transform.LookAt(target);
-                ObjectPooler.Instance.SpawnFromPool(chargeSlashEffectTag, transform.position + Vector3.up, transform.rotation);
+                GameObject effect = ObjectPooler.Instance.SpawnFromPool(chargeSlashEffectTag, transform.position + Vector3.up, transform.rotation);
+                effect.GetComponent<AttackEffect>().InitialValues(0, chargeSlashEffectTag, 1.5f); // 데미지는 0으로 설정 (데미지는 돌아와서 줌)
 
                 yield return new WaitForSecondsRealtime(0.1f); // 잠깐 대기 (RealTime써서 TimeScale 무시하기 - 시간 멈춰있음)
             }
@@ -183,8 +184,7 @@ public class PlayerAttack : MonoBehaviour
                 int hitCount = finalTargets.Count(t => t == uniqueTarget);
                 float totalDamage = currentWeapon.damage * 2 * hitCount;
 
-                uniqueTarget.GetComponent<DummyDamage>()?.TakeDamage(totalDamage);
-                Debug.Log($"{uniqueTarget.name}에게 총 {totalDamage}의 데미지 ({hitCount}회)!");
+                uniqueTarget.GetComponent<MonsterStatus>()?.TakeDamage(totalDamage);
             }
 
             Time.timeScale = 1.0f; // 시간 다시 정상화

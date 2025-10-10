@@ -123,7 +123,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (Input.GetMouseButtonDown(2))
         {
-            ObjectPooler.Instance.SpawnFromPool("Dummy", transform.position + transform.forward * 2, Quaternion.identity);
+            ObjectPooler.Instance.SpawnFromPool("Dummy", transform.position + transform.forward * 5, Quaternion.identity);
         }
     }
 }

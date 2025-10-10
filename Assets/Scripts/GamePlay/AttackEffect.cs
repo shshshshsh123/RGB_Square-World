@@ -38,7 +38,8 @@ public class AttackEffect : MonoBehaviour
             // 적 캐릭터에 닿았을 때
             if (other.CompareTag("Enemy"))
             {
-                other.GetComponent<DummyDamage>()?.TakeDamage(_damage);
+                Debug.Log("AttackEffect가 Enemy에 닿음");
+                other.GetComponent<MonsterStatus>()?.TakeDamage(_damage);
             }
         }
     }
