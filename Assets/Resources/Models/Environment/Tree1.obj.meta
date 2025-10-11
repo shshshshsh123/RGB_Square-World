@@ -1,14 +1,24 @@
 fileFormatVersion: 2
-guid: 4458273954abb4049a4dab337fc4a679
+guid: 645ed8d00100b22428d949e96bfb92c8
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: g1Mat
+    second: {fileID: -6416039518592461069, guid: 4458273954abb4049a4dab337fc4a679, type: 3}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: g2Mat
+    second: {fileID: 2100000, guid: 7547145d2b3a8b840986d873313bc7f5, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
     materialSearch: 1
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
