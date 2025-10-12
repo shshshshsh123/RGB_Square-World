@@ -87,7 +87,13 @@ public class CameraController : MonoBehaviour
         List<Renderer> currentlyHitRenderers = new List<Renderer>();
         foreach (var hit in hits)
         {
-            currentlyHitRenderers.Add(hit.collider.GetComponent<Renderer>());
+            // 오브젝트와 그 자식들로부터 모든 Renderer 컴포넌트를 가져옴
+            Renderer[] renderers = hit.collider.GetComponentsInChildren<Renderer>();
+            if (renderers != null && renderers.Length > 0)
+            {
+                // 찾은 모든 렌더러를 리스트에 추가
+                currentlyHitRenderers.AddRange(renderers);
+            }
         }
 
         // 이전에 투명했지만 이제는 감지되지 않은 렌더러들을 다시 불투명하게

@@ -2409,6 +2409,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree2_l_3
       objectReference: {fileID: 0}
+    - target: {fileID: 3524017307871370707, guid: ade3be96abd6c5648aa079a030dcbf5c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8544,6 +8548,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1646646521}
     m_Modifications:
+    - target: {fileID: 383566876900749169, guid: 7047ce66462caa74393aa78d52183ec3, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1520414396140590110, guid: 7047ce66462caa74393aa78d52183ec3, type: 3}
       propertyPath: m_LocalPosition.x
       value: -109.76
@@ -9978,8 +9986,8 @@ Transform:
   - {fileID: 1935990148}
   - {fileID: 32505091}
   - {fileID: 843104294}
-  - {fileID: 806506564}
   - {fileID: 1333263922}
+  - {fileID: 806506564}
   - {fileID: 801038423}
   - {fileID: 1955984630}
   m_Father: {fileID: 1885051768}
