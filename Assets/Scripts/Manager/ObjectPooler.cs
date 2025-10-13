@@ -2,6 +2,14 @@ using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 
+public enum PoolType
+{
+    Dummy,
+    BasicSlash,
+    DoubleSlash,
+    ChargeSlash
+}
+
 public class ObjectPooler : MonoBehaviour
 {
     public static ObjectPooler Instance;
@@ -9,13 +17,13 @@ public class ObjectPooler : MonoBehaviour
     [System.Serializable]
     public class Pool
     {
-        public string tag;
+        public PoolType tag;
         public GameObject prefab;
         public int initalSize;
     }
 
     public List<Pool> pools;
-    public Dictionary<string, Queue<GameObject>> poolDictionary;    // 실제 오브젝트들이 담길 딕셔너리
+    public Dictionary<PoolType, Queue<GameObject>> poolDictionary;    // 실제 오브젝트들이 담길 딕셔너리
 
     private void Awake()
     {
@@ -25,7 +33,7 @@ public class ObjectPooler : MonoBehaviour
 
     private void Start()
     {
-        poolDictionary = new Dictionary<string, Queue<GameObject>>();
+        poolDictionary = new Dictionary<PoolType, Queue<GameObject>>();
         foreach (Pool pool in pools)
         {
             Queue<GameObject> objectPool = new Queue<GameObject>();
@@ -46,7 +54,7 @@ public class ObjectPooler : MonoBehaviour
     /// <param name="position">오브젝트가 나타날 위치</param>
     /// <param name="rotation">오브젝트가 회전값</param>
     /// <returns></returns>
-    public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation)
+    public GameObject SpawnFromPool(PoolType tag, Vector3 position, Quaternion rotation)
     {
         if (!poolDictionary.ContainsKey(tag))
         {
@@ -100,7 +108,7 @@ public class ObjectPooler : MonoBehaviour
     /// </summary>
     /// <param name="tag">Pool에 달린 태그이름 (string이므로 정확하게)</param>
     /// <param name="objectToReturn">리턴할 오브젝트</param>
-    public void ReturnToPool(string tag, GameObject objectToReturn)
+    public void ReturnToPool(PoolType tag, GameObject objectToReturn)
     {
         if (!poolDictionary.ContainsKey(tag))
         {

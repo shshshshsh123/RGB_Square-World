@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BasicSlash
   m_EditorClassIdentifier: 
   weaponType: 0
-  weaponTag: BasicSlash
+  weaponTag: 1
   weaponIcon: {fileID: 0}
   weaponDescription: 
   attackPositionOffset: {x: 0, y: 1, z: 0}

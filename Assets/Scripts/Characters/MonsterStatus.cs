@@ -5,8 +5,9 @@ public class MonsterStatus : MonoBehaviour
 {
     [Header("# 몬스터 스탯 정보")]
     public int maxHp = 100;
-    public string monsterTag = "Monster";   // 오브젝트 풀러 태그
+    public PoolType monsterTag;
     public float monsterDamage = 10f;
+    public float monsterSpeed = 3f;
     private int _currentHp;
 
     [Header("UI 연결")]
@@ -14,6 +15,8 @@ public class MonsterStatus : MonoBehaviour
     public Slider hpSlider;
     [Tooltip("캔버스(회전용)")]
     public Canvas hpCanvas;
+
+    
 
     void OnEnable()
     {

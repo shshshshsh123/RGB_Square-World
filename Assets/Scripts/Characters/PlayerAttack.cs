@@ -17,7 +17,6 @@ public class PlayerAttack : MonoBehaviour
     public float chargeAttackTimeRequire = 2.0f; // 몇초 눌러야지 발동??
     public int chargeAttackTarget = 3; // 몇명 때리나요? (강화하면 올라감)
     public float chargeAttackRange = 10.0f; // 범위
-    public string chargeSlashEffectTag = "ChargeSlashEffect"; // 차지공격 이펙트 태그 (오브젝트풀링용)
     public TrailRenderer chargeAttackTrail; // 차지공격시 나오는 궤적 이펙트
     public Image chargeAttackKeyDownImage; // 차지공격 키 누르고 있는 동안 채워지는 이미지 (UI)
     private bool _isCharging = false;
@@ -162,8 +161,8 @@ public class PlayerAttack : MonoBehaviour
 
                 // 타겟을 바라보며 슬래시 이펙트 생성
                 transform.LookAt(target);
-                GameObject effect = ObjectPooler.Instance.SpawnFromPool(chargeSlashEffectTag, transform.position + Vector3.up, transform.rotation);
-                effect.GetComponent<AttackEffect>().InitialValues(0, chargeSlashEffectTag, 1.5f); // 데미지는 0으로 설정 (데미지는 돌아와서 줌)
+                GameObject effect = ObjectPooler.Instance.SpawnFromPool(PoolType.ChargeSlash, transform.position + Vector3.up, transform.rotation);
+                effect.GetComponent<AttackEffect>().InitialValues(0, PoolType.ChargeSlash, 1.5f); // 데미지는 0으로 설정 (데미지는 돌아와서 줌)
 
                 yield return new WaitForSecondsRealtime(0.1f); // 잠깐 대기 (RealTime써서 TimeScale 무시하기 - 시간 멈춰있음)
             }

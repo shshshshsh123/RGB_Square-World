@@ -5,7 +5,7 @@ public class WeaponData : ScriptableObject
 {
     [Header("# 기본 정보")]
     public WeaponType weaponType; // 무기 타입 (근접, 원거리 등)
-    public string weaponTag; // 무기 태그 (오브젝트 풀링용)
+    public PoolType weaponTag; // 무기 태그 (오브젝트 풀링용)
     public Sprite weaponIcon; // UI에 표시될 아이콘
     [TextArea]
     public string weaponDescription; // 무기 설명
