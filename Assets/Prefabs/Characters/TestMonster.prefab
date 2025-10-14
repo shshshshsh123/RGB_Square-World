@@ -163,8 +163,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHp: 100
-  monsterTag: Dummy
+  monsterTag: 0
   monsterDamage: 10
+  monsterSpeed: 3
+  monsterChargeAmount: 3
   hpSlider: {fileID: 8355987444543871825}
   hpCanvas: {fileID: 3851885877814537582}
 --- !u!54 &-6657495546966649323

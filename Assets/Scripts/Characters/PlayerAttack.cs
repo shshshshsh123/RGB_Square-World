@@ -118,9 +118,9 @@ public class PlayerAttack : MonoBehaviour
             // 1. 범위 내의 적 탐색
             Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, chargeAttackRange, LayerMask.GetMask("Enemy"));
 
-            // 2. 플레이어에게서 가장 가까운 적부터 정렬후 타겟 수 만큼 선택
+            // 2. 랜덤 적부터 정렬후 타겟 수 만큼 선택
             List<Transform> targets = enemiesInRange
-                .OrderBy(enemy => Vector3.Distance(transform.position, enemy.transform.position))
+                .OrderBy(enemy => Random.value)
                 .Take(chargeAttackTarget)
                 .Select(enemy => enemy.transform)
                 .ToList();
