@@ -117,11 +117,7 @@ public class PlayerController : MonoBehaviour
 
     void TestFunction()
     {
-        if (Input.GetMouseButtonDown(1))
-        {
-            GameManager.Instance.IncreaseMaxHp(Random.Range(80f, 550f));
-        }
-        else if (Input.GetMouseButtonDown(2))
+        if (Input.GetMouseButtonDown(2))
         {
             ObjectPooler.Instance.SpawnFromPool(PoolType.Dummy, transform.position + transform.forward * 5, Quaternion.identity);
         }

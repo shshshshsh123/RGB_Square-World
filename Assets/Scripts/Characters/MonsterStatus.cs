@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,7 @@ public class MonsterStatus : MonoBehaviour
     public PoolType monsterTag;
     public float monsterDamage = 10f;
     public float monsterSpeed = 3f;
+    public int monsterChargeAmount = 1; // 몬스터 때리면 차는 차지양 (킬하면 3배? 일단 그건 보류)
     private int _currentHp;
 
     [Header("UI 연결")]
@@ -15,8 +17,6 @@ public class MonsterStatus : MonoBehaviour
     public Slider hpSlider;
     [Tooltip("캔버스(회전용)")]
     public Canvas hpCanvas;
-
-    
 
     void OnEnable()
     {
@@ -45,6 +45,7 @@ public class MonsterStatus : MonoBehaviour
         {
             ObjectPooler.Instance.ReturnToPool(monsterTag, gameObject);
         }
+        GameManager.Instance.IncreaseChargeAttack(monsterChargeAmount);
     }
 
     void UpdateHpBar()

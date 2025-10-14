@@ -11,14 +11,34 @@ public class GameManager : Singleton<GameManager>
     [Header("# Player Info")]
     [SerializeField] private float _playerMaxHp = 100f;
     [SerializeField] private float _playerCurrentHp;
+    [SerializeField] private int _currentChargeAttack = 0;
+    [SerializeField] private int _maxChargeAttack = 100;
+    public bool CanChargeAttack => _currentChargeAttack == 100;
 
     public static event Action<float, float> OnPlayerHpChanged;
     public static event Action<float> OnPlayerMaxHpChanged; // 새로운 최대 체력 변경 이벤트
+    public static event Action<int, int> OnPlayerChargeChanged;
 
     void Start()
     {
-        IncreaseMaxHp(500f);
+        initPlayerInfo();
         _playerCurrentHp = _playerMaxHp;
+    }
+
+    void initPlayerInfo()
+    {
+        _playerMaxHp = 100f;
+        _playerCurrentHp = _playerMaxHp;
+        _maxChargeAttack = 100;
+        _currentChargeAttack = 20;
+        UpdateAllPlayerUIs();
+    }
+
+    void UpdateAllPlayerUIs()
+    {
+        OnPlayerMaxHpChanged?.Invoke(_playerMaxHp);
+        OnPlayerHpChanged?.Invoke(_playerCurrentHp, _playerMaxHp);
+        OnPlayerChargeChanged?.Invoke(_currentChargeAttack, _maxChargeAttack);
     }
 
     public void PlayerTakeDamage(float damage, GameObject damageSource)
@@ -59,5 +79,13 @@ public class GameManager : Singleton<GameManager>
         // 최대 체력이 변경되었음을 모든 구독자에게 알리기
         OnPlayerMaxHpChanged?.Invoke(_playerMaxHp);
         OnPlayerHpChanged?.Invoke(_playerCurrentHp, _playerMaxHp);
+    }
+
+    public void IncreaseChargeAttack(int amount)
+    {
+        _currentChargeAttack += amount;
+        if (_currentChargeAttack > _maxChargeAttack) _currentChargeAttack = _maxChargeAttack;
+
+        OnPlayerChargeChanged?.Invoke(_currentChargeAttack, _maxChargeAttack);
     }
 }

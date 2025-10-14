@@ -1,14 +1,5 @@
-using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
-
-public enum PoolType
-{
-    Dummy,
-    BasicSlash,
-    DoubleSlash,
-    ChargeSlash
-}
 
 public class ObjectPooler : MonoBehaviour
 {
@@ -17,23 +8,25 @@ public class ObjectPooler : MonoBehaviour
     [System.Serializable]
     public class Pool
     {
-        public PoolType tag;
+        public PoolType type; // enum으로 변경
         public GameObject prefab;
         public int initalSize;
     }
 
     public List<Pool> pools;
-    public Dictionary<PoolType, Queue<GameObject>> poolDictionary;    // 실제 오브젝트들이 담길 딕셔너리
+    public Dictionary<PoolType, Queue<GameObject>> poolDictionary;
+    private Dictionary<PoolType, GameObject> prefabDictionary; // 프리팹을 빠르게 찾기 위한 딕셔너리
 
     private void Awake()
     {
-        // 싱글톤에 DontDestroyOnLoad는 사용하지 않음
         Instance = this;
     }
 
     private void Start()
     {
         poolDictionary = new Dictionary<PoolType, Queue<GameObject>>();
+        prefabDictionary = new Dictionary<PoolType, GameObject>(); // 초기화
+
         foreach (Pool pool in pools)
         {
             Queue<GameObject> objectPool = new Queue<GameObject>();
@@ -43,57 +36,31 @@ public class ObjectPooler : MonoBehaviour
                 obj.SetActive(false);
                 objectPool.Enqueue(obj);
             }
-            poolDictionary.Add(pool.tag, objectPool);
+            poolDictionary.Add(pool.type, objectPool);
+            prefabDictionary.Add(pool.type, pool.prefab); // 프리팹 정보도 딕셔너리에 저장
         }
     }
 
-    /// <summary>
-    /// 풀에서 오브젝트를 가져옵니다. 풀이 비어있으면 새로 생성합니다.
-    /// </summary>
-    /// <param name="tag">Pool에 달린 태그이름 (string이므로 정확하게)</param>
-    /// <param name="position">오브젝트가 나타날 위치</param>
-    /// <param name="rotation">오브젝트가 회전값</param>
-    /// <returns></returns>
-    public GameObject SpawnFromPool(PoolType tag, Vector3 position, Quaternion rotation)
+    public GameObject SpawnFromPool(PoolType type, Vector3 position, Quaternion rotation)
     {
-        if (!poolDictionary.ContainsKey(tag))
+        if (!poolDictionary.ContainsKey(type))
         {
-            Debug.LogWarning($"[오브젝트풀러] 태그 {tag} 를 찾을 수 없습니다.");
+            Debug.LogWarning($"[오브젝트풀러] 타입 {type} 을 찾을 수 없습니다.");
             return null;
         }
 
         GameObject objectToSpawn;
 
-        // 만약 큐에 비활성화된 오브젝트가 남아있다면 그것을 사용
-        if (poolDictionary[tag].Count > 0)
+        if (poolDictionary[type].Count > 0)
         {
-            objectToSpawn = poolDictionary[tag].Dequeue();
+            objectToSpawn = poolDictionary[type].Dequeue();
         }
-
-        // 큐가 비어있다면, 새로운 오브젝트를 생성
         else
         {
-            // pools 리스트에서 해당 태그의 프리팹을 찾기
-            GameObject prefabToInstantiate = null;
-            foreach (Pool pool in pools)
-            {
-                if (pool.tag == tag)
-                {
-                    prefabToInstantiate = pool.prefab;
-                    break;
-                }
-            }
-
-            if (prefabToInstantiate != null)
-            {
-                objectToSpawn = Instantiate(prefabToInstantiate, transform);
-                Debug.Log($"[오브젝트풀러] 태그 {tag} 에 대해 새로운 오브젝트를 생성합니다.");
-            }
-            else
-            {
-                Debug.LogWarning($"[오브젝트풀러] 태그 {tag} 에 대한 프리팹을 찾을 수 없습니다.");
-                return null;
-            }
+            // foreach 루프 대신 딕셔너리에서 즉시 프리팹을 찾아 새로 생성
+            GameObject prefabToInstantiate = prefabDictionary[type];
+            objectToSpawn = Instantiate(prefabToInstantiate, transform);
+            // Debug.Log($"[오브젝트풀러] 타입 {type} 에 대해 새로운 오브젝트를 생성합니다.");
         }
 
         objectToSpawn.SetActive(true);
@@ -103,20 +70,24 @@ public class ObjectPooler : MonoBehaviour
         return objectToSpawn;
     }
 
-    /// <summary>
-    /// 사용이 끝난 오브젝트를 풀에 반납합니다.
-    /// </summary>
-    /// <param name="tag">Pool에 달린 태그이름 (string이므로 정확하게)</param>
-    /// <param name="objectToReturn">리턴할 오브젝트</param>
-    public void ReturnToPool(PoolType tag, GameObject objectToReturn)
+    public void ReturnToPool(PoolType type, GameObject objectToReturn)
     {
-        if (!poolDictionary.ContainsKey(tag))
+        if (!poolDictionary.ContainsKey(type))
         {
-            Debug.LogWarning($"[오브젝트풀러] 태그 {tag} 를 찾을 수 없습니다.");
+            Debug.LogWarning($"[오브젝트풀러] 타입 {type} 을 찾을 수 없습니다.");
+            Destroy(objectToReturn); // 풀이 없으면 그냥 파괴
             return;
         }
 
         objectToReturn.SetActive(false);
-        poolDictionary[tag].Enqueue(objectToReturn);
+        poolDictionary[type].Enqueue(objectToReturn);
     }
+}
+
+public enum PoolType
+{
+    Dummy,
+    BasicSlash,
+    DoubleSlash,
+    ChargeSlash
 }

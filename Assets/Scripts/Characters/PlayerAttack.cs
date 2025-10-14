@@ -70,6 +70,9 @@ public class PlayerAttack : MonoBehaviour
     /// </summary>
     void HandleChargeAttack()
     {
+        // 게이지 다찼나?
+        if (!GameManager.Instance.CanChargeAttack) return;
+
         // 차지 공격 키 처음 누르면 타이머 시작
         if (Input.GetMouseButtonDown(1))
         {
@@ -186,6 +189,7 @@ public class PlayerAttack : MonoBehaviour
 
             Time.timeScale = 1.0f; // 시간 다시 정상화
             chargeAttackTrail.emitting = false; // 궤적 이펙트 종료
+            GameManager.Instance.IncreaseChargeAttack(-100);    // 게이지 정상화
         }
     }
 }
