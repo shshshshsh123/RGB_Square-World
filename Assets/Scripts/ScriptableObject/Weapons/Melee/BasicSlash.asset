@@ -15,10 +15,38 @@ MonoBehaviour:
   weaponType: 0
   weaponTag: 1
   weaponIcon: {fileID: 0}
+  lifeTime: 0.5
   weaponDescription: 
   attackPositionOffset: {x: 0, y: 1, z: 0}
-  damage: 10
-  attackDelay: 0.5
-  lifeTime: 0.5
-  projectileSpeed: 0
+  levelDataList:
+  - level: 1
+    damage: 10
+    attackDelay: 0.5
+    scale: 2
+    projectileCount: 1
+    penetrationCount: 1
+  - level: 2
+    damage: 15
+    attackDelay: 0.5
+    scale: 2
+    projectileCount: 1
+    penetrationCount: 1
+  - level: 3
+    damage: 20
+    attackDelay: 0.5
+    scale: 2
+    projectileCount: 1
+    penetrationCount: 1
+  - level: 4
+    damage: 20
+    attackDelay: 0.3
+    scale: 2
+    projectileCount: 1
+    penetrationCount: 1
+  - level: 5
+    damage: 20
+    attackDelay: 0.3
+    scale: 3
+    projectileCount: 1
+    penetrationCount: 1
   projectilePrefab: {fileID: 5503505460791601945, guid: a360efa07fce47847a8e5f7b10d6d418, type: 3}

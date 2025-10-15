@@ -7,13 +7,34 @@ using UnityEngine.UI;
 
 public class PlayerAttack : MonoBehaviour
 {
-    [Header("# 무기 데이터 리스트")]
-    public List<WeaponData> weaponDataList; // 게임 내 존재하는 모든 무기 데이터 리스트
+    // 내부에서 사용할 현재 무기 데이터
+    [System.Serializable]
+    public class EquippedWeapon
+    {
+        public WeaponData weaponData;
+        public int currentLevel = 1;
+        public float lastAttackTime;
 
-    [Header("# 현재 무기 데이터")]
-    public WeaponData currentWeapon; // 현재 장착된 무기 데이터
+        public EquippedWeapon(WeaponData data)
+        {
+            weaponData = data;
+            currentLevel = 1;
+            lastAttackTime = 0f;
+        }
+
+        public LevelData GetCurrentLevelData()
+        {
+            // 레벨 1부터 시작하게 할거임 (보기 편하게)
+            int index = Mathf.Clamp(currentLevel - 1, 0, weaponData.levelDataList.Count - 1);
+            return weaponData.levelDataList[index];
+        }
+    }
+    [Header("# 무기 관리")]
+    public List<WeaponData> weaponDatas; // 게임 내 존재하는 모든 무기 데이터
+    public List<EquippedWeapon> equippedWeapons;
 
     [Header("# 차지공격(근접)")]
+    public int chargeAttackDamage = 20; // 기본 데미지 (강화하면 올라감)
     public float chargeAttackTimeRequire = 2.0f; // 몇초 눌러야지 발동??
     public int chargeAttackTarget = 3; // 몇명 때리나요? (강화하면 올라감)
     public float chargeAttackRange = 10.0f; // 범위
@@ -22,12 +43,12 @@ public class PlayerAttack : MonoBehaviour
     private bool _isCharging = false;
     private float _chargeTimer = 0.0f;
 
-    private float _lastAttackTime; // 마지막 공격 시점
     private PlayerController _playerController;
 
     void Awake()
     {
         _playerController = GetComponent<PlayerController>();
+        equippedWeapons = new List<EquippedWeapon>();
     }
 
     void Start()
@@ -37,31 +58,86 @@ public class PlayerAttack : MonoBehaviour
 
     void Update()
     {
-        if (currentWeapon == null) return;
+        // 기본공격
+        HandleAutoAttacks();
 
-        if (Time.time >= _lastAttackTime + currentWeapon.attackDelay)
-        {
-            if (Input.GetMouseButton(0)) // 마우스 좌클릭을 누르고 있을 때 공격
-            {
-                Attack();
-                _lastAttackTime = Time.time;
-            }
-        }
-
+        // 차지공격
         HandleChargeAttack();
+
+        // 테스트용!!!!!!!!
+        if (Input.GetKeyDown(KeyCode.Space)) AddOrUpgradeWeapon(weaponDatas[0]);
     }
 
-    void Attack()
+    void HandleAutoAttacks()
     {
-        // TODO: 애니메이션 받으면 호출하기
-        if (currentWeapon.projectilePrefab != null)
+        if (!Input.GetMouseButton(0)) return;   // 좌클릭 중에만 발동
+
+        foreach (EquippedWeapon weapon in equippedWeapons)
+        {
+            LevelData levelData = weapon.GetCurrentLevelData();
+            // 공격 딜레이 체크
+            if (Time.time >= weapon.lastAttackTime + levelData.attackDelay) 
+            {
+                Attack(weapon);
+                weapon.lastAttackTime = Time.time;
+            }
+        }
+    }
+
+    void Attack(EquippedWeapon weapon)
+    {
+        LevelData levelData = weapon.GetCurrentLevelData();
+
+        if (weapon.weaponData.projectilePrefab == null)
+        {
+            Debug.LogWarning($"[Player Attack] 이잉? 이펙트가 없네요????? {weapon.weaponData.weaponTag}");
+            return;
+        }
+
+        // 발사체 수(projectileCount)만큼 반복하여 공격
+        for (int i = 0; i < levelData.projectileCount; i++)
         {
             GameObject effect = ObjectPooler.Instance.SpawnFromPool(
-                currentWeapon.weaponTag,
-                transform.position + currentWeapon.attackPositionOffset,
+                weapon.weaponData.weaponTag,
+                transform.position + weapon.weaponData.attackPositionOffset,
                 _playerController.Rotation
             );
-            effect.GetComponent<AttackEffect>().InitialValues(currentWeapon.damage, currentWeapon.weaponTag, currentWeapon.lifeTime);
+
+            // 이펙트/투사체에 데미지, 크기 등 레벨에 맞는 데이터 전달
+            AttackEffect attackEffect = effect.GetComponent<AttackEffect>();
+            if (attackEffect != null)
+            {
+                attackEffect.InitialValues(levelData.damage, weapon.weaponData.weaponTag, weapon.weaponData.lifeTime, levelData.scale);
+            }
+
+            // TODO: 여러 발사체를 쏠 때 방향을 다르게 하는 로직 추가 (예: 부채꼴, 전방위 등)
+        }
+    }
+
+    public void AddOrUpgradeWeapon(WeaponData weaponData)
+    {
+        EquippedWeapon existingWeapon = equippedWeapons.FirstOrDefault(w => w.weaponData == weaponData); // 이미 장착된 무기인지 확인
+
+        if (existingWeapon != null)
+        {
+            // 현재 레벨이 최대 레벨(levelDataList의 개수)보다 작은지 확인
+            if (existingWeapon.currentLevel < weaponData.levelDataList.Count)
+            {
+                // 이미 있으면 레벨업
+                existingWeapon.currentLevel++;
+                Debug.Log($"{weaponData.name} 레벨 업! -> Lv.{existingWeapon.currentLevel}");
+            }
+            else
+            {
+                // 최대 레벨에 도달했을 경우
+                Debug.Log($"{weaponData.name}은(는) 이미 최대 레벨(Lv.{existingWeapon.currentLevel})입니다!");
+            }
+        }
+        else
+        {
+            // 없으면 새로 추가
+            equippedWeapons.Add(new EquippedWeapon(weaponData));
+            Debug.Log($"{weaponData.name} 새로 획득!");
         }
     }
 
@@ -165,7 +241,7 @@ public class PlayerAttack : MonoBehaviour
                 // 타겟을 바라보며 슬래시 이펙트 생성
                 transform.LookAt(target);
                 GameObject effect = ObjectPooler.Instance.SpawnFromPool(PoolType.ChargeSlash, transform.position + Vector3.up, transform.rotation);
-                effect.GetComponent<AttackEffect>().InitialValues(0, PoolType.ChargeSlash, 1.5f); // 데미지는 0으로 설정 (데미지는 돌아와서 줌)
+                effect.GetComponent<AttackEffect>().InitialValues(0, PoolType.ChargeSlash, 1.5f, 1f); // 데미지는 0으로 설정 (데미지는 돌아와서 줌), scale은 1고정??
 
                 yield return new WaitForSecondsRealtime(0.1f); // 잠깐 대기 (RealTime써서 TimeScale 무시하기 - 시간 멈춰있음)
             }
@@ -182,7 +258,7 @@ public class PlayerAttack : MonoBehaviour
             {
                 // 최종 타겟 리스트에서 해당 타겟이 몇 번 포함되었는지 계산하여 데미지 배율 적용
                 int hitCount = finalTargets.Count(t => t == uniqueTarget);
-                float totalDamage = currentWeapon.damage * 2 * hitCount;
+                float totalDamage = chargeAttackDamage * hitCount;
 
                 uniqueTarget.GetComponent<MonsterStatus>()?.TakeDamage(totalDamage);
             }

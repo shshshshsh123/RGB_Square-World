@@ -11,10 +11,11 @@ public class AttackEffect : MonoBehaviour
     /// <param name="damage">데미지</param>
     /// <param name="poolTag">태그(오브젝트풀러)</param>
     /// <param name="lifeTime">이펙트 사라질 시간</param>
-    public void InitialValues(float damage, PoolType poolTag, float lifeTime)
+    public void InitialValues(float damage, PoolType poolTag, float lifeTime, float scale)
     {
         _damage = damage;
         _poolTag = poolTag;
+        transform.localScale = Vector3.one * scale;
         Invoke(nameof(ReturnToPool), lifeTime);
     }
 

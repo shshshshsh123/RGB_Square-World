@@ -701,12 +701,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cdaafcf8ab7aa040a0483302a74baf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponDataList:
+  weaponDatas:
   - {fileID: 11400000, guid: 987404a6c9ee90f4ba563dda50c7edd5, type: 2}
-  currentWeapon: {fileID: 11400000, guid: 987404a6c9ee90f4ba563dda50c7edd5, type: 2}
+  equippedWeapons: []
+  chargeAttackDamage: 20
   chargeAttackTimeRequire: 2
   chargeAttackTarget: 10
-  chargeAttackRange: 10
+  chargeAttackRange: 30
   chargeAttackTrail: {fileID: 3217898328203354281}
   chargeAttackKeyDownImage: {fileID: 0}
 --- !u!136 &59111408122199693
