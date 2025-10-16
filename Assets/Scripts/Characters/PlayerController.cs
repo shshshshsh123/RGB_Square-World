@@ -2,6 +2,8 @@ using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(PlayerAttack))]
+[RequireComponent(typeof(PlayerChargeAttack))]
 public class PlayerController : MonoBehaviour
 {
     [Header("# Player Setting")]
@@ -117,9 +119,9 @@ public class PlayerController : MonoBehaviour
 
     void TestFunction()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha0))
+        if (Input.GetMouseButtonDown(2))
         {
-            ObjectPooler.Instance.SpawnFromPool(PoolType.Dummy, transform.position + transform.forward * 5, Quaternion.identity);
+            ObjectPooler.Instance.SpawnFromPool(PoolType.Dummy, transform.position + Vector3.one * Random.Range(5, 30), Quaternion.identity);
         }
     }
 }

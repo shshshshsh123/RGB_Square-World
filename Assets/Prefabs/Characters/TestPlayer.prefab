@@ -601,6 +601,9 @@ PrefabInstance:
       addedObject: {fileID: 4365710523778137212}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a864481855260214aa095bd5787107fa, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 59111408122199693}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a864481855260214aa095bd5787107fa, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 7117933484694180559}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a864481855260214aa095bd5787107fa, type: 3}
       insertIndex: -1
@@ -610,7 +613,7 @@ PrefabInstance:
       addedObject: {fileID: 1882279140966794363}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a864481855260214aa095bd5787107fa, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 59111408122199693}
+      addedObject: {fileID: 4367353298545426590}
   m_SourcePrefab: {fileID: 100100000, guid: a864481855260214aa095bd5787107fa, type: 3}
 --- !u!4 &8645111654643952410 stripped
 Transform:
@@ -642,6 +645,29 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.2
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!136 &59111408122199693
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8985327303841296800}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.4
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
@@ -704,32 +730,21 @@ MonoBehaviour:
   weaponDatas:
   - {fileID: 11400000, guid: 987404a6c9ee90f4ba563dda50c7edd5, type: 2}
   equippedWeapons: []
-  chargeAttackDamage: 20
-  chargeAttackTimeRequire: 2
-  chargeAttackTarget: 10
-  chargeAttackRange: 30
-  chargeAttackTrail: {fileID: 3217898328203354281}
-  chargeAttackKeyDownImage: {fileID: 0}
---- !u!136 &59111408122199693
-CapsuleCollider:
+--- !u!114 &4367353298545426590
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8985327303841296800}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.4
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8eb74a577024c244a8aaad54ff539964, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chargeAttackDamage: 40
+  chargeAttackTimeRequire: 2
+  chargeAttackTarget: 15
+  chargeAttackRange: 50
+  chargeAttackTrail: {fileID: 3217898328203354281}
+  chargeAttackKeyDownImage: {fileID: 0}

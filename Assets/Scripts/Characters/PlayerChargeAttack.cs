@@ -1,0 +1,157 @@
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine.UI;
+
+public class PlayerChargeAttack : MonoBehaviour
+{
+    [Header("# 차지공격(근접)")]
+    public int chargeAttackDamage = 20; // 기본 데미지 (강화하면 올라감)
+    public float chargeAttackTimeRequire = 2.0f; // 몇초 눌러야지 발동??
+    public int chargeAttackTarget = 3; // 몇명 때리나요? (강화하면 올라감)
+    public float chargeAttackRange = 10.0f; // 범위
+    public TrailRenderer chargeAttackTrail; // 차지공격시 나오는 궤적 이펙트
+    public Image chargeAttackKeyDownImage; // 차지공격 키 누르고 있는 동안 채워지는 이미지 (UI)
+    private bool _isCharging = false;
+    private float _chargeTimer = 0.0f;
+
+    void Start()
+    {
+        chargeAttackKeyDownImage.fillAmount = 0f;
+    }
+
+    void Update()
+    {
+        // 차지공격
+        HandleChargeAttack();
+    }
+
+    /// <summary>
+    /// 차지공격 발동확인
+    /// </summary>
+    void HandleChargeAttack()
+    {
+        // 게이지 다찼나?
+        if (!GameManager.Instance.CanChargeAttack) return;
+
+        // 차지 공격 키 처음 누르면 타이머 시작
+        if (Input.GetMouseButtonDown(1))
+        {
+            _isCharging = true;
+            _chargeTimer = 0.0f;
+        }
+
+        // 차지 공격 키를 누르고 있는 동안
+        if (Input.GetMouseButton(1) && _isCharging)
+        {
+            // Time.timeScale에 영향을 받지 않는 unscaledDeltaTime을 사용합니다.
+            _chargeTimer += Time.unscaledDeltaTime;
+            chargeAttackKeyDownImage.fillAmount = Mathf.Clamp01(_chargeTimer / chargeAttackTimeRequire);
+
+            if (_isCharging && _chargeTimer >= chargeAttackTimeRequire)
+            {
+                // 차지 성공! 공격 실행
+                StartCoroutine(PerformChargeAttack());
+                _isCharging = false;
+                _chargeTimer = 0f;
+            }
+        }
+
+        if (Input.GetMouseButtonUp(1))
+        {
+            // 차지 실패 또는 취소
+            _isCharging = false;
+            _chargeTimer = 0f;
+            chargeAttackKeyDownImage.fillAmount = 0f;
+        }
+
+        IEnumerator PerformChargeAttack()
+        {
+            // 0. UI 반짝임 한번만
+            Color originalColor = chargeAttackKeyDownImage.color;
+            chargeAttackKeyDownImage.color = Color.red;
+            chargeAttackKeyDownImage.rectTransform.localScale = Vector3.one * 1.2f;
+            yield return new WaitForSecondsRealtime(0.3f);
+            chargeAttackKeyDownImage.color = originalColor;
+            chargeAttackKeyDownImage.fillAmount = 0f;
+            chargeAttackKeyDownImage.rectTransform.localScale = Vector3.one;
+
+            // 1. 범위 내의 적 탐색
+            Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, chargeAttackRange, LayerMask.GetMask("Enemy"));
+
+            // 2. 랜덤 적부터 정렬후 타겟 수 만큼 선택
+            List<Transform> targets = enemiesInRange
+                .OrderBy(enemy => Random.value)
+                .Take(chargeAttackTarget)
+                .Select(enemy => enemy.transform)
+                .ToList();
+
+            if (targets.Count == 0)
+            {
+                Debug.Log("[차지공격] 타겟이 없습니다.");
+                yield break; // 타겟이 없으면 종료
+            }
+
+            // 타겟이 부족할 경우, 이미 찾은 적들을 반복해서 추가
+            List<Transform> finalTargets = new List<Transform>();
+            for (int i = 0; i < chargeAttackTarget; i++)
+            {
+                finalTargets.Add(targets[i % targets.Count]);
+            }
+
+            // 3. 시간 정지하고 발동준비
+            Vector3 originalPosition = transform.position;  // 원래 위치 저장
+            Time.timeScale = 0.0f; // 시간 정지!!!!!!!!
+            GetComponent<Collider>().enabled = false; // 콜라이더 잠깐 비활성화해서 끼거나 이상한거 방지하기
+            chargeAttackTrail.emitting = true; // 궤적 이펙트 시작
+
+            // 4. 타겟 위치로 순간이동하며 공격
+            foreach (Transform target in finalTargets)
+            {
+                // 타겟의 콜라이더 경계를 가져오기
+                Collider targetCollider = target.GetComponent<Collider>();
+                Vector3 targetBounds = targetCollider != null ? targetCollider.bounds.extents : Vector3.one;
+
+                // 타겟 주변 랜덤 방향 벡터 생성 (Y축은 제외)
+                Vector2 randomDirection2D = Random.insideUnitCircle.normalized;
+                Vector3 randomDirection = new Vector3(randomDirection2D.x, 0, randomDirection2D.y);
+
+                // 타겟 콜라이더 크기에 비례하여 랜덤한 거리만큼 떨어진 위치 계산
+                float randomDistance = Random.Range(0.6f, targetBounds.magnitude + 1.0f);
+                Vector3 teleportPosition = target.position + randomDirection * randomDistance;
+
+                // 계산된 위치로 순간이동
+                transform.position = teleportPosition;
+
+                // 타겟을 바라보며 슬래시 이펙트 생성
+                transform.LookAt(target);
+                GameObject effect = ObjectPooler.Instance.SpawnFromPool(PoolType.ChargeSlash, transform.position + Vector3.up, transform.rotation);
+                effect.GetComponent<AttackEffect>().InitialValues(0, PoolType.ChargeSlash, 1.5f, 1f); // 데미지는 0으로 설정 (데미지는 돌아와서 줌), scale은 1고정??
+
+                yield return new WaitForSecondsRealtime(0.1f); // 잠깐 대기 (RealTime써서 TimeScale 무시하기 - 시간 멈춰있음)
+            }
+
+            // 5. 원래 위치로 돌아오기 + 데미지주기
+            transform.position = originalPosition;
+
+            // 돌아오고 잠깐 있다가 데미지 주기 (간지용)
+            yield return new WaitForSecondsRealtime(0.2f);
+
+            GetComponent<Collider>().enabled = true; // 콜라이더 다시 활성화
+
+            foreach (Transform uniqueTarget in targets)
+            {
+                // 최종 타겟 리스트에서 해당 타겟이 몇 번 포함되었는지 계산하여 데미지 배율 적용
+                int hitCount = finalTargets.Count(t => t == uniqueTarget);
+                float totalDamage = chargeAttackDamage * hitCount;
+
+                uniqueTarget.GetComponent<MonsterStatus>()?.TakeDamage(totalDamage);
+            }
+
+            Time.timeScale = 1.0f; // 시간 다시 정상화
+            chargeAttackTrail.emitting = false; // 궤적 이펙트 종료
+            GameManager.Instance.IncreaseChargeAttack(-100);    // 게이지 정상화
+        }
+    }
+}

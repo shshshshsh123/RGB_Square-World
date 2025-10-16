@@ -762,7 +762,7 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1882279140966794363, guid: 9204696eca25536478d9fe50cb63e9eb, type: 3}
+    - target: {fileID: 4367353298545426590, guid: 9204696eca25536478d9fe50cb63e9eb, type: 3}
       propertyPath: chargeAttackKeyDownImage
       value: 
       objectReference: {fileID: 1111835622}
