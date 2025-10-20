@@ -87,6 +87,7 @@ public class ObjectPooler : MonoBehaviour
 public enum PoolType
 {
     Dummy,
+    Monsters,
     BasicSlash,
     DoubleSlash,
     ChargeSlash

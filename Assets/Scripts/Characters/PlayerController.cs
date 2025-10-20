@@ -121,5 +121,10 @@ public class PlayerController : MonoBehaviour
         {
             ObjectPooler.Instance.SpawnFromPool(PoolType.Dummy, transform.position + transform.forward * 5, Quaternion.identity);
         }
+
+        else if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            ObjectPooler.Instance.SpawnFromPool(PoolType.Monsters, transform.position + transform.forward * 5, Quaternion.identity);
+        }
     }
 }
