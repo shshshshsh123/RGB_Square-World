@@ -56,6 +56,7 @@ public class MonsterStatus : MonoBehaviour
         }
     }
 
+    /*
     private void OnTriggerEnter(Collider other)
     {
         if (other != null)
@@ -66,4 +67,5 @@ public class MonsterStatus : MonoBehaviour
             }
         }
     }
+    */
 }
