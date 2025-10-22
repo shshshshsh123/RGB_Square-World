@@ -7,17 +7,20 @@ using System.Collections.Generic;
 public class PlayerController : MonoBehaviour
 {
     [Header("# Player Setting")]
-    [Tooltip("ÇÃ·¹ÀÌ¾î ÀÌµ¿¼Óµµ")]
+    [Tooltip("ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ìµï¿½ï¿½Óµï¿½")]
     public float moveSpeed = 7.5f;
-    [Tooltip("ÇÃ·¹ÀÌ¾î È¸Àü¼Óµµ")]
+    [Tooltip("ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ È¸ï¿½ï¿½ï¿½Óµï¿½")]
     public float rotationSpeed = 15.0f;
 
     [Header("# Mouse Settings")]
-    [Tooltip("¸¶¿ì½º À§Ä¡¸¦ ÀÎ½ÄÇÒ ¹Ù´Ú ·¹ÀÌ¾î")]
+    [Tooltip("ï¿½ï¿½ï¿½ì½º ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Î½ï¿½ï¿½ï¿½ ï¿½Ù´ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½")]
     public LayerMask groundLayer;
 
     private Rigidbody _rigidBody;
     private Animator _animator;
+    private float _animatorMoveX; // ï¿½Ö´Ï¸ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ ï¿½ï¿½ï¿½Þµï¿½ ï¿½ï¿½ï¿½ï¿½ Xï¿½ï¿½
+    private float _animatorMoveZ; // ï¿½Ö´Ï¸ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ ï¿½ï¿½ï¿½Þµï¿½ ï¿½ï¿½ï¿½ï¿½ Zï¿½ï¿½
+    public float animationSmoothTime = 0.1f; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´Âµï¿½ ï¿½É¸ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
 
     private Vector3 _movement;
     private Quaternion _rotation;
@@ -27,13 +30,13 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        // ÄÄÆ÷³ÍÆ® °¡Á®¿À±â
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         _rigidBody = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
 
         _mainCamera = Camera.main;
 
-        _rigidBody.freezeRotation = true; // ¹°¸®¿£Áø¿¡ ÀÇÇÑ È¸Àü ¹æÁö
+        _rigidBody.freezeRotation = true; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
     void Update()
@@ -52,43 +55,51 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// ¿òÁ÷ÀÓ¿¡ °ü·ÃµÈ Input °¨Áö¹× ÀÌµ¿¹æÇâ ¼³Á¤
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿ï¿½ ï¿½ï¿½ï¿½Ãµï¿½ Input ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     void CalculateMovement()
     {
-        // ÀÔ·Â°¨Áö
+        // ï¿½Ô·Â°ï¿½ï¿½ï¿½
         float hAxis = Input.GetAxisRaw("Horizontal");
         float vAxis = Input.GetAxisRaw("Vertical");
 
-        // ÀÌµ¿¹æÇâ¸¸ °è»ê
+        // ï¿½Ìµï¿½ï¿½ï¿½ï¿½â¸¸ ï¿½ï¿½ï¿½
         _movement = new Vector3(hAxis, 0, vAxis).normalized;
     }
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î ÀÌµ¿(rigidBody¸¦ ÀÌ¿ëÇÑ Ã³¸®) -> FixedUpdate¿¡¼­ »ç¿ëÇÒ°Í
+    /// ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ìµï¿½(rigidBodyï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½) -> FixedUpdateï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ò°ï¿½
     /// </summary>
     void PlayerMove()
     {
-        // ÀÔ·ÂÀÌ ÀÖÀ» ¶§¸¸ ÀÌµ¿ ¼Óµµ¸¦ Àû¿ë (¹Ì²ô·¯Áü ¹æÁö)
+        // ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½Óµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½Ì²ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
         if (_movement.magnitude > 0.01f)
         {
             _rigidBody.linearVelocity = _movement * moveSpeed;
 
-            // ÇöÀç ÇÃ·¹ÀÌ¾îÀÇ ¿ùµå ¼Óµµ º¤ÅÍ¸¦ ·ÎÄÃ ÁÂÇ¥°è·Î º¯È¯
+            // ï¿½ï¿½ï¿½ï¿½ Rigidbody ï¿½Óµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ (ï¿½ï¿½Ç¥ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
             Vector3 localVelocity = transform.InverseTransformDirection(_rigidBody.linearVelocity);
 
-            // ¾Ö´Ï¸ÞÀÌ¼Ç ¼³Á¤
-            _animator.SetBool("isRunning", true);
-            _animator.SetFloat("MoveX", localVelocity.x); // ·ÎÄÃ XÃà ¼Óµµ
-            _animator.SetFloat("MoveZ", localVelocity.z); // ·ÎÄÃ ZÃà ¼Óµµ
+            // ï¿½ï¿½Ç¥ MoveX, MoveZ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ localVelocity ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ß¸ï¿½ 0)
+            float targetMoveX = (_movement.magnitude > 0.1f) ? localVelocity.x / moveSpeed : 0f; // ï¿½Óµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ -1 ~ 1 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­
+            float targetMoveZ = (_movement.magnitude > 0.1f) ? localVelocity.z / moveSpeed : 0f; // ï¿½Óµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ -1 ~ 1 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­
+
+            // Mathf.Lerpï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµå·´ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            _animatorMoveX = Mathf.Lerp(_animatorMoveX, targetMoveX, Time.fixedDeltaTime * (1f / animationSmoothTime));
+            _animatorMoveZ = Mathf.Lerp(_animatorMoveZ, targetMoveZ, Time.fixedDeltaTime * (1f / animationSmoothTime));
+
+            // ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½Îµå·´ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½)
+            _animator.SetBool("isRunning", _movement.magnitude > 0.1f);
+            _animator.SetFloat("MoveX", _animatorMoveX);
+            _animator.SetFloat("MoveZ", _animatorMoveZ);
         }
         else
         {
-            // ÀÔ·ÂÀÌ ¾øÀ» ¶§´Â ¼Óµµ¸¦ 0À¸·Î ¼³Á¤ÇÏ¿© ¸ØÃã (but! yÃà ¿òÁ÷ÀÓÀº À¯Áö ex) Á¡ÇÁ, ¶³¾îÁüµî)
+            // ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ï¿½ï¿½ 0ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ (but! yï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ex) ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
             Vector3 currentVelocity = _rigidBody.linearVelocity;
             _rigidBody.linearVelocity = new Vector3(0, currentVelocity.y, 0);
 
-            // ¾Ö´Ï¸ÞÀÌ¼Ç ¼³Á¤
+            // ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½
             _animator.SetBool("isRunning", false); 
             _animator.SetFloat("MoveX", 0f);
             _animator.SetFloat("MoveZ", 0f);
@@ -96,7 +107,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// ¸¶¿ì½º Ä¿¼­ ¹æÇâÀ¸·ÎÀÇ ¸ñÇ¥ È¸Àü °ªÀ» °è»êÇÕ´Ï´Ù.
+    /// ï¿½ï¿½ï¿½ì½º Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
     /// </summary>
     void CalculateRotation()
     {
@@ -107,7 +118,7 @@ public class PlayerController : MonoBehaviour
             Vector3 lookDirection = hit.point - transform.position;
             lookDirection.y = 0;
 
-            // ¸ñÇ¥ È¸Àü °ªÀ» °è»êÇØ¼­ º¯¼ö¿¡ ÀúÀå (¸¶¿ì½º°¡ ÇÃ·¹ÀÌ¾î À§Ä¡¿Í °ÅÀÇ °°´Ù¸é È¸ÀüÇÏÁö ¾ÊÀ½)
+            // ï¿½ï¿½Ç¥ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ì½ºï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ù¸ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
             if (lookDirection.sqrMagnitude > 0.01f)
             {
                 _rotation = Quaternion.LookRotation(lookDirection);
@@ -116,11 +127,11 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// °è»êµÈ ¹æÇâÀ¸·Î ÇÃ·¹ÀÌ¾î¸¦ È¸Àü½ÃÅµ´Ï´Ù. (Rigidbody¸¦ ÀÌ¿ë)
+    /// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ È¸ï¿½ï¿½ï¿½ï¿½Åµï¿½Ï´ï¿½. (Rigidbodyï¿½ï¿½ ï¿½Ì¿ï¿½)
     /// </summary>
     void PlayerRotate()
     {
-        // Slerp¸¦ »ç¿ëÇÏ¿© ºÎµå·¯¿î È¸Àü
+        // Slerpï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½Îµå·¯ï¿½ï¿½ È¸ï¿½ï¿½
         Quaternion newRotation = Quaternion.Slerp(_rigidBody.rotation, _rotation, rotationSpeed * Time.fixedDeltaTime).normalized;
         _rigidBody.MoveRotation(newRotation);
     }
