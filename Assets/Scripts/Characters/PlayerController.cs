@@ -73,8 +73,14 @@ public class PlayerController : MonoBehaviour
         if (_movement.magnitude > 0.01f)
         {
             _rigidBody.linearVelocity = _movement * moveSpeed;
+
+            // 현재 플레이어의 월드 속도 벡터를 로컬 좌표계로 변환
+            Vector3 localVelocity = transform.InverseTransformDirection(_rigidBody.linearVelocity);
+
             // 애니메이션 설정
             _animator.SetBool("isRunning", true);
+            _animator.SetFloat("MoveX", localVelocity.x); // 로컬 X축 속도
+            _animator.SetFloat("MoveZ", localVelocity.z); // 로컬 Z축 속도
         }
         else
         {
@@ -83,7 +89,9 @@ public class PlayerController : MonoBehaviour
             _rigidBody.linearVelocity = new Vector3(0, currentVelocity.y, 0);
 
             // 애니메이션 설정
-            _animator.SetBool("isRunning", false);
+            _animator.SetBool("isRunning", false); 
+            _animator.SetFloat("MoveX", 0f);
+            _animator.SetFloat("MoveZ", 0f);
         }
     }
 

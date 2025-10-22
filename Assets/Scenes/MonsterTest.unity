@@ -149,16 +149,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pools:
-  - tag: Dummy
+  - type: 0
     prefab: {fileID: 717552205417201984, guid: 41e4c32ea1099dd4aa332cad219a8b35, type: 3}
     initalSize: 10
-  - tag: BasicSlash
+  - type: 0
     prefab: {fileID: 5503505460791601945, guid: a360efa07fce47847a8e5f7b10d6d418, type: 3}
     initalSize: 3
-  - tag: DoubleSlash
+  - type: 0
     prefab: {fileID: 3600389243222657682, guid: d337e48e9f687e84ab4210dadde4d936, type: 3}
     initalSize: 3
-  - tag: ChargeSlashEffect
+  - type: 0
     prefab: {fileID: 158789456559184324, guid: 7a67dc3f83390d74ea657bda6b315ab7, type: 3}
     initalSize: 3
 --- !u!4 &47802448
@@ -764,7 +764,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
