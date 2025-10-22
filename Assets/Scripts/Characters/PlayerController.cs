@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -7,36 +6,36 @@ using System.Collections.Generic;
 public class PlayerController : MonoBehaviour
 {
     [Header("# Player Setting")]
-    [Tooltip("�÷��̾� �̵��ӵ�")]
+    [Tooltip("플레이어 이동속도")]
     public float moveSpeed = 7.5f;
-    [Tooltip("�÷��̾� ȸ���ӵ�")]
+    [Tooltip("플레이어 회전속도")]
     public float rotationSpeed = 15.0f;
 
     [Header("# Mouse Settings")]
-    [Tooltip("���콺 ��ġ�� �ν��� �ٴ� ���̾�")]
+    [Tooltip("마우스 위치를 인식할 바닥 레이어")]
     public LayerMask groundLayer;
 
     private Rigidbody _rigidBody;
     private Animator _animator;
-    private float _animatorMoveX; // �ִϸ����Ϳ� ���޵� ���� X��
-    private float _animatorMoveZ; // �ִϸ����Ϳ� ���޵� ���� Z��
-    public float animationSmoothTime = 0.1f; // ���� ���ϴµ� �ɸ��� �ð� (���� ����)
+    private float _animatorMoveX; // 애니메이터에 전달될 현재 X값
+    private float _animatorMoveZ; // 애니메이터에 전달될 현재 Z값
+    public float animationSmoothTime = 0.1f; // 값이 변하는데 걸리는 시간 (조절 가능)
 
     private Vector3 _movement;
     private Quaternion _rotation;
-    public Quaternion Rotation => _rotation;
+    public Quaternion Rotation => _rotation; // 외부에서 읽기 전용으로 _rotation 값 접근
 
     private Camera _mainCamera;
 
     void Awake()
     {
-        // ������Ʈ ��������
+        // 컴포넌트 가져오기
         _rigidBody = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
 
         _mainCamera = Camera.main;
 
-        _rigidBody.freezeRotation = true; // ���������� ���� ȸ�� ����
+        _rigidBody.freezeRotation = true; // 물리엔진에 의한 회전 방지
     }
 
     void Update()
@@ -55,59 +54,59 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// �����ӿ� ���õ� Input ������ �̵����� ����
+    /// 움직임에 관련된 Input 감지 및 이동방향 설정
     /// </summary>
     void CalculateMovement()
     {
-        // �Է°���
+        // 입력감지
         float hAxis = Input.GetAxisRaw("Horizontal");
         float vAxis = Input.GetAxisRaw("Vertical");
 
-        // �̵����⸸ ���
+        // 이동방향만 계산
         _movement = new Vector3(hAxis, 0, vAxis).normalized;
     }
 
     /// <summary>
-    /// �÷��̾� �̵�(rigidBody�� �̿��� ó��) -> FixedUpdate���� ����Ұ�
+    /// 플레이어 이동(rigidBody를 이용한 처리) -> FixedUpdate에서 사용할 것
     /// </summary>
     void PlayerMove()
     {
-        // �Է��� ���� ���� �̵� �ӵ��� ���� (�̲����� ����)
+        // 입력이 있을 때만 이동 속도를 적용 (미끄러짐 방지)
         if (_movement.magnitude > 0.01f)
         {
             _rigidBody.linearVelocity = _movement * moveSpeed;
 
-            // ���� Rigidbody �ӵ��� ���� ��ǥ��� ��ȯ (��ǥ �ִϸ��̼� �� ����)
+            // 현재 Rigidbody 속도를 로컬 좌표계로 변환 (목표 애니메이션 값 계산용)
             Vector3 localVelocity = transform.InverseTransformDirection(_rigidBody.linearVelocity);
 
-            // ��ǥ MoveX, MoveZ �� ���� (�̵� ���� ���� localVelocity ���, ���߸� 0)
-            float targetMoveX = (_movement.magnitude > 0.1f) ? localVelocity.x / moveSpeed : 0f; // �ӵ��� ������ -1 ~ 1 ������ ����ȭ
-            float targetMoveZ = (_movement.magnitude > 0.1f) ? localVelocity.z / moveSpeed : 0f; // �ӵ��� ������ -1 ~ 1 ������ ����ȭ
+            // 목표 MoveX, MoveZ 값 결정 (이동 중일 때만 localVelocity 사용, 멈추면 0)
+            float targetMoveX = (_movement.magnitude > 0.1f) ? localVelocity.x / moveSpeed : 0f; // 속도로 나누어 -1 ~ 1 범위로 정규화
+            float targetMoveZ = (_movement.magnitude > 0.1f) ? localVelocity.z / moveSpeed : 0f; // 속도로 나누어 -1 ~ 1 범위로 정규화
 
-            // Mathf.Lerp�� ����Ͽ� ���� �ִϸ����� ���� ��ǥ ������ �ε巴�� ����
+            // Mathf.Lerp를 사용하여 현재 애니메이터 값을 목표 값으로 부드럽게 변경
             _animatorMoveX = Mathf.Lerp(_animatorMoveX, targetMoveX, Time.fixedDeltaTime * (1f / animationSmoothTime));
             _animatorMoveZ = Mathf.Lerp(_animatorMoveZ, targetMoveZ, Time.fixedDeltaTime * (1f / animationSmoothTime));
 
-            // �ִϸ��̼� ���� (�ε巴�� ������ �� ���)
+            // 애니메이션 설정 (부드럽게 보간된 값 사용)
             _animator.SetBool("isRunning", _movement.magnitude > 0.1f);
             _animator.SetFloat("MoveX", _animatorMoveX);
             _animator.SetFloat("MoveZ", _animatorMoveZ);
         }
         else
         {
-            // �Է��� ���� ���� �ӵ��� 0���� �����Ͽ� ���� (but! y�� �������� ���� ex) ����, ��������)
+            // 입력이 없을 때는 속도를 0으로 설정하여 멈춤 (but! y축 움직임은 유지 ex) 점프, 떨어짐 등)
             Vector3 currentVelocity = _rigidBody.linearVelocity;
             _rigidBody.linearVelocity = new Vector3(0, currentVelocity.y, 0);
 
-            // �ִϸ��̼� ����
-            _animator.SetBool("isRunning", false); 
+            // 애니메이션 설정
+            _animator.SetBool("isRunning", false);
             _animator.SetFloat("MoveX", 0f);
             _animator.SetFloat("MoveZ", 0f);
         }
     }
 
     /// <summary>
-    /// ���콺 Ŀ�� ���������� ��ǥ ȸ�� ���� ����մϴ�.
+    /// 마우스 커서 방향으로의 목표 회전 값을 계산합니다.
     /// </summary>
     void CalculateRotation()
     {
@@ -118,7 +117,7 @@ public class PlayerController : MonoBehaviour
             Vector3 lookDirection = hit.point - transform.position;
             lookDirection.y = 0;
 
-            // ��ǥ ȸ�� ���� ����ؼ� ������ ���� (���콺�� �÷��̾� ��ġ�� ���� ���ٸ� ȸ������ ����)
+            // 목표 회전 값을 계산해서 저장 (마우스가 플레이어 위치와 거의 같다면 회전하지 않음)
             if (lookDirection.sqrMagnitude > 0.01f)
             {
                 _rotation = Quaternion.LookRotation(lookDirection);
@@ -127,11 +126,11 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// ���� �������� �÷��̾ ȸ����ŵ�ϴ�. (Rigidbody�� �̿�)
+    /// 계산된 방향으로 플레이어를 회전시킵니다. (Rigidbody를 이용)
     /// </summary>
     void PlayerRotate()
     {
-        // Slerp�� ����Ͽ� �ε巯�� ȸ��
+        // Slerp를 사용하여 부드러운 회전
         Quaternion newRotation = Quaternion.Slerp(_rigidBody.rotation, _rotation, rotationSpeed * Time.fixedDeltaTime).normalized;
         _rigidBody.MoveRotation(newRotation);
     }
