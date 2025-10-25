@@ -8,7 +8,6 @@ public class MonsterStatus : MonoBehaviour
     public int maxHp = 100;
     public PoolType monsterTag;
     public float monsterDamage = 10f;
-    public float monsterSpeed = 3f;
     public int monsterChargeAmount = 1; // 몬스터 때리면 차는 차지양 (킬하면 3배? 일단 그건 보류)
     private int _currentHp;
 
@@ -56,7 +55,6 @@ public class MonsterStatus : MonoBehaviour
         }
     }
 
-    /*
     private void OnTriggerEnter(Collider other)
     {
         if (other != null)
@@ -67,5 +65,4 @@ public class MonsterStatus : MonoBehaviour
             }
         }
     }
-    */
 }

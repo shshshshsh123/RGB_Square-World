@@ -1,143 +1,116 @@
 using UnityEngine;
 
-[RequireComponent(typeof(MonsterStatus))]
 public abstract class BaseMonster : MonoBehaviour
 {
-    protected Transform player;
-    protected MonsterStatus status;
-    protected Rigidbody rb;
+    [Header("이동")]
+    public float moveSpeed = 5f;
+    public float rotationSpeed = 5f;
+    public float avoidanceDistance = 2f;
+    public LayerMask obstacleLayer;
 
-    [Header("이동 관련 설정")]
-    public float attackRange = 1.5f;
-    public float separationRadius = 1.0f;
-    public float separationStrength = 3.0f;
-    public LayerMask monsterLayer;
-
-    protected float moveSpeed;
-    protected float attackDamage;
-    protected float attackCooldown = 1.0f;
+    [Header("공격")]
+    public float attackRange = 3f;
+    protected float attackCooldown = 2f;
     protected float lastAttackTime = 0f;
 
-    // Update()가 물리 프레임(FixedUpdate)에 이동 여부를 알려주기 위한 플래그
-    private bool isPlayerInRange;
+    protected Transform _player;
+    protected Rigidbody _rigidBody;
 
-    protected virtual void Start()
+    void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player")?.transform;
-        status = GetComponent<MonsterStatus>();
-        rb = GetComponent<Rigidbody>();
+        _rigidBody = GetComponent<Rigidbody>();
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
 
-        // [★땅 꺼짐 현상 해결★]
-        // Rigidbody의 Y축 이동과 회전을 고정하고 중력을 끕니다.
-        if (rb != null)
+        if (playerObject != null)
         {
-            rb.constraints = RigidbodyConstraints.FreezePositionY |
-                             RigidbodyConstraints.FreezeRotationX |
-                             RigidbodyConstraints.FreezeRotationZ;
-            rb.useGravity = false;
+            _player = playerObject.transform;
         }
-
-        moveSpeed = status.monsterSpeed;
-        attackDamage = status.monsterDamage;
     }
 
-    protected virtual void Update()
+    void FixedUpdate()
     {
-        if (player == null) return;
+        if (_player != null) return;
 
-        // --- 1. 계산 및 방향 전환 ---
-        Vector3 playerPosXZ = new Vector3(player.position.x, 0, player.position.z);
-        Vector3 monsterPosXZ = new Vector3(transform.position.x, 0, transform.position.z);
-        float currentDistance = Vector3.Distance(playerPosXZ, monsterPosXZ);
+        float distanceToPlayer = Vector3.Distance(transform.position, _player.transform.position);
 
-        // 플레이어 바라보기
-        Vector3 lookTarget = player.position;
-        lookTarget.y = transform.position.y;
-        transform.LookAt(lookTarget);
-
-        // --- 2. 상태 결정 ---
-        if (currentDistance > attackRange)
-        {
-            isPlayerInRange = false; // 사거리 밖 (FixedUpdate가 이동시킬 것)
-        }
+        if (distanceToPlayer < attackRange)
+            Attack(); // 사거리 안 = 공격
         else
-        {
-            isPlayerInRange = true; // 사거리 안 (FixedUpdate가 멈추거나, MeleeMonster처럼 맴돌게 할 것)
-            TryAttack(); // 공격 시도
-        }
+            Movement(); // 사거리 밖 = 이동
     }
 
-    // [★떨림 현상 해결★]
-    // 모든 물리 로직(이동/정지)은 FixedUpdate에서 처리합니다.
-    protected virtual void FixedUpdate()
+    /// <summary>
+    /// 기본 이동 로직
+    /// </summary>
+    protected virtual void Movement()
     {
-        if (player == null || rb == null) return;
+        if (_player == null) return;
 
-        if (isPlayerInRange)
-        {
-            // 사거리 안: 정지 로직 실행 (MeleeMonster는 이 부분을 재정의)
-            StopMovement();
-        }
-        else
-        {
-            // 사거리 밖: 이동 로직 실행
-            MoveToPlayer();
-        }
+        // 방향
+        Vector3 targetDirection = (_player.position - transform.position).normalized;
+
+        // 장애물 회피
+        Vector3 moveDirection = Avoid(targetDirection);
+
+        // 이동
+        Move(moveDirection);
+
+        // 회전
+        Rotate(moveDirection);
     }
 
-    protected virtual void MoveToPlayer()
+    protected virtual void Attack()
     {
-        Vector3 dirToPlayer = (player.position - transform.position);
-        dirToPlayer.y = 0;
-        dirToPlayer.Normalize();
 
-        Vector3 separationDir = GetSeparationDirection();
-
-        Vector3 finalDir = (dirToPlayer + separationDir).normalized;
-        finalDir.y = 0;
-
-        // 물리 프레임에 맞춰 이동
-        rb.MovePosition(rb.position + finalDir * moveSpeed * Time.fixedDeltaTime);
     }
 
-    protected virtual void StopMovement()
+    /// <summary>
+    /// 몬스터 앞에 장애물이 있는지 확인하고, 장애물이 있으면 회피
+    /// </summary>
+    /// <param name="direction"></param>
+    /// <returns></returns>
+    protected Vector3 Avoid(Vector3 direction)
     {
-        // RangedMonster 등은 여기서 멈춥니다.
-        if (rb != null)
+        RaycastHit hit;
+
+        // 몬스터가 가야 할 방향에 장애물이 있는지 Ray로 확인
+        if (Physics.Raycast(transform.position, direction, out hit, avoidanceDistance, obstacleLayer))
         {
-            rb.linearVelocity = Vector3.zero;
-        }
-    }
+            // 장애물이 감지되면 좌우 방향을 탐색
+            Vector3 rightDir = Vector3.Cross(Vector3.up, direction).normalized;
+            Vector3 leftDir = -rightDir;
 
-    private Vector3 GetSeparationDirection()
-    {
-        Collider[] neighbors = Physics.OverlapSphere(transform.position, separationRadius, monsterLayer);
-        Vector3 separation = Vector3.zero;
-        int count = 0;
-
-        foreach (Collider neighbor in neighbors)
-        {
-            if (neighbor.gameObject == gameObject) continue;
-
-            Vector3 away = transform.position - neighbor.transform.position;
-            away.y = 0;
-            float dist = away.magnitude;
-
-            if (dist > 0)
+            if (!Physics.Raycast(transform.position, rightDir, avoidanceDistance, obstacleLayer))
             {
-                separation += away.normalized / dist;
-                count++;
+                return rightDir; // 오른쪽으로 회피
             }
+            // 왼쪽이 비었는지 확인
+            else if (!Physics.Raycast(transform.position, leftDir, avoidanceDistance, obstacleLayer))
+            {
+                return leftDir; // 왼쪽으로 회피
+            }
+            else return rightDir;
         }
-
-        if (count > 0)
-        {
-            separation /= count;
-            return separation.normalized * separationStrength;
-        }
-
-        return Vector3.zero;
+        return direction;
     }
 
-    protected abstract void TryAttack();
+    protected void Move(Vector3 direction)
+    {
+        // y축 속도는 제외
+        _rigidBody.linearVelocity = new Vector3(direction.x * moveSpeed, 0, direction.z * moveSpeed);
+    }
+
+    protected void Rotate(Vector3 direction)
+    {
+        if (direction != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            _rigidBody.MoveRotation(Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime));
+        }
+    }
+
+    protected void Stop()
+    {
+        _rigidBody.linearVelocity = new Vector3(0, 0, 0);
+    }
 }
