@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(PlayerAttack))]
 [RequireComponent(typeof(PlayerChargeAttack))]
 public class PlayerController : MonoBehaviour
