@@ -46,7 +46,6 @@ GameObject:
   - component: {fileID: 8838441708238644166}
   - component: {fileID: 2006580348885632176}
   - component: {fileID: 5528511388315693842}
-  - component: {fileID: 4724542931091993014}
   m_Layer: 9
   m_Name: Model
   m_TagString: Enemy
@@ -122,29 +121,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &4724542931091993014
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3766954969744914035}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.01000295
-  m_Height: 0.019995479
-  m_Direction: 1
-  m_Center: {x: 0.000024470035, y: 0.00001075957, z: 0.000005350448}
 --- !u!1 &5796714565822359741
 GameObject:
   m_ObjectHideFlags: 0
@@ -603,7 +579,7 @@ PrefabInstance:
       addedObject: {fileID: 4495176634173658877}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b0c1baffd64799a4f8d2105e3dcdce10, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5686663113492258612}
+      addedObject: {fileID: 2495032728676470459}
   m_SourcePrefab: {fileID: 100100000, guid: b0c1baffd64799a4f8d2105e3dcdce10, type: 3}
 --- !u!4 &4911396900058595282 stripped
 Transform:
@@ -660,21 +636,26 @@ MonoBehaviour:
   monsterChargeAmount: 1
   hpSlider: {fileID: 7277799918033871743}
   hpCanvas: {fileID: 5184443142124448073}
---- !u!114 &5686663113492258612
-MonoBehaviour:
+--- !u!136 &2495032728676470459
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5720444375251690856}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfb1b82aaf0991246ade3b83bb9736f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 3
-  rotationSpeed: 5
-  avoidanceDistance: 2
-  obstacleLayer:
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.01000295
+  m_Height: 0.019995479
+  m_Direction: 1
+  m_Center: {x: 0.000024470035, y: 0.00001075957, z: 0.000005350448}

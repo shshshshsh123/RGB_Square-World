@@ -1021,22 +1021,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pools:
-  - type: 0
-    prefab: {fileID: 717552205417201984, guid: 41e4c32ea1099dd4aa332cad219a8b35, type: 3}
-    initalSize: 10
   - type: 1
+    prefab: {fileID: 5720444375251690856, guid: 2938e66ff3a878d43ae358ae4569cf19, type: 3}
+    initalSize: 10
+  - type: 4
     prefab: {fileID: 5503505460791601945, guid: a360efa07fce47847a8e5f7b10d6d418, type: 3}
     initalSize: 3
-  - type: 2
+  - type: 5
     prefab: {fileID: 3600389243222657682, guid: d337e48e9f687e84ab4210dadde4d936, type: 3}
     initalSize: 3
-  - type: 3
+  - type: 6
     prefab: {fileID: 158789456559184324, guid: 7a67dc3f83390d74ea657bda6b315ab7, type: 3}
     initalSize: 3
-  - type: 4
+  - type: 7
     prefab: {fileID: 1676683520964337982, guid: 177d742a7431c95428e97dc54eb5d357, type: 3}
     initalSize: 10
-  - type: 5
+  - type: 8
     prefab: {fileID: 1690548281334034, guid: 60ff48a39b3e7b644aa620b288bb256e, type: 3}
     initalSize: 10
 --- !u!4 &1541234524

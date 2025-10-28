@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BasicBow
   m_EditorClassIdentifier: 
   weaponType: 1
-  weaponTag: 4
+  weaponTag: 7
   weaponIcon: {fileID: 0}
   lifeTime: 10
   weaponDescription: 
