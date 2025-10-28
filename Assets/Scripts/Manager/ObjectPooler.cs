@@ -63,9 +63,9 @@ public class ObjectPooler : MonoBehaviour
             // Debug.Log($"[오브젝트풀러] 타입 {type} 에 대해 새로운 오브젝트를 생성합니다.");
         }
 
-        objectToSpawn.SetActive(true);
         objectToSpawn.transform.position = position;
         objectToSpawn.transform.rotation = rotation;
+        objectToSpawn.SetActive(true);
 
         return objectToSpawn;
     }
@@ -87,6 +87,9 @@ public class ObjectPooler : MonoBehaviour
 public enum PoolType
 {
     Dummy,
+    MeleeMonster,
+    RangedMonster,
+    Projectile,
     BasicSlash,
     DoubleSlash,
     ChargeSlash,

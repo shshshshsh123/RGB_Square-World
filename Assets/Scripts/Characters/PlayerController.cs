@@ -144,5 +144,15 @@ public class PlayerController : MonoBehaviour
         {
             ObjectPooler.Instance.SpawnFromPool(PoolType.Dummy, transform.position + Vector3.one * Random.Range(5, 10), _rigidBody.rotation);
         }
+
+        else if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            ObjectPooler.Instance.SpawnFromPool(PoolType.MeleeMonster, transform.position + transform.forward * 5, Quaternion.identity);
+        }
+
+        else if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            ObjectPooler.Instance.SpawnFromPool(PoolType.RangedMonster, transform.position + transform.forward * 5, Quaternion.identity);
+        }
     }
 }
