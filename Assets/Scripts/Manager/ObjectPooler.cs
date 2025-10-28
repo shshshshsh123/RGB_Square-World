@@ -89,5 +89,7 @@ public enum PoolType
     Dummy,
     BasicSlash,
     DoubleSlash,
-    ChargeSlash
+    ChargeSlash,
+    BasicArrow,
+    hitEffect,
 }

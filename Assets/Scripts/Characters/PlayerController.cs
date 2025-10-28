@@ -142,7 +142,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(2))
         {
-            ObjectPooler.Instance.SpawnFromPool(PoolType.Dummy, transform.position + Vector3.one * Random.Range(5, 30), Quaternion.identity);
+            ObjectPooler.Instance.SpawnFromPool(PoolType.Dummy, transform.position + Vector3.one * Random.Range(5, 10), _rigidBody.rotation);
         }
     }
 }

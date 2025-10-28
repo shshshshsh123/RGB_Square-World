@@ -32,6 +32,7 @@ public class LevelData
     public float scale; // 공격 범위 (근접 무기용)
     public int projectileCount; // 발사되는 투사체 수 (원거리 무기용, 근접은 1)
     public int penetrationCount; // 투사체가 관통할 수 있는 적 수 (근접은 한번에 때릴 수 있는 적 수)
+    public float projectileSpeed; // 투사체 속도 (원거리 무기용)
 }
 
 public enum WeaponType

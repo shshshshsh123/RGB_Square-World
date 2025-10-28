@@ -1,4 +1,4 @@
-using NUnit.Framework;
+ï»¿using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class PlayerAttack : MonoBehaviour
 {
-    // ³»ºÎ¿¡¼­ »ç¿ëÇÒ ÇöÀç ¹«±â µ¥ÀÌÅÍ
+    // ë‚´ë¶€ì—ì„œ ì‚¬ìš©í•  í˜„ì¬ ë¬´ê¸° ë°ì´í„°
     [System.Serializable]
     public class EquippedWeapon
     {
@@ -24,16 +24,19 @@ public class PlayerAttack : MonoBehaviour
 
         public LevelData GetCurrentLevelData()
         {
-            // ·¹º§ 1ºÎÅÍ ½ÃÀÛÇÏ°Ô ÇÒ°ÅÀÓ (º¸±â ÆíÇÏ°Ô)
+            // ë ˆë²¨ 1ë¶€í„° ì‹œì‘í•˜ê²Œ í• ê±°ì„ (ë³´ê¸° í¸í•˜ê²Œ)
             int index = Mathf.Clamp(currentLevel - 1, 0, weaponData.levelDataList.Count - 1);
             return weaponData.levelDataList[index];
         }
     }
-    [Header("# ¹«±â °ü¸®")]
-    public List<WeaponData> weaponDatas; // °ÔÀÓ ³» Á¸ÀçÇÏ´Â ¸ğµç ¹«±â µ¥ÀÌÅÍ
+    [Header("# ë¬´ê¸° ê´€ë¦¬")]
+    public List<WeaponData> weaponDatas; // ê²Œì„ ë‚´ ì¡´ì¬í•˜ëŠ” ëª¨ë“  ë¬´ê¸° ë°ì´í„°
     public List<EquippedWeapon> equippedWeapons;
 
-    private float _lastAttackTime; // ¸¶Áö¸· °ø°İ ½ÃÁ¡
+    [Header("# ê³µê²© ê´€ë¦¬")]
+    public float spreadAngle = 15f; // íˆ¬ì‚¬ì²´ í¼ì§€ëŠ” ê°ë„
+
+    private float _lastAttackTime; // ë§ˆì§€ë§‰ ê³µê²© ì‹œì 
     private PlayerController _playerController;
 
     void Awake()
@@ -49,21 +52,22 @@ public class PlayerAttack : MonoBehaviour
 
     void Update()
     {
-        // ±âº»°ø°İ
+        // ê¸°ë³¸ê³µê²©
         HandleAutoAttacks();
 
-        // Å×½ºÆ®¿ë!!!!!!!!
-        if (Input.GetKeyDown(KeyCode.Space)) AddOrUpgradeWeapon(weaponDatas[0]);
+        // í…ŒìŠ¤íŠ¸ìš©!!!!!!!!
+        if (Input.GetKeyDown(KeyCode.Alpha1)) AddOrUpgradeWeapon(weaponDatas[0]);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) AddOrUpgradeWeapon(weaponDatas[1]);
     }
 
     void HandleAutoAttacks()
     {
-        if (!Input.GetMouseButton(0)) return;    // ÁÂÅ¬¸¯ Áß¿¡¸¸ ¹ßµ¿
+        if (!Input.GetMouseButton(0)) return;    // ì¢Œí´ë¦­ ì¤‘ì—ë§Œ ë°œë™
 
         foreach (EquippedWeapon weapon in equippedWeapons)
         {
             LevelData levelData = weapon.GetCurrentLevelData();
-            // °ø°İ µô·¹ÀÌ Ã¼Å©
+            // ê³µê²© ë”œë ˆì´ ì²´í¬
             if (Time.time >= weapon.lastAttackTime + levelData.attackDelay)
             {
                 Attack(weapon);
@@ -78,54 +82,110 @@ public class PlayerAttack : MonoBehaviour
 
         if (weapon.weaponData.projectilePrefab == null)
         {
-            Debug.LogWarning($"[Player Attack] ÀÌÀ×? ÀÌÆåÆ®°¡ ¾ø³×¿ä????? {weapon.weaponData.weaponTag}");
+            Debug.LogWarning($"[Player Attack] ì´ì‰? ì´í™íŠ¸ê°€ ì—†ë„¤ìš”????? {weapon.weaponData.weaponTag}");
             return;
         }
 
-        // ¹ß»çÃ¼ ¼ö(projectileCount)¸¸Å­ ¹İº¹ÇÏ¿© °ø°İ
-        for (int i = 0; i < levelData.projectileCount; i++)
-        {
-            GameObject effect = ObjectPooler.Instance.SpawnFromPool(
-                weapon.weaponData.weaponTag,
-                transform.position + weapon.weaponData.attackPositionOffset,
-                _playerController.Rotation
-            );
+        int projectileCount = levelData.projectileCount;
 
-            // ÀÌÆåÆ®/Åõ»çÃ¼¿¡ µ¥¹ÌÁö, Å©±â µî ·¹º§¿¡ ¸Â´Â µ¥ÀÌÅÍ Àü´Ş
-            AttackEffect attackEffect = effect.GetComponent<AttackEffect>();
+        // ê³µê²© ë°©í–¥ ê²°ì • (í”Œë ˆì´ì–´ì˜ ëª©í‘œ íšŒì „ ê°’)
+        Quaternion baseRotation = _playerController.Rotation;
+
+        // ê³µê²© ì‹œì‘ ìœ„ì¹˜ ê²°ì •
+        Vector3 basePosition = transform.position; // í”Œë ˆì´ì–´ ìœ„ì¹˜ ê¸°ì¤€
+        Vector3 rotatedOffset = baseRotation * weapon.weaponData.attackPositionOffset; // ì˜¤í”„ì…‹ ì ìš©
+        Vector3 spawnPosition = basePosition + rotatedOffset;
+
+        // ë°œì‚¬ì²´ê°€ 1ê°œë©´ ì •ë©´ìœ¼ë¡œ ë°œì‚¬
+        if (projectileCount <= 1)
+        {
+            SpawnProjectile(weapon, levelData, spawnPosition, baseRotation);
+        }
+        // ë°œì‚¬ì²´ê°€ 2ê°œ ì´ìƒì´ë©´ ë¶€ì±„ê¼´ë¡œ ë°œì‚¬
+        else
+        {
+            // ë°œì‚¬ì²´ ì‚¬ì´ì˜ ê°ë„ ê³„ì‚°
+            float angleStep = spreadAngle / (projectileCount - 1);
+            // ì‹œì‘ ê°ë„ ê³„ì‚° (ë¶€ì±„ê¼´ ì¤‘ì•™ ì •ë ¬)
+            float startAngle = -spreadAngle / 2f;
+
+            for (int i = 0; i < projectileCount; i++)
+            {
+                // í˜„ì¬ ë°œì‚¬ì²´ì˜ ê°ë„ ê³„ì‚°
+                float currentAngle = startAngle + (i * angleStep);
+                // ê¸°ë³¸ íšŒì „ê°’ì— í˜„ì¬ ê°ë„ë¥¼ ë”í•˜ì—¬ ìµœì¢… ë°œì‚¬ ë°©í–¥ ê³„ì‚° (Yì¶• ê¸°ì¤€ íšŒì „)
+                Quaternion projectileRotation = baseRotation * Quaternion.Euler(0, currentAngle, 0);
+
+                SpawnProjectile(weapon, levelData, spawnPosition, projectileRotation);
+            }
+        }
+    }
+
+    /// <summary>
+    /// ì‹¤ì œ ë°œì‚¬ì²´ë¥¼ ìŠ¤í°í•˜ê³  ì´ˆê¸°í™”í•˜ëŠ” í•¨ìˆ˜
+    /// </summary>
+    void SpawnProjectile(PlayerAttack.EquippedWeapon weapon, LevelData levelData, Vector3 position, Quaternion rotation)
+    {
+        GameObject instance = ObjectPooler.Instance.SpawnFromPool(
+            weapon.weaponData.weaponTag,
+            position,
+            rotation
+        );
+
+        if (instance == null) return;
+
+        // ìƒì„±ëœ ì¸ìŠ¤í„´ìŠ¤ ì´ˆê¸°í™” (ë¬´ê¸° íƒ€ì…ì— ë”°ë¼ ë‹¤ë¥¸ ì»´í¬ë„ŒíŠ¸ ì ‘ê·¼)
+        if (weapon.weaponData.weaponType == WeaponType.Ranged)
+        {
+            RangedProjectile projectile = instance.GetComponent<RangedProjectile>();
+            if (projectile != null)
+            {
+                projectile.Initialize(weapon.weaponData, levelData, weapon.weaponData.weaponTag); // ì´ ë¶€ë¶„ì´ ìƒˆ RangedProjectileì„ ì´ˆê¸°í™”í•©ë‹ˆë‹¤.
+                instance.transform.localScale = Vector3.one * levelData.scale;
+            }
+            else
+            {
+                Debug.LogError($"[Player Attack] ì›ê±°ë¦¬ í”„ë¦¬íŒ¹ì— RangedProjectile ìŠ¤í¬ë¦½íŠ¸ê°€ ì—†ìŠµë‹ˆë‹¤: {weapon.weaponData.weaponTag} - {instance.name}");
+            }
+        }
+        else if (weapon.weaponData.weaponType == WeaponType.Melee)
+        {
+            AttackEffect attackEffect = instance.GetComponent<AttackEffect>();
             if (attackEffect != null)
             {
                 attackEffect.InitialValues(levelData.damage, weapon.weaponData.weaponTag, weapon.weaponData.lifeTime, levelData.scale);
             }
-
-            // TODO: ¿©·¯ ¹ß»çÃ¼¸¦ ½ò ¶§ ¹æÇâÀ» ´Ù¸£°Ô ÇÏ´Â ·ÎÁ÷ Ãß°¡ (¿¹: ºÎÃ¤²Ã, Àü¹æÀ§ µî)
+            else
+            {
+                Debug.LogError($"[Player Attack] ê·¼ì ‘ í”„ë¦¬íŒ¹ì— AttackEffect ìŠ¤í¬ë¦½íŠ¸ê°€ ì—†ìŠµë‹ˆë‹¤: {weapon.weaponData.weaponTag} - {instance.name}");
+            }
         }
     }
 
     public void AddOrUpgradeWeapon(WeaponData weaponData)
     {
-        EquippedWeapon existingWeapon = equippedWeapons.FirstOrDefault(w => w.weaponData == weaponData); // ÀÌ¹Ì ÀåÂøµÈ ¹«±âÀÎÁö È®ÀÎ
+        EquippedWeapon existingWeapon = equippedWeapons.FirstOrDefault(w => w.weaponData == weaponData); // ì´ë¯¸ ì¥ì°©ëœ ë¬´ê¸°ì¸ì§€ í™•ì¸
 
         if (existingWeapon != null)
         {
-            // ÇöÀç ·¹º§ÀÌ ÃÖ´ë ·¹º§(levelDataListÀÇ °³¼ö)º¸´Ù ÀÛÀºÁö È®ÀÎ
+            // í˜„ì¬ ë ˆë²¨ì´ ìµœëŒ€ ë ˆë²¨(levelDataListì˜ ê°œìˆ˜)ë³´ë‹¤ ì‘ì€ì§€ í™•ì¸
             if (existingWeapon.currentLevel < weaponData.levelDataList.Count)
             {
-                // ÀÌ¹Ì ÀÖÀ¸¸é ·¹º§¾÷
+                // ì´ë¯¸ ìˆìœ¼ë©´ ë ˆë²¨ì—…
                 existingWeapon.currentLevel++;
-                Debug.Log($"{weaponData.name} ·¹º§ ¾÷! -> Lv.{existingWeapon.currentLevel}");
+                Debug.Log($"{weaponData.name} ë ˆë²¨ ì—…! -> Lv.{existingWeapon.currentLevel}");
             }
             else
             {
-                // ÃÖ´ë ·¹º§¿¡ µµ´ŞÇßÀ» °æ¿ì
-                Debug.Log($"{weaponData.name}Àº(´Â) ÀÌ¹Ì ÃÖ´ë ·¹º§(Lv.{existingWeapon.currentLevel})ÀÔ´Ï´Ù!");
+                // ìµœëŒ€ ë ˆë²¨ì— ë„ë‹¬í–ˆì„ ê²½ìš°
+                Debug.Log($"{weaponData.name}ì€(ëŠ”) ì´ë¯¸ ìµœëŒ€ ë ˆë²¨(Lv.{existingWeapon.currentLevel})ì…ë‹ˆë‹¤!");
             }
         }
         else
         {
-            // ¾øÀ¸¸é »õ·Î Ãß°¡
+            // ì—†ìœ¼ë©´ ìƒˆë¡œ ì¶”ê°€
             equippedWeapons.Add(new EquippedWeapon(weaponData));
-            Debug.Log($"{weaponData.name} »õ·Î È¹µæ!");
+            Debug.Log($"{weaponData.name} ìƒˆë¡œ íšë“!");
         }
     }
 }
