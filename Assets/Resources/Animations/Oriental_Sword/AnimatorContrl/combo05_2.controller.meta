@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0d0104d005ff1ac4487e192fdb2314fe
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 71318
+  packageName: Oriental Sword AnimSet
+  packageVersion: 1.61
+  assetPath: Assets/Oriental_Sword/AnimatorContrl/combo05_2.controller
+  uploadId: 698663

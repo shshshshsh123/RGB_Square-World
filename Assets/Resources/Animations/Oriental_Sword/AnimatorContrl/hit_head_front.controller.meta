@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 811b7d4ccc080854cb2b7563f9f83ac2
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 71318
+  packageName: Oriental Sword AnimSet
+  packageVersion: 1.61
+  assetPath: Assets/Oriental_Sword/AnimatorContrl/hit_head_front.controller
+  uploadId: 698663

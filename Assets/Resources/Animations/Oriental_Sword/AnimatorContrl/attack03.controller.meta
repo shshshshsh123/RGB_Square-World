@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bb4862dc6f302f246a6ae9b64ee0d650
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 71318
+  packageName: Oriental Sword AnimSet
+  packageVersion: 1.61
+  assetPath: Assets/Oriental_Sword/AnimatorContrl/attack03.controller
+  uploadId: 698663

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 8d75a7447a605334184a2fd6ebfb6262
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 210131
+  packageName: Bow & Arrow Animation Set
+  packageVersion: 1.3
+  assetPath: Assets/Nephilite Studios/Bow & Arrow Animation Set/Demo/Scripts/ResetAnimatorBool.cs
+  uploadId: 616149

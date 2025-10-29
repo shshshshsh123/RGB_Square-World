@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7ff2289c1a4767447aa8f341539c57b4
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 71318
+  packageName: Oriental Sword AnimSet
+  packageVersion: 1.61
+  assetPath: Assets/Oriental_Sword/AnimatorContrl/jumpZ0.controller
+  uploadId: 698663

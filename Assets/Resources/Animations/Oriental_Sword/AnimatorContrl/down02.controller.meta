@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7b2e65e405b4f184ca7cd2fd5c880ab4
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 71318
+  packageName: Oriental Sword AnimSet
+  packageVersion: 1.61
+  assetPath: Assets/Oriental_Sword/AnimatorContrl/down02.controller
+  uploadId: 698663

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c43d6c0da601b2040be2bbb366459df3
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 71318
+  packageName: Oriental Sword AnimSet
+  packageVersion: 1.61
+  assetPath: Assets/Oriental_Sword/AnimatorContrl/wp_unequip.controller
+  uploadId: 698663

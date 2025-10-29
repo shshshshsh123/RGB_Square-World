@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 9c9c2d14f22f84146ba7c4b3e7283494
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 71318
+  packageName: Oriental Sword AnimSet
+  packageVersion: 1.61
+  assetPath: Assets/Oriental_Sword/AnimatorContrl/defense02.controller
+  uploadId: 698663

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2d5cba019f9015b43b598f7d00c4e8e3
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 71318
+  packageName: Oriental Sword AnimSet
+  packageVersion: 1.61
+  assetPath: Assets/Oriental_Sword/AnimatorContrl/hit_body.controller
+  uploadId: 698663

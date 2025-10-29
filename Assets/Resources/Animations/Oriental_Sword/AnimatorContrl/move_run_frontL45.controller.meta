@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d73868720d77089449b10a3e56cffcb4
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 71318
+  packageName: Oriental Sword AnimSet
+  packageVersion: 1.61
+  assetPath: Assets/Oriental_Sword/AnimatorContrl/move_run_frontL45.controller
+  uploadId: 698663
