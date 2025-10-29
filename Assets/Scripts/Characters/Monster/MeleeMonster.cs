@@ -9,7 +9,7 @@ public class MeleeMonster : BaseMonster
 
     private bool isDashing = false; // 현재 박치기 중인지 확인
 
-    void Start()
+    protected override void Start()
     {
         // BaseMonster의 Start() 실행
         base.Start();

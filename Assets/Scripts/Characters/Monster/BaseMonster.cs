@@ -10,41 +10,41 @@ public abstract class BaseMonster : MonoBehaviour
 
     [Header("공격")]
     public float attackRange = 3f;
-    protected float attackCooldown = 2f;
-    protected float lastAttackTime = 0f;
+    protected float _attackCoolDown = 2f;
+    protected float _lastAttackTime = 0f;
 
     protected Transform _player;
     protected Rigidbody _rigidBody;
 
-    void Start()
+    protected void Start()
     {
         _rigidBody = GetComponent<Rigidbody>();
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-
         if (playerObject != null)
-        {
             _player = playerObject.transform;
-        }
     }
 
     void FixedUpdate()
     {
-        if (_player != null) return;
+        if (_player == null)
+            return;
 
-        float distanceToPlayer = Vector3.Distance(transform.position, _player.transform.position);
+        float distanceToPlayer = Vector3.Distance(transform.position, _player.position);
 
+        // 사거리 안에 있으면 공격, 사거리 밖에 있으면 이동
         if (distanceToPlayer < attackRange)
-            Attack(); // 사거리 안 = 공격
+            Attack();
         else
-            Movement(); // 사거리 밖 = 이동
+            Movement();
     }
 
     /// <summary>
-    /// 기본 이동 로직
+    /// 이동 로직
     /// </summary>
     protected virtual void Movement()
     {
-        if (_player == null) return;
+        if (_player == null)
+            return;
 
         // 방향
         Vector3 targetDirection = (_player.position - transform.position).normalized;
