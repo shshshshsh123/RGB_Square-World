@@ -91,8 +91,10 @@ public enum PoolType
     RangedMonster,
     Projectile,
     BasicSlash,
-    DoubleSlash,
+    BasicSlashHitEffect,
     ChargeSlash,
     BasicArrow,
-    hitEffect,
+    ArrowHitEffect,
+    ChargeArrow,
+    ChargeArrrowHitEffect,
 }

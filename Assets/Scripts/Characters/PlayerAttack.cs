@@ -149,7 +149,13 @@ public class PlayerAttack : MonoBehaviour
             RangedProjectile projectile = instance.GetComponent<RangedProjectile>();
             if (projectile != null)
             {
-                projectile.Initialize(weapon.weaponData, levelData, weapon.weaponData.weaponTag); // 이 부분이 새 RangedProjectile을 초기화합니다.
+                projectile.Initialize(
+                    levelData.damage,
+                    levelData.projectileSpeed,
+                    levelData.penetrationCount,
+                    weapon.weaponData.weaponTag,
+                    weapon.weaponData.lifeTime
+                );
                 instance.transform.localScale = Vector3.one * levelData.scale;
             }
             else

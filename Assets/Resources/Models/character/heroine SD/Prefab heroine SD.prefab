@@ -84,19 +84,16 @@ PrefabInstance:
       addedObject: {fileID: -7262977802414374585}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 480adb6b7005946409be0a516ff10c04, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -708202772527554704}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 480adb6b7005946409be0a516ff10c04, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 7551565240146946375}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 480adb6b7005946409be0a516ff10c04, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3563197531529115928}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 480adb6b7005946409be0a516ff10c04, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -8196258836644835250}
+      addedObject: {fileID: 5304801204025048699}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 480adb6b7005946409be0a516ff10c04, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5304801204025048699}
+      addedObject: {fileID: 992979740459986683}
   m_SourcePrefab: {fileID: 100100000, guid: 480adb6b7005946409be0a516ff10c04, type: 3}
 --- !u!1 &8879146994650340651 stripped
 GameObject:
@@ -152,29 +149,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!136 &-708202772527554704
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8879146994650340651}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.38859382
-  m_Height: 0.44715893
-  m_Direction: 1
-  m_Center: {x: 0.000000014901161, y: 0.09094298, z: 0.38878432}
 --- !u!136 &7551565240146946375
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -213,24 +187,7 @@ MonoBehaviour:
   weaponDatas:
   - {fileID: 11400000, guid: 987404a6c9ee90f4ba563dda50c7edd5, type: 2}
   equippedWeapons: []
---- !u!114 &-8196258836644835250
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8879146994650340651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8eb74a577024c244a8aaad54ff539964, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  chargeAttackDamage: 20
-  chargeAttackTimeRequire: 2
-  chargeAttackTarget: 3
-  chargeAttackRange: 10
-  chargeAttackTrail: {fileID: 0}
-  chargeAttackKeyDownImage: {fileID: 0}
+  spreadAngle: 15
 --- !u!114 &5304801204025048699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,3 +206,26 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   animationSmoothTime: 0.1
+--- !u!114 &992979740459986683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8879146994650340651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98a6793c3e2b0624e9ca106525af30ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chargeAttackTimeRequire: 1
+  chargeAttackTarget: 3
+  chargeAttackRange: 10
+  chargeAttackKeyDownImage: {fileID: 0}
+  chargeAttackDamage: 50
+  chargeAttackTrail: {fileID: 0}
+  chargeSlashEffectTag: 6
+  effectLifetime: 1.5
+  effectScale: 1
+  teleportDelay: 0.1
+  returnDelay: 0.2

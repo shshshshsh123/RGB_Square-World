@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 199553087641855842}
   - component: {fileID: 6076715813573906241}
   m_Layer: 0
-  m_Name: Hit 15
+  m_Name: BasicArrowHitEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

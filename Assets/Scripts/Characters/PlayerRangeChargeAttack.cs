@@ -4,11 +4,65 @@ using System.Collections;
 public class PlayerRangeChargeAttack : PlayerChargeAttackBase
 {
     [Header("# 원거리 차지공격 설정")]
-    public GameObject projectilePrefab; // 발사체 프리팹
-    public float knockbackForce = 10f; // 넉백 힘
+    public int chargeAttackDamage = 40; // 원거리 차지 공격 기본 데미지
+    public float chargeAttackSpeed = 10f; // 원거리 차지 공격 투사체 속도
+    public float chargeAttackLifetime = 5f; // 원거리 차지 공격 투사체 수명
+    public GameObject largeProjectilePrefab;    // 거대 투사체 프리팹
+    public PoolType projectilePoolTag = PoolType.ChargeArrow;   // 투사체 풀 태그
+    public Vector3 launchOffset = new Vector3(0, 0.5f, 1.0f);   // 투사체 발사 위치 오프셋
+    public float knockbackForce = 10f;  // 넉백 힘
+    public float knockbackDuration = 0.2f;  // 넉백 지속 시간
 
+    private PlayerController _playerController; // 방향 참고용
+
+    private void Awake()
+    {
+        _playerController = GetComponent<PlayerController>();
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+    }
+
+    /// <summary>
+    /// 실제 원거리 차지 공격의 로직을 구현
+    /// </summary>
+    /// <returns></returns>
     protected override IEnumerator PerformChargeAttack()
     {
-        yield return null;
+        // 0. UI 반짝임 (필요 시 베이스 클래스에서 가져오거나 여기서 구현)
+        if (chargeAttackKeyDownImage != null)
+        {
+            Color originalColor = chargeAttackKeyDownImage.color;
+            chargeAttackKeyDownImage.color = Color.cyan; // 다른 색상으로 구분
+            chargeAttackKeyDownImage.rectTransform.localScale = Vector3.one * 1.2f;
+            yield return new WaitForSeconds(0.3f);
+            chargeAttackKeyDownImage.color = originalColor;
+            chargeAttackKeyDownImage.fillAmount = 0f;
+            chargeAttackKeyDownImage.rectTransform.localScale = Vector3.one;
+        }
+
+        // 1. 발사 준비
+        Quaternion launchRotation = _playerController.Rotation;
+        Vector3 launchPosition = transform.position + (launchRotation * launchOffset);
+
+        // 2. 투사체 풀에서 가져오기
+        GameObject projectile = ObjectPooler.Instance.SpawnFromPool(projectilePoolTag, launchPosition, launchRotation);
+        if (projectile != null)
+        {
+            RangedProjectile rangedProjectile = projectile.GetComponent<RangedProjectile>();
+            if (rangedProjectile != null)
+            {
+                rangedProjectile.Initialize(
+                    chargeAttackDamage,
+                    chargeAttackSpeed,
+                    -100, // 무한 관통
+                    projectilePoolTag,
+                    chargeAttackLifetime,
+                    PoolType.ChargeArrrowHitEffect
+                );
+            }
+        }
     }
 }

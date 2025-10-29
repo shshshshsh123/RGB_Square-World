@@ -17,7 +17,7 @@ public class PlayerMeleeChargeAttack : PlayerChargeAttackBase
 
     protected override void Start()
     {
-        base.Start(); // 부모 클래스의 Start() 호출
+        base.Start();
         if (chargeAttackTrail != null && chargeAttackTrail.isPlaying)
         {
             chargeAttackTrail.Stop(true, ParticleSystemStopBehavior.StopEmitting);
@@ -29,13 +29,13 @@ public class PlayerMeleeChargeAttack : PlayerChargeAttackBase
     /// </summary>
     protected override IEnumerator PerformChargeAttack()
     {
-        // 0. UI 반짝임 (베이스 클래스에 있었지만 여기서 다시 구현하거나 베이스 수정 필요)
+        // 0. UI 반짝임
         if (chargeAttackKeyDownImage != null)
         {
             Color originalColor = chargeAttackKeyDownImage.color;
             chargeAttackKeyDownImage.color = Color.red;
             chargeAttackKeyDownImage.rectTransform.localScale = Vector3.one * 1.2f;
-            yield return new WaitForSecondsRealtime(0.3f);
+            yield return new WaitForSeconds(0.3f);
             chargeAttackKeyDownImage.color = originalColor;
             chargeAttackKeyDownImage.fillAmount = 0f;
             chargeAttackKeyDownImage.rectTransform.localScale = Vector3.one;
