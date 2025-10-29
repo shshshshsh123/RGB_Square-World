@@ -5,7 +5,7 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(PlayerAttack))]
-[RequireComponent(typeof(PlayerChargeAttack))]
+[RequireComponent(typeof(PlayerMeleeChargeAttack))]
 public class PlayerController : MonoBehaviour
 {
     [Header("# Player Setting")]
@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
         _mainCamera = Camera.main;
 
         _rigidBody.freezeRotation = true; // 물리엔진에 의한 회전 방지
+        _rotation = Quaternion.identity; // 초기화
     }
 
     void Update()
@@ -123,7 +124,7 @@ public class PlayerController : MonoBehaviour
             // 목표 회전 값을 계산해서 저장 (마우스가 플레이어 위치와 거의 같다면 회전하지 않음)
             if (lookDirection.sqrMagnitude > 0.01f)
             {
-                _rotation = Quaternion.LookRotation(lookDirection);
+                _rotation = Quaternion.LookRotation(lookDirection.normalized);
             }
         }
     }
@@ -134,7 +135,7 @@ public class PlayerController : MonoBehaviour
     void PlayerRotate()
     {
         // Slerp를 사용하여 부드러운 회전
-        Quaternion newRotation = Quaternion.Slerp(_rigidBody.rotation, _rotation, rotationSpeed * Time.fixedDeltaTime).normalized;
+        Quaternion newRotation = Quaternion.Slerp(_rigidBody.rotation, _rotation, rotationSpeed * Time.fixedDeltaTime);
         _rigidBody.MoveRotation(newRotation);
     }
 
@@ -142,7 +143,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(2))
         {
-            ObjectPooler.Instance.SpawnFromPool(PoolType.Dummy, transform.position + Vector3.one * Random.Range(5, 10), _rigidBody.rotation);
+            ObjectPooler.Instance.SpawnFromPool(PoolType.Dummy, transform.position + transform.forward * 5, Quaternion.identity);
         }
 
         else if (Input.GetKeyDown(KeyCode.Alpha8))

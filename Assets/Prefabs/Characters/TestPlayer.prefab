@@ -613,7 +613,7 @@ PrefabInstance:
       addedObject: {fileID: 1882279140966794363}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a864481855260214aa095bd5787107fa, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4367353298545426590}
+      addedObject: {fileID: 7628509505116361074}
   m_SourcePrefab: {fileID: 100100000, guid: a864481855260214aa095bd5787107fa, type: 3}
 --- !u!4 &8645111654643952410 stripped
 Transform:
@@ -715,6 +715,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  animationSmoothTime: 0.1
 --- !u!114 &1882279140966794363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -730,21 +731,27 @@ MonoBehaviour:
   weaponDatas:
   - {fileID: 11400000, guid: 987404a6c9ee90f4ba563dda50c7edd5, type: 2}
   equippedWeapons: []
---- !u!114 &4367353298545426590
+  spreadAngle: 15
+--- !u!114 &7628509505116361074
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8985327303841296800}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8eb74a577024c244a8aaad54ff539964, type: 3}
+  m_Script: {fileID: 11500000, guid: 98a6793c3e2b0624e9ca106525af30ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chargeAttackDamage: 40
-  chargeAttackTimeRequire: 2
-  chargeAttackTarget: 15
-  chargeAttackRange: 50
-  chargeAttackTrail: {fileID: 3217898328203354281}
+  chargeAttackTimeRequire: 1
+  chargeAttackTarget: 3
+  chargeAttackRange: 10
   chargeAttackKeyDownImage: {fileID: 0}
+  chargeAttackDamage: 50
+  chargeAttackTrail: {fileID: 0}
+  chargeSlashEffectTag: 6
+  effectLifetime: 1.5
+  effectScale: 1
+  teleportDelay: 0.1
+  returnDelay: 0.2

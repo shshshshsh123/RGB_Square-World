@@ -6,7 +6,7 @@ public class MonsterFollow : MonoBehaviour
     [SerializeField] private Transform _player;
     private NavMeshAgent _agent;
 
-    void Start()
+    void OnEnable()
     {
         _agent = GetComponent<NavMeshAgent>();
         _player = GameObject.FindGameObjectWithTag("Player")?.transform;

@@ -15,6 +15,7 @@ public class WeaponData : ScriptableObject
 
     [Header("# 공격 위치 프리셋")]
     public Vector3 attackPositionOffset; // 공격 위치 오프셋 (플레이어 기준)
+    public Vector3 attackRotationOffset; // 공격 회전 오프셋 (플레이어 기준)
 
     [Header("# 레벨별 공격 속성")]
     public List<LevelData> levelDataList; // 각 레벨별 공격 속성 리스트

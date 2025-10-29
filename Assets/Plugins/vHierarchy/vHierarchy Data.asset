@@ -42,6 +42,7 @@ MonoBehaviour:
         - globalObjectIdString: GlobalObjectId_V1-2-b8d06f69bf683a14b9d2cbcadaf8cab6-457118864-0
         - globalObjectIdString: GlobalObjectId_V1-2-b8d06f69bf683a14b9d2cbcadaf8cab6-1644687736-0
         - globalObjectIdString: GlobalObjectId_V1-2-b8d06f69bf683a14b9d2cbcadaf8cab6-1678420446-0
+        - globalObjectIdString: GlobalObjectId_V1-2-b8d06f69bf683a14b9d2cbcadaf8cab6-5023341480702838272-2634586012333250700
         values:
         - colorIndex: 6
           iconNameOrGuid: 
@@ -61,6 +62,10 @@ MonoBehaviour:
           isColorRecursive: 0
         - colorIndex: 0
           iconNameOrGuid: Camera Icon
+          isIconRecursive: 0
+          isColorRecursive: 0
+        - colorIndex: 9
+          iconNameOrGuid: AvatarMask On Icon
           isIconRecursive: 0
           isColorRecursive: 0
   bookmarks: []

@@ -88,18 +88,25 @@ public class PlayerAttack : MonoBehaviour
 
         int projectileCount = levelData.projectileCount;
 
-        // 공격 방향 결정 (플레이어의 목표 회전 값)
-        Quaternion baseRotation = _playerController.Rotation;
+        // 1. 공격 기준 회전 결정 (플레이어의 목표 회전 값)
+        Quaternion playerBaseRotation = _playerController.Rotation;
 
-        // 공격 시작 위치 결정
-        Vector3 basePosition = transform.position; // 플레이어 위치 기준
-        Vector3 rotatedOffset = baseRotation * weapon.weaponData.attackPositionOffset; // 오프셋 적용
-        Vector3 spawnPosition = basePosition + rotatedOffset;
+        // 2. WeaponData에 정의된 회전 오프셋을 Quaternion으로 변환
+        Quaternion weaponRotationOffset = Quaternion.Euler(weapon.weaponData.attackRotationOffset);
+
+        // 3. 플레이어의 기본 회전에 무기 자체의 회전 오프셋을 먼저 적용하여 최종 기준 회전을 만듭니다.
+        // 이는 이펙트가 플레이어가 바라보는 방향 + 무기 자체의 기울어진 방향으로 나가게 합니다.
+        Quaternion combinedBaseRotation = playerBaseRotation * weaponRotationOffset;
+
+
+        // 4. 공격 시작 위치 결정
+        Vector3 rotatedPositionOffset = playerBaseRotation * weapon.weaponData.attackPositionOffset;
+        Vector3 spawnPosition = transform.position + rotatedPositionOffset;
 
         // 발사체가 1개면 정면으로 발사
         if (projectileCount <= 1)
         {
-            SpawnProjectile(weapon, levelData, spawnPosition, baseRotation);
+            SpawnProjectile(weapon, levelData, spawnPosition, combinedBaseRotation);
         }
         // 발사체가 2개 이상이면 부채꼴로 발사
         else
@@ -113,8 +120,10 @@ public class PlayerAttack : MonoBehaviour
             {
                 // 현재 발사체의 각도 계산
                 float currentAngle = startAngle + (i * angleStep);
-                // 기본 회전값에 현재 각도를 더하여 최종 발사 방향 계산 (Y축 기준 회전)
-                Quaternion projectileRotation = baseRotation * Quaternion.Euler(0, currentAngle, 0);
+
+                // 콤바인된 기준 회전에 부채꼴 각도를 더하여 최종 발사 방향을 계산
+                // Quaternion.Euler(0, currentAngle, 0)은 Y축 기준 회전이므로, combinedBaseRotation의 로컬 회전으로 적용
+                Quaternion projectileRotation = combinedBaseRotation * Quaternion.Euler(0, currentAngle, 0);
 
                 SpawnProjectile(weapon, levelData, spawnPosition, projectileRotation);
             }
