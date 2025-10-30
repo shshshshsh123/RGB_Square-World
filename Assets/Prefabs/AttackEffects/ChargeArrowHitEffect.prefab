@@ -14756,6 +14756,7 @@ GameObject:
   - component: {fileID: 3832266962591422349}
   - component: {fileID: 8028056291791891230}
   - component: {fileID: 8604068574165515734}
+  - component: {fileID: -1072936114602289247}
   m_Layer: 0
   m_Name: ChargeArrowHitEffect
   m_TagString: Untagged
@@ -19663,6 +19664,20 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &-1072936114602289247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1810277478360680437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b003773a62d7254abffc2287c04f2e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifeTime: 1
+  poolTag: 10
 --- !u!1 &4737174527440816637
 GameObject:
   m_ObjectHideFlags: 0

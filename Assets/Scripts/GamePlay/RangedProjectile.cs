@@ -133,11 +133,11 @@ public class RangedProjectile : MonoBehaviour
     }
 
     /// <summary>
-    /// 충돌 지점에 히트 이펙트를 생성합니다. (원래 작동하던 방식)
+    /// 충돌 지점에 히트 이펙트를 생성
     /// </summary>
     private void SpawnHitEffect(Collider other)
     {
-        Vector3 collisionPoint = other.ClosestPoint(transform.position); // 오류 발생 시 other.bounds.center 사용
+        Vector3 collisionPoint = other.ClosestPoint(transform.position);
         Vector3 directionToOther = (other.transform.position - transform.position).normalized;
         Quaternion rot = Quaternion.LookRotation(-directionToOther);
         Vector3 pos = collisionPoint + (directionToOther * _hitEffectOffset);

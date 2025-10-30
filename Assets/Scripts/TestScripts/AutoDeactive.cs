@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class AutoDeactive : MonoBehaviour
 {
+    // 이펙트들 혹시나 코루틴 발동전에 비활성화되면 강제로 풀러로 반납하는 스크립트임. (이펙트에만 들어갈듯????)
+
+
     [Tooltip("자동으로 비활성화될 때까지의 시간 (초)")]
     public float lifeTime = 1.0f;
     [Tooltip("오브젝트 풀러에 등록된 이 오브젝트의 태그")]

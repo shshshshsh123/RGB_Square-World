@@ -12,10 +12,10 @@ public abstract class PlayerChargeAttackBase : MonoBehaviour
     public float chargeAttackRange = 10.0f; // 범위
     public Image chargeAttackKeyDownImage; // 차지공격 키 누르고 있는 동안 채워지는 이미지 (UI)
 
-    protected bool _isCharging = false; // protected로 변경하여 자식 클래스에서 접근 가능
-    protected float _chargeTimer = 0.0f; // protected로 변경
+    protected bool _isCharging = false;
+    protected float _chargeTimer = 0.0f;
 
-    protected virtual void Start() // virtual로 변경하여 자식에서 확장 가능
+    protected virtual void Start()
     {
         if (chargeAttackKeyDownImage != null)
         {

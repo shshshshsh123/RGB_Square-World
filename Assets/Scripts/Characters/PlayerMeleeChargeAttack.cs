@@ -14,6 +14,7 @@ public class PlayerMeleeChargeAttack : PlayerChargeAttackBase
     public float effectScale = 1f; // 슬래시 이펙트 크기
     public float teleportDelay = 0.1f; // 각 타겟 이동 사이 딜레이
     public float returnDelay = 0.2f; // 복귀 후 데미지 주기 전 딜레이
+    public SkillCutInUI skillCutInUI; // 스킬 컷인 UI 참조
 
     protected override void Start()
     {
@@ -29,16 +30,27 @@ public class PlayerMeleeChargeAttack : PlayerChargeAttackBase
     /// </summary>
     protected override IEnumerator PerformChargeAttack()
     {
-        // 0. UI 반짝임
+        // 일단 발동성공했으면 시간 멈추고 시작
+        Time.timeScale = 0.0f;
+
+        // 0. UI
         if (chargeAttackKeyDownImage != null)
         {
             Color originalColor = chargeAttackKeyDownImage.color;
             chargeAttackKeyDownImage.color = Color.red;
             chargeAttackKeyDownImage.rectTransform.localScale = Vector3.one * 1.2f;
-            yield return new WaitForSeconds(0.3f);
+            if (skillCutInUI != null)
+            {
+                skillCutInUI.ShowCutIn(); // 컷인 표시
+            }
+            yield return new WaitForSecondsRealtime(0.8f);
             chargeAttackKeyDownImage.color = originalColor;
             chargeAttackKeyDownImage.fillAmount = 0f;
             chargeAttackKeyDownImage.rectTransform.localScale = Vector3.one;
+            if (skillCutInUI != null)
+            {
+                skillCutInUI.HideCutIn(); // 컷인 숨기기
+            }
         }
 
         // 1. 범위 내의 적 탐색 (베이스 클래스 함수 사용)
@@ -55,9 +67,8 @@ public class PlayerMeleeChargeAttack : PlayerChargeAttackBase
         // 2. 최종 공격 대상 리스트 생성 (베이스 클래스 함수 사용)
         List<Transform> finalTargets = GetFinalTargets(foundTargets);
 
-        // 3. 시간 정지하고 발동준비
+        // 3. 발동준비
         Vector3 originalPosition = transform.position;
-        Time.timeScale = 0.0f;
         Collider playerCollider = GetComponent<Collider>(); // 콜라이더 미리 찾아두기
         if (playerCollider != null) playerCollider.enabled = false;
         if (chargeAttackTrail != null)

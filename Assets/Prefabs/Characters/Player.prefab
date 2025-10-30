@@ -5596,7 +5596,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  animationSmoothTime: 0.1
+  animationSmoothTime: 3
 --- !u!114 &3326539419270293232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5620,6 +5620,7 @@ MonoBehaviour:
   effectScale: 1
   teleportDelay: 0.1
   returnDelay: 0.2
+  skillCutInUI: {fileID: 0}
 --- !u!114 &3193424511676769265
 MonoBehaviour:
   m_ObjectHideFlags: 0

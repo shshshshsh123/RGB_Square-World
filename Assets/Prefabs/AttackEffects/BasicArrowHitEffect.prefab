@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4243744591809436}
   - component: {fileID: 198537625348318022}
   - component: {fileID: 199553087641855842}
-  - component: {fileID: 6076715813573906241}
+  - component: {fileID: 1359562600174278812}
   m_Layer: 0
   m_Name: BasicArrowHitEffect
   m_TagString: Untagged
@@ -4980,7 +4980,7 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &6076715813573906241
+--- !u!114 &1359562600174278812
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4992,8 +4992,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b003773a62d7254abffc2287c04f2e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifeTime: 1.2
-  poolTag: 5
+  lifeTime: 1
+  poolTag: 8
 --- !u!1 &1776349880673444
 GameObject:
   m_ObjectHideFlags: 0

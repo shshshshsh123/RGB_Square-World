@@ -154,7 +154,8 @@ public class PlayerAttack : MonoBehaviour
                     levelData.projectileSpeed,
                     levelData.penetrationCount,
                     weapon.weaponData.weaponTag,
-                    weapon.weaponData.lifeTime
+                    weapon.weaponData.lifeTime,
+                    PoolType.ArrowHitEffect
                 );
                 instance.transform.localScale = Vector3.one * levelData.scale;
             }
@@ -168,7 +169,13 @@ public class PlayerAttack : MonoBehaviour
             AttackEffect attackEffect = instance.GetComponent<AttackEffect>();
             if (attackEffect != null)
             {
-                attackEffect.InitialValues(levelData.damage, weapon.weaponData.weaponTag, weapon.weaponData.lifeTime, levelData.scale);
+                attackEffect.InitialValues(
+                    levelData.damage, 
+                    weapon.weaponData.weaponTag, 
+                    weapon.weaponData.lifeTime, 
+                    levelData.scale, 
+                    PoolType.BasicSlashHitEffect
+                );
             }
             else
             {
