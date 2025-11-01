@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.UI;
 
-public class PlayerMeleeChargeAttack : PlayerChargeAttackBase
+public class PlayerMeleeChargeAttack : PlayerChargeAttackBase, IAttackOwner
 {
     [Header("# 근접 차지공격 설정")]
     public int chargeAttackDamage = 50; // 근접 차지 공격 기본 데미지
@@ -111,7 +111,7 @@ public class PlayerMeleeChargeAttack : PlayerChargeAttackBase
                 if (attackEffect != null)
                 {
                     // 데미지는 나중에 한 번에 주므로 0, 태그, 지속시간, 스케일 전달
-                    attackEffect.InitialValues(0, chargeSlashEffectTag, effectLifetime, effectScale);
+                    attackEffect.InitialValues(this, 0, chargeSlashEffectTag, effectLifetime, effectScale, PoolType.ChargeSlash);
                 }
             }
 
@@ -152,5 +152,10 @@ public class PlayerMeleeChargeAttack : PlayerChargeAttackBase
         // 코루틴 종료 후 상태 초기화 (GetKeyUp에서도 처리하지만 안전하게)
         _isCharging = false;
         _chargeTimer = 0f;
+    }
+
+    void IAttackOwner.NotifyHit()
+    {
+        // 근접 차지공격은 타격 시 별도 처리 없음
     }
 }

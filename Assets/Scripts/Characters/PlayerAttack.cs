@@ -5,7 +5,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine.UI;
 
-public class PlayerAttack : MonoBehaviour
+public class PlayerAttack : MonoBehaviour, IAttackOwner
 {
     // 내부에서 사용할 현재 무기 데이터
     [System.Serializable]
@@ -35,8 +35,12 @@ public class PlayerAttack : MonoBehaviour
 
     [Header("# 공격 관리")]
     public float spreadAngle = 15f; // 투사체 퍼지는 각도
+    public float hitStopCooldown = 0.1f; // 히트스톱 쿨타임 (최소 시간)
+    public float hitStopDuration = 0.1f; // 히트스톱 지속 시간
 
     private float _lastAttackTime; // 마지막 공격 시점
+    private float _lastHitStopTime; // 마지막 히트스톱 시점
+    private bool _canAttackHitStop = true; // 히트스톱 가능 여부
     private PlayerController _playerController;
 
     void Awake()
@@ -47,7 +51,9 @@ public class PlayerAttack : MonoBehaviour
 
     void Start()
     {
-
+        // 내부 변수 초기화
+        _lastAttackTime = Time.time;
+        _canAttackHitStop = true;
     }
 
     void Update()
@@ -62,6 +68,7 @@ public class PlayerAttack : MonoBehaviour
 
     void HandleAutoAttacks()
     {
+        if (Input.GetMouseButtonUp(0)) _canAttackHitStop = true;    // 좌클릭 뗄 때 히트스톱 가능하도록 리셋
         if (!Input.GetMouseButton(0)) return;    // 좌클릭 중에만 발동
 
         foreach (EquippedWeapon weapon in equippedWeapons)
@@ -170,6 +177,7 @@ public class PlayerAttack : MonoBehaviour
             if (attackEffect != null)
             {
                 attackEffect.InitialValues(
+                    this,
                     levelData.damage, 
                     weapon.weaponData.weaponTag, 
                     weapon.weaponData.lifeTime, 
@@ -209,5 +217,16 @@ public class PlayerAttack : MonoBehaviour
             equippedWeapons.Add(new EquippedWeapon(weaponData));
             Debug.Log($"{weaponData.name} 새로 획득!");
         }
+    }
+
+    void IAttackOwner.NotifyHit()
+    {
+        if (!_canAttackHitStop) return;
+        if (Time.time < _lastHitStopTime + hitStopCooldown) return; // 쿨타임 체크
+
+        // 히트스톱 실행
+        StartCoroutine(TimeUtils.HitStop(hitStopDuration)); // 0.1초 동안 히트스톱
+        _canAttackHitStop = false; // 한 공격당 한 번만 히트스톱 가능
+        _lastHitStopTime = Time.time;
     }
 }

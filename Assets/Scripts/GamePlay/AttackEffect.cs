@@ -6,6 +6,7 @@ public class AttackEffect : MonoBehaviour
 {
     private float _damage = 0f;
     private PoolType _poolTag;
+    private IAttackOwner _owner;
 
     // 이미 맞은 적들을 기록할 리스트
     private List<Collider> _hitEnemies;
@@ -29,8 +30,9 @@ public class AttackEffect : MonoBehaviour
     /// <param name="damage">데미지</param>
     /// <param name="poolTag">태그(오브젝트풀러)</param>
     /// <param name="lifeTime">이펙트 사라질 시간</param>
-    public void InitialValues(float damage, PoolType poolTag, float lifeTime, float scale, PoolType hitEffectTag = PoolType.BasicSlashHitEffect)
+    public void InitialValues(IAttackOwner owner, float damage, PoolType poolTag, float lifeTime, float scale, PoolType hitEffectTag)
     {
+        if (owner != null) _owner = owner;  // 차지공격에서는 null일 수 있음
         _damage = damage;
         _poolTag = poolTag;
         transform.localScale = Vector3.one * scale;
@@ -100,6 +102,9 @@ public class AttackEffect : MonoBehaviour
                     // --- 추가된 부분: 맞은 적 리스트에 추가 ---
                     _hitEnemies.Add(other);
                     SpawnHitEffect(other);
+
+                    // 히트시 히트했다고 PlayerAttack에 알림
+                    _owner?.NotifyHit();
                 }
             }
         }
