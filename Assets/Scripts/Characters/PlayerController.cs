@@ -153,7 +153,7 @@ public class PlayerController : MonoBehaviour
 
         else if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-            ObjectPooler.Instance.SpawnFromPool(PoolType.RangedMonster, transform.position + transform.forward * 5, Quaternion.identity);
+            ObjectPooler.Instance.SpawnFromPool(PoolType.RangeMonster, transform.position + transform.forward * 5, Quaternion.identity);
         }
     }
 }

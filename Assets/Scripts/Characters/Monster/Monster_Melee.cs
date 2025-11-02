@@ -1,14 +1,15 @@
 using UnityEngine;
 using System.Collections;
 
-public class Enemy_Melee : BaseEnemy
+public class Monster_Melee : BaseMonster
 {
-    [Header("Melee Stats")]
-    public float dashSpeed = 10f;
-    public float dashDuration = 0.5f;
-    public float dashAcceleration = 1000f;
-    private float _normalSpeed;
-    private float _normalAcceleration;
+    [Header("근접 몬스터 돌진 관련 스탯")]
+    public float dashSpeed = 10f; // 돌진 시 속도
+    public float dashDuration = 0.5f; // 돌진 지속 시간
+    public float dashAcceleration = 1000f; // 돌진 시 가속도
+
+    private float _normalSpeed; // 기본 이동 속도
+    private float _normalAcceleration; // 기본 가속도
 
     protected override void Awake()
     {
@@ -22,6 +23,10 @@ public class Enemy_Melee : BaseEnemy
         StartCoroutine(Dash());
     }
 
+    /// <summary>
+    /// 돌진 공격(플레이어에게 빠른 속도로 돌진 후 다시 돌진 시작 위치로 돌아오는 공격) 코루틴
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator Dash()
     {
         Vector3 startPosition = transform.position;
@@ -39,8 +44,10 @@ public class Enemy_Melee : BaseEnemy
         _agent.acceleration = _normalAcceleration;
         _agent.SetDestination(startPosition);
 
+        // 회전을 직접 제어할 수 있도록 NavMeshAgent의 자동 회전을 비활성화
         _agent.updateRotation = false;
 
+        // 경로 계산 중에도 플레이어를 향하도록 회전
         while (_agent.pathPending)
         {
             Vector3 lookDir = (_player.position - transform.position).normalized;
@@ -49,6 +56,7 @@ public class Enemy_Melee : BaseEnemy
             yield return null;
         }
 
+        // 복귀(플레이어에게 돌진 공격 후 돌아옴)중에도 계속해서 플레이어를 향하도록 회전
         while (_agent.remainingDistance > _agent.stoppingDistance + 0.1f)
         {
             Vector3 lookDir = (_player.position - transform.position).normalized;

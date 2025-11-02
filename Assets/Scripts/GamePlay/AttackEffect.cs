@@ -56,12 +56,12 @@ public class AttackEffect : MonoBehaviour
         if (other != null)
         {
             // 적 캐릭터에 닿았을 때
-            if (other.CompareTag("Enemy"))
+            if (other.CompareTag("Monster"))
             {
                 // --- 추가된 부분: 이미 맞은 적인지 확인 ---
                 if (!_hitEnemies.Contains(other))
                 {
-                    Debug.Log("AttackEffect가 Enemy에 닿음");
+                    Debug.Log("AttackEffect가 Monster에 닿음");
                     other.GetComponent<MonsterStatus>()?.TakeDamage(_damage);
 
                     // --- 추가된 부분: 맞은 적 리스트에 추가 ---

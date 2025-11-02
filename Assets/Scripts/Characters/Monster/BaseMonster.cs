@@ -2,12 +2,12 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
 
-public abstract class BaseEnemy : MonoBehaviour
+public abstract class BaseMonster : MonoBehaviour
 {
     [Header("기본 스탯")]
-    protected float _attackRange = 2.5f;
-    protected float _attackCooldown = 2f;
-    protected float _pathUpdateTime = 0.2f; // 플레이어 위치 갱신 시간
+    [SerializeField] protected float _attackRange = 2.5f;
+    [SerializeField] protected float _attackCooldown = 2f;
+    [SerializeField] protected float _pathUpdateTime = 0.2f; // 플레이어 위치 갱신 시간
 
     protected float _playerDistance;
     protected bool _canAttack = true; // 공격 가능 여부
@@ -15,10 +15,12 @@ public abstract class BaseEnemy : MonoBehaviour
     
     protected Transform _player;
     protected NavMeshAgent _agent;
+    protected Animator _animator;
 
     protected virtual void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
+        _animator = GetComponent<Animator>();
     }
 
     protected virtual void Start()
@@ -29,15 +31,63 @@ public abstract class BaseEnemy : MonoBehaviour
             _player = playerObject.transform;
 
         if (_agent == null) _agent = GetComponent<NavMeshAgent>();
+    }
+
+    protected virtual void OnEnable()
+    {
+        if (_player == null)
+        {
+            GameObject playerObject = GameObject.FindWithTag("Player");
+            if (playerObject != null)
+                _player = playerObject.transform;
+        }
+
+        // 몬스터가 활성화될 때마다 AI 로직을 다시 시작
+        if (_agent != null)
+        {
+            _agent.enabled = true;
+            _agent.isStopped = false;
+        }
+
+        _canAttack = true;
+        _isAttacking = false;
 
         StartCoroutine(EnemyLogic());
+    }
+
+    protected virtual void OnDisable()
+    {
+        // 몬스터가 비활성화될 때, 실행 중이던 모든 코루틴을 멈춥니다.
+        StopAllCoroutines();
+
+        if (_agent != null && _agent.isOnNavMesh)
+        {
+            _agent.isStopped = true;
+            _agent.ResetPath();
+            _agent.enabled = false;
+        }
+    }
+
+    protected virtual void Update()
+    {
+        // _animator나 _agent가 없으면 실행하지 않음
+        if (_animator == null || _agent == null) return;
+
+        // NavMeshAgent의 현재 속도(월드 유닛/초)를 계산
+        float currentSpeed = _agent.velocity.magnitude;
+
+        // 속도가 0.1 (아주 약간)보다 크면 true, 아니면 false
+        bool isMoving = currentSpeed > 0.1f;
+
+        // Animator의 "isRunning" 파라미터(Bool)에 isMoving 값을 전달
+        _animator.SetBool("isRunning", isMoving);
     }
 
     /// <summary>
     /// 몬스터 기본 행동 로직
     /// </summary>
     /// <returns></returns>
-    private IEnumerator EnemyLogic()
+    protected IEnumerator EnemyLogic()
     {
         WaitForSeconds wait = new WaitForSeconds(_pathUpdateTime);
 
