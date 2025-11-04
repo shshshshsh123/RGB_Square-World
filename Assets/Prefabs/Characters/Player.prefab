@@ -5483,6 +5483,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 631756998c0f7d143ac2b514b44e30ce, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3193424511676769265}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 631756998c0f7d143ac2b514b44e30ce, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6843588585530160563}
   m_SourcePrefab: {fileID: 100100000, guid: 631756998c0f7d143ac2b514b44e30ce, type: 3}
 --- !u!1 &5023341480702838272 stripped
 GameObject:
@@ -5648,8 +5651,30 @@ MonoBehaviour:
   chargeAttackLifetime: 5
   projectilePoolTag: 9
   launchOffset: {x: 0, y: 0.5, z: 1}
-  knockbackForce: 50
-  knockbackDuration: 0.2
+  knockbackForce: 10
+  knockbackDuration: 0.3
+--- !u!114 &6843588585530160563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5023341480702838272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 998cedd020601fa4681f19b7a0cfb899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chargeAttackTimeRequire: 1
+  chargeAttackTarget: 30
+  chargeAttackRange: 7
+  chargeAttackKeyDownImage: {fileID: 0}
+  chargeAttackDamage: 30
+  projectileFallDuration: 1
+  projectileScale: 1
+  spawnRadius: 10
+  delayBetweenProjectiles: 0.05
+  projectilePoolTag: 13
 --- !u!4 &5691897758151564474 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 631756998c0f7d143ac2b514b44e30ce, type: 3}

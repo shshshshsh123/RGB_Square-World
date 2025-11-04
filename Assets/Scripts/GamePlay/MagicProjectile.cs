@@ -18,8 +18,12 @@ public class MagicProjectile : MonoBehaviour
     public float initialHeight = 10f; // 마우스 위치에서 얼마나 높은 곳에서 생성될지
 
     private bool _hasDealtDamage = false; // 한 번만 데미지 처리 (범위 공격이므로 중요)
-    public float explosionRadius = 3f; // 착지 시 데미지 범위
+    public float explosionRadius = 1f; // 착지 시 데미지 범위
     public LayerMask enemyLayer; // 적 레이어 마스크 (Inspector에서 설정)
+
+    public float cylinderHeightOffset = 0.05f; // 데미지 범위 표시용 Cylinder를 지면에서 얼마나 띄울지
+    private MaterialPropertyBlock _mpb;
+    private Color _rangeDisplayColor;
 
     private void Awake()
     {
@@ -27,6 +31,7 @@ public class MagicProjectile : MonoBehaviour
         {
             enemyLayer = LayerMask.GetMask("Enemy");
         }
+        _mpb = new MaterialPropertyBlock();
     }
 
     private void OnEnable()
@@ -38,7 +43,7 @@ public class MagicProjectile : MonoBehaviour
     /// <summary>
     /// 마법 발사체 초기화 (RangedProjectile과 유사한 시그니처)
     /// </summary>
-    public void Initialize(IAttackOwner owner, float damage, float fallDuration, float scale, PoolType selfPoolTag, PoolType effectPoolTag)
+    public void Initialize(IAttackOwner owner, float damage, float fallDuration, float scale, PoolType selfPoolTag, PoolType effectPoolTag, Color rangeDisplayColor)
     {
         _owner = owner;
         _damage = damage;
@@ -46,6 +51,8 @@ public class MagicProjectile : MonoBehaviour
         _scale = scale;
         _selfPoolTag = selfPoolTag;
         _effectPoolTag = effectPoolTag;
+        _rangeDisplayColor = rangeDisplayColor;
+        _rangeDisplayColor.a = 0.2f; // 반투명 설정
 
         transform.localScale = Vector3.one * _scale;
         _hasDealtDamage = false;
@@ -94,6 +101,9 @@ public class MagicProjectile : MonoBehaviour
         if (_hasDealtDamage) return;
         _hasDealtDamage = true;
 
+        // 범위는 scale에 비례합니둥
+        explosionRadius = 1.5f * _scale;
+
         Collider[] hitColliders = Physics.OverlapSphere(_targetGroundPosition, explosionRadius, enemyLayer);
         foreach (Collider hitCollider in hitColliders)
         {
@@ -107,6 +117,26 @@ public class MagicProjectile : MonoBehaviour
         // 착지 이펙트 재생
         GameObject effet = ObjectPooler.Instance.SpawnFromPool(_effectPoolTag, _targetGroundPosition, Quaternion.identity);
         effet.transform.localScale = Vector3.one * _scale;
+
+        // 데미지 범위 표시용 Cylinder 오브젝트
+        // 지면 위치에서 Y축으로 살짝 띄워서 Z-fighting(텍스처 깜빡임) 방지
+        Vector3 cylinderSpawnPosition = _targetGroundPosition + Vector3.up * cylinderHeightOffset;
+        GameObject cylinderInstance = ObjectPooler.Instance.SpawnFromPool(PoolType.AttackRange, cylinderSpawnPosition, Quaternion.identity);
+        if (cylinderInstance != null)
+        {
+            // Y 스케일은 프리팹에서 이미 아주 작게 설정되어 있으므로 변경하지 않음 (1 -> 0.01)
+            cylinderInstance.transform.localScale = new Vector3(explosionRadius * 2, cylinderInstance.transform.localScale.y, explosionRadius * 2);
+            MeshRenderer meshRenderer = cylinderInstance.GetComponent<MeshRenderer>();
+            if (meshRenderer != null)
+            {
+                // MaterialPropertyBlock을 적용하기 전에 이전 속성을 클리어
+                _mpb.Clear();
+                // URP의 _BaseColor 속성을 변경 (Built-in 렌더 파이프라인에서는 _Color)
+                _mpb.SetColor("_BaseColor", _rangeDisplayColor); // MaterialPropertyBlock에 색상 설정
+                meshRenderer.SetPropertyBlock(_mpb); // MeshRenderer에 MaterialPropertyBlock 적용
+            }
+            // 풀에 반남은 Auto Deactive에서 슈슝~~
+        }
     }
 
     private void ReturnToPool()

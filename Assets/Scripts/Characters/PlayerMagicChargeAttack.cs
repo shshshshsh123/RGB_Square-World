@@ -77,7 +77,8 @@ public class PlayerMagicChargeAttack : PlayerChargeAttackBase
                         projectileFallDuration, // 낙하 시간
                         projectileScale,        // 크기
                         projectilePoolTag,       // 풀 태그 (반납용)
-                        PoolType.MagicChargeHitEffect  // 착지 이펙트 풀 태그
+                        PoolType.MagicChargeHitEffect,  // 착지 이펙트 풀 태그
+                        Color.yellow // 차지공격은 별이니까 노란색입니다람쥐쥐쥐
                     );
                     magicProjectile.StartFall(targetGroundPosition); // 낙하 시작
                 }

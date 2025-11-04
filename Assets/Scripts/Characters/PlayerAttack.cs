@@ -266,7 +266,8 @@ public class PlayerAttack : MonoBehaviour, IAttackOwner
                 weapon.weaponData.lifeTime, // WeaponData의 lifeTime을 운석의 낙하 지속 시간으로 사용
                 levelData.scale,
                 weapon.weaponData.weaponTag, // 운석 발사체 자신을 풀에 반납할 태그
-                PoolType.MagicHitEffect
+                PoolType.MagicHitEffect,
+                Color.blue // 기본공격은 물이니까 파란색으로 합니다람쥐쥐쥐
             );
 
             magicProjectile.StartFall(targetGroundPosition); // 운석 낙하 시작

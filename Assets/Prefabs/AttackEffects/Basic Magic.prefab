@@ -4965,10 +4965,11 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   initialHeight: 5
-  explosionRadius: 3
+  explosionRadius: 1
   enemyLayer:
     serializedVersion: 2
     m_Bits: 512
+  cylinderHeightOffset: 0.05
 --- !u!1 &767315798251188106
 GameObject:
   m_ObjectHideFlags: 0
