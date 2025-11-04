@@ -1,6 +1,6 @@
-using UnityEngine;
 using System.Collections; // Invoke 사용을 위해 필요
 using System.Collections.Generic; // List 사용
+using UnityEngine;
 
 [RequireComponent(typeof(Collider))] // 충돌 감지를 위해 Collider 필요
 [RequireComponent(typeof(Rigidbody))] // 이동을 위해 Rigidbody 필요
@@ -19,8 +19,11 @@ public class RangedProjectile : MonoBehaviour
     private List<Collider> _hitEnemies; // 이미 맞은 적들을 기록 (다단 히트 방지)
 
     // --- 기타 설정 ---
+    private IAttackOwner _owner;
     private PoolType _hitEffectTag = PoolType.ArrowHitEffect;
     private float _hitEffectOffset = 0.1f;
+    private float _knockbackForce;
+    private float _knockbackDuration;
 
     private void Awake()
     {
@@ -46,15 +49,18 @@ public class RangedProjectile : MonoBehaviour
     /// <summary>
     /// 투사체의 초기값을 설정하고 발사를 시작합니다.
     /// </summary>
-    public void Initialize(float damage, float speed, int penetrationCount, PoolType poolTag, float lifeTime, PoolType effectPoolType = PoolType.ArrowHitEffect)
+    public void Initialize(IAttackOwner owner, float damage, float speed, int penetrationCount, PoolType poolTag, float lifeTime, PoolType effectPoolType = PoolType.ArrowHitEffect, float knockbackForce = 0f, float knockbackDuration = 0f)
     {
         // 데이터 할당
+        _owner = owner;
         _damage = damage;
         _speed = speed;
         _penetrationCount = penetrationCount;
         _poolTag = poolTag;
         _lifeTime = lifeTime;
         _hitEffectTag = effectPoolType;
+        _knockbackForce = knockbackForce;
+        _knockbackDuration = knockbackDuration;
 
         if (_collider != null) _collider.enabled = true; // 콜라이더 활성화
 
@@ -93,29 +99,45 @@ public class RangedProjectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!gameObject.activeSelf) return; // 비활성화 중이면 무시
-        if (other.CompareTag("Player") || other.CompareTag("PlayerAttack") || other.CompareTag("Ground")) return; // 충돌 무시 대상
+        if (!gameObject.activeSelf) return;
+        if (other.CompareTag("Player") || other.CompareTag("PlayerAttack") || other.CompareTag("Ground")) return;
 
         // 적과 충돌 시
         if (other.CompareTag("Enemy"))
         {
-            if (!_hitEnemies.Contains(other)) // 다단 히트 방지
+            if (!_hitEnemies.Contains(other))
             {
-                _hitEnemies.Add(other);
-                other.GetComponent<MonsterStatus>()?.TakeDamage(_damage);
+                _hitEnemies.Add(other); // 맞은 적 목록에 추가하여 다단 히트 방지
+
+                // 몬스터에게 데미지 적용
+                MonsterStatus monsterStatus = other.GetComponent<MonsterStatus>();
+                if (monsterStatus != null)
+                {
+                    monsterStatus.TakeDamage(_damage);
+                }
+
+                // 넉백 적용 (무한 관통 투사체일 때만)
+                if (_knockbackForce > 0 && _penetrationCount == -100)
+                {
+                    MonsterKnockBack monsterKnockBack = other.GetComponent<MonsterKnockBack>();
+                    if (monsterKnockBack != null)
+                    {
+                        Vector3 knockbackDirection = (other.transform.position - transform.position).normalized;
+                        monsterKnockBack?.ApplyKnockback(knockbackDirection, _knockbackForce, _knockbackDuration);
+                    }
+                }
+
+                _owner?.NotifyHit(); // 공격 주체에게 히트 통지 (히트스톱 등)
                 SpawnHitEffect(other); // 충돌 이펙트 생성
 
-                // 무한 관통인 경우
-                if (_penetrationCount == -100)
-                {
-                    return;
-                }
-                else
+                // 무한 관통이 아닌 경우 관통 횟수 감소
+                if (_penetrationCount != -100)
                 {
                     _penetrationCount--;
                 }
 
-                if (_penetrationCount <= 0) // 관통 횟수 소진
+                // 관통 횟수 소진 시 (무한 관통이 아닌 경우)
+                if (_penetrationCount <= 0 && _penetrationCount != -100)
                 {
                     ReturnToPool();
                     return;
@@ -123,9 +145,10 @@ public class RangedProjectile : MonoBehaviour
             }
         }
         // 적이 아닌 다른 콜라이더(벽 등)와 충돌 시
-        else if (!other.isTrigger) // 트리거가 아닌 콜라이더와 충돌 시
+        else if (!other.isTrigger)
         {
-            if (_penetrationCount == 100) return; // 무한 관통이면 무시
+            if (_penetrationCount == -100) return; // 무한 관통이면 적이 아닌 오브젝트와 충돌해도 계속 진행 (벽 통과)
+
             SpawnHitEffect(other); // 충돌 이펙트 생성
             ReturnToPool(); // 즉시 반납
             return;

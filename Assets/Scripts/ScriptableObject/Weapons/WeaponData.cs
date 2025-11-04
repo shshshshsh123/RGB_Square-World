@@ -39,5 +39,6 @@ public class LevelData
 public enum WeaponType
 {
     Melee,      // 근접 무기
-    Ranged      // 원거리 무기
+    Ranged,      // 원거리 무기
+    Magic       // 마법 무기
 }

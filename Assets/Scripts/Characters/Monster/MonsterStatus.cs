@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(MonsterKnockBack))]
 public class MonsterStatus : MonoBehaviour
 {
     [Header("# 몬스터 스탯 정보")]

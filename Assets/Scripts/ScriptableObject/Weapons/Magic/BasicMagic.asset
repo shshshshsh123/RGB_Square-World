@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fedb5f64938252c45be525e5916d1e91, type: 3}
+  m_Name: BasicMagic
+  m_EditorClassIdentifier: 
+  weaponType: 2
+  weaponTag: 11
+  weaponIcon: {fileID: 0}
+  lifeTime: 0.7
+  weaponDescription: 
+  attackPositionOffset: {x: 0, y: 0, z: 0}
+  attackRotationOffset: {x: 0, y: 0, z: 0}
+  levelDataList:
+  - level: 1
+    damage: 20
+    attackDelay: 1
+    scale: 1
+    projectileCount: 1
+    penetrationCount: 0
+    projectileSpeed: 10
+  - level: 2
+    damage: 20
+    attackDelay: 1
+    scale: 1
+    projectileCount: 1
+    penetrationCount: 0
+    projectileSpeed: 10
+  - level: 3
+    damage: 30
+    attackDelay: 0.8
+    scale: 1
+    projectileCount: 1
+    penetrationCount: 0
+    projectileSpeed: 10
+  - level: 4
+    damage: 30
+    attackDelay: 0.7
+    scale: 1
+    projectileCount: 1
+    penetrationCount: 0
+    projectileSpeed: 10
+  - level: 5
+    damage: 50
+    attackDelay: 0.6
+    scale: 1.5
+    projectileCount: 1
+    penetrationCount: 0
+    projectileSpeed: 10
+  projectilePrefab: {fileID: 1759596753954018, guid: 2e5569348371cb64683860d6f4efac92, type: 3}

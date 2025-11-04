@@ -14,7 +14,7 @@ public class MonsterFollow : MonoBehaviour
 
     void Update()
     {
-        if (_player != null)
+        if (_player != null && _agent.enabled == true)
         {
             _agent.SetDestination(_player.position); // 플레이어 위치로 이동
         }

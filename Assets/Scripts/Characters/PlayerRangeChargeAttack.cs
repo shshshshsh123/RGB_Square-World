@@ -7,17 +7,18 @@ public class PlayerRangeChargeAttack : PlayerChargeAttackBase
     public int chargeAttackDamage = 40; // 원거리 차지 공격 기본 데미지
     public float chargeAttackSpeed = 10f; // 원거리 차지 공격 투사체 속도
     public float chargeAttackLifetime = 5f; // 원거리 차지 공격 투사체 수명
-    public GameObject largeProjectilePrefab;    // 거대 투사체 프리팹
     public PoolType projectilePoolTag = PoolType.ChargeArrow;   // 투사체 풀 태그
     public Vector3 launchOffset = new Vector3(0, 0.5f, 1.0f);   // 투사체 발사 위치 오프셋
     public float knockbackForce = 10f;  // 넉백 힘
     public float knockbackDuration = 0.2f;  // 넉백 지속 시간
 
     private PlayerController _playerController; // 방향 참고용
+    private PlayerAttack _playerAttack; // IAttackOwner 구현용
 
     private void Awake()
     {
         _playerController = GetComponent<PlayerController>();
+        _playerAttack = GetComponent<PlayerAttack>();
     }
 
     protected override void Start()
@@ -55,14 +56,24 @@ public class PlayerRangeChargeAttack : PlayerChargeAttackBase
             if (rangedProjectile != null)
             {
                 rangedProjectile.Initialize(
+                    _playerAttack,
                     chargeAttackDamage,
                     chargeAttackSpeed,
                     -100, // 무한 관통
                     projectilePoolTag,
                     chargeAttackLifetime,
-                    PoolType.ChargeArrrowHitEffect
+                    PoolType.ChargeArrrowHitEffect,
+                    knockbackForce,
+                    knockbackDuration
                 );
+                // 넉백처리는 RangedProjectile에서 합니둥
             }
         }
+
+        // 3. 여러가지 정상화들
+        GameManager.Instance.IncreaseChargeAttack(-100);    // 게이지 정상화_isCharging = false;
+        _chargeTimer = 0f;
+
+        yield break; // 코루틴 종료
     }
 }

@@ -37,6 +37,7 @@ public class PlayerAttack : MonoBehaviour, IAttackOwner
     public float spreadAngle = 15f; // 투사체 퍼지는 각도
     public float hitStopCooldown = 0.1f; // 히트스톱 쿨타임 (최소 시간)
     public float hitStopDuration = 0.1f; // 히트스톱 지속 시간
+    public LayerMask groundLayer; // 마법 공격 시 지면 레이어
 
     private float _lastAttackTime; // 마지막 공격 시점
     private float _lastHitStopTime; // 마지막 히트스톱 시점
@@ -64,6 +65,7 @@ public class PlayerAttack : MonoBehaviour, IAttackOwner
         // 테스트용!!!!!!!!
         if (Input.GetKeyDown(KeyCode.Alpha1)) AddOrUpgradeWeapon(weaponDatas[0]);
         if (Input.GetKeyDown(KeyCode.Alpha2)) AddOrUpgradeWeapon(weaponDatas[1]);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) AddOrUpgradeWeapon(weaponDatas[2]);
     }
 
     void HandleAutoAttacks()
@@ -142,21 +144,20 @@ public class PlayerAttack : MonoBehaviour, IAttackOwner
     /// </summary>
     void SpawnProjectile(PlayerAttack.EquippedWeapon weapon, LevelData levelData, Vector3 position, Quaternion rotation)
     {
-        GameObject instance = ObjectPooler.Instance.SpawnFromPool(
-            weapon.weaponData.weaponTag,
-            position,
-            rotation
-        );
-
-        if (instance == null) return;
-
         // 생성된 인스턴스 초기화 (무기 타입에 따라 다른 컴포넌트 접근)
         if (weapon.weaponData.weaponType == WeaponType.Ranged)
         {
+            GameObject instance = ObjectPooler.Instance.SpawnFromPool(
+                weapon.weaponData.weaponTag,
+                position,
+                rotation
+            );
+
             RangedProjectile projectile = instance.GetComponent<RangedProjectile>();
             if (projectile != null)
             {
                 projectile.Initialize(
+                    this,
                     levelData.damage,
                     levelData.projectileSpeed,
                     levelData.penetrationCount,
@@ -173,6 +174,12 @@ public class PlayerAttack : MonoBehaviour, IAttackOwner
         }
         else if (weapon.weaponData.weaponType == WeaponType.Melee)
         {
+            GameObject instance = ObjectPooler.Instance.SpawnFromPool(
+                weapon.weaponData.weaponTag,
+                position,
+                rotation
+            );
+
             AttackEffect attackEffect = instance.GetComponent<AttackEffect>();
             if (attackEffect != null)
             {
@@ -189,6 +196,86 @@ public class PlayerAttack : MonoBehaviour, IAttackOwner
             {
                 Debug.LogError($"[Player Attack] 근접 프리팹에 AttackEffect 스크립트가 없습니다: {weapon.weaponData.weaponTag} - {instance.name}");
             }
+        }
+        else if (weapon.weaponData.weaponType == WeaponType.Magic)
+        {
+            PerformMagicAttack(weapon, levelData);
+        }
+        else
+        {
+            Debug.LogError($"[Player Attack] 알 수 없는 무기 타입입니다: {weapon.weaponData.weaponTag} - {weapon.weaponData.weaponType}");
+        }
+    }
+
+    /// <summary>
+    /// 마법 공격 (운석)을 수행하는 함수
+    /// </summary>
+    void PerformMagicAttack(EquippedWeapon weapon, LevelData levelData)
+    {
+        if (weapon.weaponData.projectilePrefab == null)
+        {
+            Debug.LogWarning($"[Player Attack] 마법 공격 이펙트 프리팹이 할당되지 않았습니다: {weapon.weaponData.weaponTag}");
+            return;
+        }
+
+        // 1. 마우스 위치를 월드 좌표의 지면으로 변환
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        Vector3 targetGroundPosition;
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayer))
+        {
+            targetGroundPosition = hit.point; // 레이캐스트에 맞은 지점
+        }
+        else
+        {
+            // 지면이 없으면 플레이어 앞 일정 거리 지면으로 가정 (높이는 플레이어 높이와 동일)
+            // 쿼터뷰에서 너무 높은 Y 값으로 생성되지 않도록 Y축은 플레이어와 동일하게 고정
+            Plane groundPlane = new Plane(Vector3.up, transform.position);
+            float distance;
+            if (groundPlane.Raycast(ray, out distance))
+            {
+                targetGroundPosition = ray.GetPoint(distance);
+                // 플레이어와 너무 멀어지지 않게 제한할 경우
+                // targetGroundPosition = Vector3.Lerp(transform.position, targetGroundPosition, 0.5f); 
+                targetGroundPosition.y = transform.position.y; // Y축은 플레이어 높이와 동일하게
+            }
+            else
+            {
+                Debug.LogWarning("[Player Attack] 지면을 찾을 수 없습니다. 마법 공격을 플레이어 위치에 발동합니다.");
+                targetGroundPosition = transform.position;
+            }
+        }
+
+        // 2. 마법 발사체 (운석) 생성
+        GameObject instance = ObjectPooler.Instance.SpawnFromPool(
+            weapon.weaponData.weaponTag,
+            targetGroundPosition, // 일단 지면 위치로 스폰 (MagicProjectile이 시작 높이에서 다시 설정)
+            Quaternion.identity
+        );
+
+        if (instance == null) return;
+
+        // 생성된 인스턴스 초기화 (MagicProjectile 컴포넌트 접근)
+        MagicProjectile magicProjectile = instance.GetComponent<MagicProjectile>();
+        if (magicProjectile != null)
+        {
+            magicProjectile.Initialize(
+                this,   // IAttackOwner
+                levelData.damage,
+                weapon.weaponData.lifeTime, // WeaponData의 lifeTime을 운석의 낙하 지속 시간으로 사용
+                levelData.scale,
+                weapon.weaponData.weaponTag, // 운석 발사체 자신을 풀에 반납할 태그
+                PoolType.MagicHitEffect
+            );
+
+            magicProjectile.StartFall(targetGroundPosition); // 운석 낙하 시작
+        }
+        else
+        {
+            Debug.LogError($"[Player Attack] 마법 프리팹에 MagicProjectile 스크립트가 없습니다: {weapon.weaponData.weaponTag} - {instance.name}");
+            // 스크립트가 없으면 풀에 즉시 반납
+            ObjectPooler.Instance.ReturnToPool(weapon.weaponData.weaponTag, instance);
         }
     }
 

@@ -5577,8 +5577,14 @@ MonoBehaviour:
   weaponDatas:
   - {fileID: 11400000, guid: 987404a6c9ee90f4ba563dda50c7edd5, type: 2}
   - {fileID: 11400000, guid: ba98c7bfebda63746ab3ca87bdf49dd1, type: 2}
+  - {fileID: 11400000, guid: d1ccb72869e2ffd4b9b850a350d897a2, type: 2}
   equippedWeapons: []
   spreadAngle: 15
+  hitStopCooldown: 0.1
+  hitStopDuration: 0.1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!114 &62807256015326725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5640,10 +5646,9 @@ MonoBehaviour:
   chargeAttackDamage: 40
   chargeAttackSpeed: 10
   chargeAttackLifetime: 5
-  largeProjectilePrefab: {fileID: 4650637690332434465, guid: 47ccb8b73e5097545ab0a3ed27f274db, type: 3}
   projectilePoolTag: 9
   launchOffset: {x: 0, y: 0.5, z: 1}
-  knockbackForce: 10
+  knockbackForce: 50
   knockbackDuration: 0.2
 --- !u!4 &5691897758151564474 stripped
 Transform:

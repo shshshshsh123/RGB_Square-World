@@ -97,4 +97,8 @@ public enum PoolType
     ArrowHitEffect,
     ChargeArrow,
     ChargeArrrowHitEffect,
+    MagicProjectile,
+    MagicHitEffect,
+    MagicChargeProjectile,
+    MagicChargeHitEffect,
 }
