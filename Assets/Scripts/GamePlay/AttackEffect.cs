@@ -92,7 +92,7 @@ public class AttackEffect : MonoBehaviour
         if (other != null)
         {
             // 적 캐릭터에 닿았을 때
-            if (other.CompareTag("Enemy"))
+            if (other.CompareTag("Monster"))
             {
                 // --- 추가된 부분: 이미 맞은 적인지 확인 ---
                 if (!_hitEnemies.Contains(other))

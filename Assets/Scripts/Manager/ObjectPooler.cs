@@ -102,5 +102,4 @@ public enum PoolType
     MagicChargeProjectile,
     MagicChargeHitEffect,
     AttackRange,
-
 }

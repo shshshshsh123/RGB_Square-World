@@ -100,10 +100,10 @@ public class RangedProjectile : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!gameObject.activeSelf) return;
-        if (other.CompareTag("Player") || other.CompareTag("PlayerAttack") || other.CompareTag("Ground")) return;
+        if (other.CompareTag("Player") || other.CompareTag("PlayerAttack") || other.CompareTag("Ground") || other.CompareTag("Enviroment")) return;
 
         // 적과 충돌 시
-        if (other.CompareTag("Enemy"))
+        if (other.CompareTag("Monster"))
         {
             if (!_hitEnemies.Contains(other))
             {

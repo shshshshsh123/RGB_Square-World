@@ -7,7 +7,7 @@ TagManager:
   - Monster
   - PlayerAttack
   - Ground
-  - Enemy
+  - Enviroment
   layers:
   - Default
   - TransparentFX

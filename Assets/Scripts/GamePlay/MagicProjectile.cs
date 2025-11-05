@@ -29,7 +29,7 @@ public class MagicProjectile : MonoBehaviour
     {
         if (enemyLayer.value == 0)
         {
-            enemyLayer = LayerMask.GetMask("Enemy");
+            enemyLayer = LayerMask.GetMask("Monster");
         }
         _mpb = new MaterialPropertyBlock();
     }
@@ -59,7 +59,7 @@ public class MagicProjectile : MonoBehaviour
 
         if (enemyLayer.value == 0)
         {
-            enemyLayer = LayerMask.GetMask("Enemy");
+            enemyLayer = LayerMask.GetMask("Monster");
         }
     }
 

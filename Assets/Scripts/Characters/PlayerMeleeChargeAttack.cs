@@ -61,6 +61,7 @@ public class PlayerMeleeChargeAttack : PlayerChargeAttackBase, IAttackOwner
             Debug.Log("[차지공격] 타겟이 없습니다.");
             _isCharging = false; // 코루틴 종료 전 상태 초기화
             _chargeTimer = 0f;
+            Time.timeScale = 1.0f; // 발동실패했으니 시간 다시 정상화
             yield break;
         }
 

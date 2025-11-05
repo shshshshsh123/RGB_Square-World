@@ -91,7 +91,7 @@ public abstract class PlayerChargeAttackBase : MonoBehaviour
     /// </summary>
     protected List<Transform> FindTargets()
     {
-        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, chargeAttackRange, LayerMask.GetMask("Enemy"));
+        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, chargeAttackRange, LayerMask.GetMask("Monster"));
         return enemiesInRange
             .OrderBy(enemy => Random.value) // ·£´ý Á¤·Ä
             .Take(chargeAttackTarget)

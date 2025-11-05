@@ -1755,6 +1755,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3193424511676769265, guid: ace0cc9dc15c12f4bbf87e3ac75715f0, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3193424511676769265, guid: ace0cc9dc15c12f4bbf87e3ac75715f0, type: 3}
       propertyPath: chargeAttackKeyDownImage
       value: 
       objectReference: {fileID: 1111835622}
@@ -1809,6 +1813,22 @@ PrefabInstance:
     - target: {fileID: 5691897758151564474, guid: ace0cc9dc15c12f4bbf87e3ac75715f0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6843588585530160563, guid: ace0cc9dc15c12f4bbf87e3ac75715f0, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6843588585530160563, guid: ace0cc9dc15c12f4bbf87e3ac75715f0, type: 3}
+      propertyPath: projectileScale
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6843588585530160563, guid: ace0cc9dc15c12f4bbf87e3ac75715f0, type: 3}
+      propertyPath: chargeAttackRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6843588585530160563, guid: ace0cc9dc15c12f4bbf87e3ac75715f0, type: 3}
+      propertyPath: chargeAttackDamage
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 6843588585530160563, guid: ace0cc9dc15c12f4bbf87e3ac75715f0, type: 3}
       propertyPath: chargeAttackKeyDownImage
