@@ -14,15 +14,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3619aa6fdfb9e2e478da53019d228168, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.05
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3619aa6fdfb9e2e478da53019d228168, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.04
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3619aa6fdfb9e2e478da53019d228168, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.05
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3619aa6fdfb9e2e478da53019d228168, type: 3}
       propertyPath: m_LocalPosition.x
@@ -166,8 +166,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 19.15924, y: 42.083866, z: 55.668983}
-  m_Center: {x: 0.10322571, y: 1.4477581, z: -0.37351608}
+  m_Size: {x: 1.167511, y: 1.8211055, z: 2.7043037}
+  m_Center: {x: 0.0010223389, y: -0.0115504265, z: -0.011665344}
 --- !u!23 &9112690909291614798
 MeshRenderer:
   m_ObjectHideFlags: 0

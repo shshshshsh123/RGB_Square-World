@@ -88,7 +88,7 @@ public enum PoolType
 {
     Dummy,
     MeleeMonster,
-    RangedMonster,
+    RangeMonster,
     Projectile,
     BasicSlash,
     BasicSlashHitEffect,

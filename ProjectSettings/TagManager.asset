@@ -4,9 +4,10 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Enemy
+  - Monster
   - PlayerAttack
   - Ground
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -17,8 +18,8 @@ TagManager:
   - Ground
   - MinimapIcon
   - PostProcessing
-  - Enemy
-  - 
+  - Monster
+  - MonsterProjectile
   - 
   - 
   - 
