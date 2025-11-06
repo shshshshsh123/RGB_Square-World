@@ -8,6 +8,7 @@ TagManager:
   - PlayerAttack
   - Ground
   - Enviroment
+  - HitEffect
   layers:
   - Default
   - TransparentFX

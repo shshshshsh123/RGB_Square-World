@@ -41,7 +41,7 @@ public class PlayerMeleeChargeAttack : PlayerChargeAttackBase, IAttackOwner
             chargeAttackKeyDownImage.rectTransform.localScale = Vector3.one * 1.2f;
             if (skillCutInUI != null)
             {
-                skillCutInUI.ShowCutIn(); // ÄÆÀÎ Ç¥½Ã
+                skillCutInUI.ShowCutIn(CutInType.Melee); // ÄÆÀÎ Ç¥½Ã
             }
             yield return new WaitForSecondsRealtime(0.8f);
             chargeAttackKeyDownImage.color = originalColor;

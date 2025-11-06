@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2051985985255982630}
   m_Layer: 0
   m_Name: ChargeMagic
-  m_TagString: Untagged
+  m_TagString: PlayerAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -214,6 +214,7 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 512
+  cylinderHeightOffset: 0.05
 --- !u!1 &1482199675861490
 GameObject:
   m_ObjectHideFlags: 0

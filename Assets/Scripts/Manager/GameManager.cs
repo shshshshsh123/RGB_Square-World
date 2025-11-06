@@ -1,3 +1,4 @@
+using MoreMountains.Feedbacks;
 using System;
 using UnityEngine;
 
@@ -14,6 +15,9 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private int _currentChargeAttack = 0;
     [SerializeField] private int _maxChargeAttack = 100;
     public bool CanChargeAttack => _currentChargeAttack == 100;
+
+    [Header("# MMF Player")]
+    public MMF_Player mmfPlayer_Damaged;
 
     public static event Action<float, float> OnPlayerHpChanged;
     public static event Action<float> OnPlayerMaxHpChanged; // 새로운 최대 체력 변경 이벤트
@@ -70,6 +74,9 @@ public class GameManager : Singleton<GameManager>
         _playerCurrentHp -= damage;
         _playerCurrentHp = Mathf.Clamp(_playerCurrentHp, 0, _playerMaxHp);
         OnPlayerHpChanged?.Invoke(_playerCurrentHp, _playerMaxHp);
+
+        // 피격 피드백 재생
+        mmfPlayer_Damaged?.PlayFeedbacks();
     }
 
 

@@ -426,6 +426,18 @@ PrefabInstance:
       value: 9
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a864481855260214aa095bd5787107fa, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a864481855260214aa095bd5787107fa, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a864481855260214aa095bd5787107fa, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a864481855260214aa095bd5787107fa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -682,6 +694,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a864481855260214aa095bd5787107fa, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5179184394632463749}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a864481855260214aa095bd5787107fa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 53775862660461504}
   m_SourcePrefab: {fileID: 100100000, guid: a864481855260214aa095bd5787107fa, type: 3}
 --- !u!4 &8645111654643952410 stripped
 Transform:
@@ -769,6 +784,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20e50af3797fc5d42802e5ffcfa34c15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attackRange: 2.5
+  _attackCooldown: 2
+  _pathUpdateTime: 0.2
   dashSpeed: 10
   dashDuration: 0.5
   dashAcceleration: 1000
@@ -821,3 +839,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &53775862660461504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8985327303841296800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a19def99a88122043b76d49c1693a082, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

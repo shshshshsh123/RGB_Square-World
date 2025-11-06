@@ -54,6 +54,10 @@ public class Projectile_Range : MonoBehaviour
 
             ObjectPooler.Instance.ReturnToPool(projectilePoolType, gameObject);
         }
+        else if (other.CompareTag("PlayerAttack") || other.CompareTag("HitEffect"))
+        {
+            // 여기는 상호작용 X
+        }
         else
         {
             ObjectPooler.Instance.ReturnToPool(projectilePoolType, gameObject);

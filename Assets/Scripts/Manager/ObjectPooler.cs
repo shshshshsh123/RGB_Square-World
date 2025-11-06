@@ -59,8 +59,7 @@ public class ObjectPooler : MonoBehaviour
         {
             // foreach 루프 대신 딕셔너리에서 즉시 프리팹을 찾아 새로 생성
             GameObject prefabToInstantiate = prefabDictionary[type];
-            objectToSpawn = Instantiate(prefabToInstantiate, transform);
-            // Debug.Log($"[오브젝트풀러] 타입 {type} 에 대해 새로운 오브젝트를 생성합니다.");
+            objectToSpawn = Instantiate(prefabToInstantiate, position, rotation, transform);
         }
 
         objectToSpawn.transform.position = position;
@@ -79,6 +78,8 @@ public class ObjectPooler : MonoBehaviour
             return;
         }
 
+        objectToReturn.transform.position = Vector3.zero;
+        objectToReturn.transform.rotation = Quaternion.identity;
         objectToReturn.SetActive(false);
         poolDictionary[type].Enqueue(objectToReturn);
     }

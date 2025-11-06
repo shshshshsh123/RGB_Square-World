@@ -14759,7 +14759,7 @@ GameObject:
   - component: {fileID: -1072936114602289247}
   m_Layer: 0
   m_Name: ChargeArrowHitEffect
-  m_TagString: Untagged
+  m_TagString: HitEffect
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

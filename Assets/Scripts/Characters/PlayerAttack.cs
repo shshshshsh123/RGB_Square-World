@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using UnityEngine.UI;
+using MoreMountains.Tools;
+using MoreMountains.Feedbacks;
 
 public class PlayerAttack : MonoBehaviour, IAttackOwner
 {
@@ -38,6 +40,7 @@ public class PlayerAttack : MonoBehaviour, IAttackOwner
     public float hitStopCooldown = 0.1f; // 히트스톱 쿨타임 (최소 시간)
     public float hitStopDuration = 0.1f; // 히트스톱 지속 시간
     public LayerMask groundLayer; // 마법 공격 시 지면 레이어
+    public MMF_Player mmfPlayer_HitNotify;
 
     private float _lastAttackTime; // 마지막 공격 시점
     private float _lastHitStopTime; // 마지막 히트스톱 시점
@@ -313,7 +316,7 @@ public class PlayerAttack : MonoBehaviour, IAttackOwner
         if (Time.time < _lastHitStopTime + hitStopCooldown) return; // 쿨타임 체크
 
         // 히트스톱 실행
-        StartCoroutine(TimeUtils.HitStop(hitStopDuration)); // 0.1초 동안 히트스톱
+        mmfPlayer_HitNotify?.PlayFeedbacks();
         _canAttackHitStop = false; // 한 공격당 한 번만 히트스톱 가능
         _lastHitStopTime = Time.time;
     }

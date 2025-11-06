@@ -1,15 +1,21 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum CutInType
+{
+    Melee,
+    Range,
+    Magic
+}
+
 public class SkillCutInUI : MonoBehaviour
 {
     public Image cutInImage;
     public Animator animator;
+    string ANIM_TRIGGER_SHOW;
+    string ANIM_TRIGGER_HIDE;
 
-    private const string ANIM_TRIGGER_SHOW = "Show";
-    private const string ANIM_TRIGGER_HIDE = "Hide";
-
-    public void ShowCutIn(Sprite spriteImage = null)
+    public void ShowCutIn(CutInType cutInType, Sprite spriteImage = null)
     {
         gameObject.SetActive(true);
         if (cutInImage != null && spriteImage != null)
@@ -18,6 +24,21 @@ public class SkillCutInUI : MonoBehaviour
         }
         if (animator != null)
         {
+            switch(cutInType)
+            {
+                case CutInType.Melee:
+                    ANIM_TRIGGER_SHOW = "Show_Melee";
+                    ANIM_TRIGGER_HIDE = "Hide_Melee";
+                    break;
+                case CutInType.Range:
+                    ANIM_TRIGGER_SHOW = "Show_Range";
+                    ANIM_TRIGGER_HIDE = "Hide_Range";
+                    break;
+                case CutInType.Magic:
+                    ANIM_TRIGGER_SHOW = "Show_Magic";
+                    ANIM_TRIGGER_HIDE = "Hide_Magic";
+                    break;
+            }
             animator.SetTrigger(ANIM_TRIGGER_SHOW);
         }
     }
