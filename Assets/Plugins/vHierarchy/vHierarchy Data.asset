@@ -16,6 +16,7 @@ MonoBehaviour:
     keys:
     - 99c9720ab356a0642a771bea13969a05
     - b8d06f69bf683a14b9d2cbcadaf8cab6
+    - 3bc5ee15f820cf74a99c9918b79254dc
     values:
     - goDatas_byGlobalId:
         keys:
@@ -43,6 +44,39 @@ MonoBehaviour:
         - globalObjectIdString: GlobalObjectId_V1-2-b8d06f69bf683a14b9d2cbcadaf8cab6-1644687736-0
         - globalObjectIdString: GlobalObjectId_V1-2-b8d06f69bf683a14b9d2cbcadaf8cab6-1678420446-0
         - globalObjectIdString: GlobalObjectId_V1-2-b8d06f69bf683a14b9d2cbcadaf8cab6-5023341480702838272-2634586012333250700
+        values:
+        - colorIndex: 6
+          iconNameOrGuid: 
+          isIconRecursive: 0
+          isColorRecursive: 0
+        - colorIndex: 3
+          iconNameOrGuid: Settings Icon
+          isIconRecursive: 0
+          isColorRecursive: 0
+        - colorIndex: 2
+          iconNameOrGuid: Settings Icon
+          isIconRecursive: 0
+          isColorRecursive: 0
+        - colorIndex: 4
+          iconNameOrGuid: Settings Icon
+          isIconRecursive: 0
+          isColorRecursive: 0
+        - colorIndex: 0
+          iconNameOrGuid: Camera Icon
+          isIconRecursive: 0
+          isColorRecursive: 0
+        - colorIndex: 9
+          iconNameOrGuid: AvatarMask On Icon
+          isIconRecursive: 0
+          isColorRecursive: 0
+    - goDatas_byGlobalId:
+        keys:
+        - globalObjectIdString: GlobalObjectId_V1-2-3bc5ee15f820cf74a99c9918b79254dc-8985327303841296800-981365358
+        - globalObjectIdString: GlobalObjectId_V1-2-3bc5ee15f820cf74a99c9918b79254dc-1541234522-0
+        - globalObjectIdString: GlobalObjectId_V1-2-3bc5ee15f820cf74a99c9918b79254dc-457118864-0
+        - globalObjectIdString: GlobalObjectId_V1-2-3bc5ee15f820cf74a99c9918b79254dc-1644687736-0
+        - globalObjectIdString: GlobalObjectId_V1-2-3bc5ee15f820cf74a99c9918b79254dc-1678420446-0
+        - globalObjectIdString: GlobalObjectId_V1-2-3bc5ee15f820cf74a99c9918b79254dc-5023341480702838272-2634586012333250700
         values:
         - colorIndex: 6
           iconNameOrGuid: 
