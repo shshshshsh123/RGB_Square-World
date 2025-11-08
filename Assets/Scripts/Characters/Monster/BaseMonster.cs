@@ -17,6 +17,9 @@ public abstract class BaseMonster : MonoBehaviour
     protected NavMeshAgent _agent;
     protected Animator _animator;
 
+    private readonly int _hashIsRunning = Animator.StringToHash("isRunning");
+    private readonly int _hashAttack = Animator.StringToHash("Attack");
+
     protected virtual void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
@@ -29,8 +32,6 @@ public abstract class BaseMonster : MonoBehaviour
         
         if (playerObject != null)
             _player = playerObject.transform;
-
-        if (_agent == null) _agent = GetComponent<NavMeshAgent>();
     }
 
     protected virtual void OnEnable()
@@ -79,8 +80,8 @@ public abstract class BaseMonster : MonoBehaviour
         // 속도가 0.1 (아주 약간)보다 크면 true, 아니면 false
         bool isMoving = currentSpeed > 0.1f;
 
-        // Animator의 "isRunning" 파라미터(Bool)에 isMoving 값을 전달
-        _animator.SetBool("isRunning", isMoving);
+        // 문자열 대신 캐시된 _hashIsRunning 값을 사용
+        _animator.SetBool(_hashIsRunning, isMoving);
     }
 
     /// <summary>
@@ -122,12 +123,17 @@ public abstract class BaseMonster : MonoBehaviour
     protected virtual void Stop()
     {
         _canAttack = false;
-        _agent.isStopped = true;
+        //_agent.isStopped = true;
         _isAttacking = true;
 
         Vector3 lookDir = (_player.position - transform.position).normalized;
         lookDir.y = 0;
         transform.rotation = Quaternion.LookRotation(lookDir);
+
+        if (_animator != null)
+        {
+            _animator.SetTrigger(_hashAttack);
+        }
 
         Attack();
 

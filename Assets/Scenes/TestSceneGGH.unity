@@ -2468,6 +2468,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3455885190061386007, guid: ace0cc9dc15c12f4bbf87e3ac75715f0, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3621307740055105935, guid: ace0cc9dc15c12f4bbf87e3ac75715f0, type: 3}
       propertyPath: m_Camera
       value: 
@@ -2705,14 +2709,8 @@ MonoBehaviour:
     prefab: {fileID: 1676683520964337982, guid: 177d742a7431c95428e97dc54eb5d357, type: 3}
     initalSize: 50
   - type: 1
-    prefab: {fileID: 8985327303841296800, guid: 84e422550c55ca7409686d806bb245e9, type: 3}
+    prefab: {fileID: 8095715445784668538, guid: 2c9d9cb36556196498eb1c65c82703d3, type: 3}
     initalSize: 10
-  - type: 2
-    prefab: {fileID: 8985327303841296800, guid: af4fb11418492d94ea8b6c6d8df93f0a, type: 3}
-    initalSize: 10
-  - type: 3
-    prefab: {fileID: 4503444643522903686, guid: e2c82a774636786428cfeedb1bb3353f, type: 3}
-    initalSize: 50
 --- !u!4 &584098001
 Transform:
   m_ObjectHideFlags: 0
