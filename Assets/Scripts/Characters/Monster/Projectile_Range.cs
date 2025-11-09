@@ -17,7 +17,7 @@ public class Projectile_Range : MonoBehaviour
     [Tooltip("회전 축")]
     [SerializeField] private Vector3 _rotationAxis = new Vector3(1, 0, 0);
 
-    [Tooltip("회전 각도(1초)")]
+    [Tooltip("초당 회전 각도")]
     [SerializeField] private float _rotationSpeed = 720f;
 
     [SerializeField] private PoolType projectilePoolType;
@@ -84,7 +84,7 @@ public class Projectile_Range : MonoBehaviour
 
             ObjectPooler.Instance.ReturnToPool(projectilePoolType, gameObject);
         }
-        // 그 외 충돌 시 그냥 풀에 반납
+        // 그 외의 오브젝트와 충돌 시 그냥 풀에 반납
         else
         {
             ObjectPooler.Instance.ReturnToPool(projectilePoolType, gameObject);

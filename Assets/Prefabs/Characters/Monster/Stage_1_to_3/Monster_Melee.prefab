@@ -642,7 +642,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -756,13 +756,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20e50af3797fc5d42802e5ffcfa34c15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackRange: 2.5
-  _attackCooldown: 2
+  _attackRange: 3
+  _attackCoolDown: 3
   _pathUpdateTime: 0.2
   dashSpeed: 7
   dashDuration: 0.5
   dashAcceleration: 100
-  dashOvershootDistance: 3
+  dashDistance: 3
 --- !u!4 &8868171380501459904 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 62c02b23a01275f46895b45c1202a4d6, type: 3}

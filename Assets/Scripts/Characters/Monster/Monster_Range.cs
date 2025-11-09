@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 public class Monster_Range : BaseMonster
 {
-    [Tooltip("발사체가 생성될 위치")]
+    [Tooltip("발사체 생성 위치")]
     [SerializeField] private Transform _firePos;
     
     [SerializeField] private PoolType _projectilePoolType;
@@ -30,7 +30,8 @@ public class Monster_Range : BaseMonster
     /// <returns></returns>
     private IEnumerator Fire()
     {
-        _agent.isStopped = true; // 공격 시 미끄러지지 않도록 멈춤
+        // 공격 시 미끄러지지 않도록 멈춤
+        _agent.isStopped = true;
 
         // 공격하는 동안 플레이어가 와서 부딪혀도 영향을 받지 않도록 Rigidbody 비활성화
         if (_rigidBody != null)

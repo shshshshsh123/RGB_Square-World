@@ -2769,7 +2769,7 @@ MonoBehaviour:
     initalSize: 10
   - type: 7
     prefab: {fileID: 1676683520964337982, guid: 177d742a7431c95428e97dc54eb5d357, type: 3}
-    initalSize: 50
+    initalSize: 30
   - type: 1
     prefab: {fileID: 8095715445784668538, guid: 2c9d9cb36556196498eb1c65c82703d3, type: 3}
     initalSize: 10
@@ -2778,7 +2778,7 @@ MonoBehaviour:
     initalSize: 10
   - type: 3
     prefab: {fileID: 4816992463432822580, guid: 393bbfeb809ae83479cf52dafb9f2656, type: 3}
-    initalSize: 10
+    initalSize: 30
 --- !u!4 &584098001
 Transform:
   m_ObjectHideFlags: 0

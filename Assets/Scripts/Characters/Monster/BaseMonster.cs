@@ -6,8 +6,11 @@ public abstract class BaseMonster : MonoBehaviour
 {
     [Header("몬스터 기본 설정")]
 
-    [SerializeField] protected float _attackRange = 2.5f;
-    [SerializeField] protected float _attackCoolDown = 2f;
+    [Tooltip("공격 가능 사거리")]
+    [SerializeField] protected float _attackRange = 3f;
+
+    [Tooltip("공격 쿨타임")]
+    [SerializeField] protected float _attackCoolDown = 3f;
 
     [Tooltip("플레이어 위치 갱신 주기")]
     [SerializeField] protected float _pathUpdateTime = 0.2f;
@@ -46,7 +49,7 @@ public abstract class BaseMonster : MonoBehaviour
                 _player = playerObject.transform;
         }
 
-        // NavMeshAgent를 활성화
+        // NavMeshAgent 활성화
         if (_agent != null)
         {
             _agent.enabled = true;
@@ -57,7 +60,7 @@ public abstract class BaseMonster : MonoBehaviour
         _canAttack = true;
         _isAttacking = false;
 
-        // 몬스터 AI 로직 실행
+        // 몬스터 기본 행동 로직 실행
         StartCoroutine(EnemyLogic());
     }
 
