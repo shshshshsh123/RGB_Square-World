@@ -585,16 +585,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b0c1baffd64799a4f8d2105e3dcdce10, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4495176634173658877}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b0c1baffd64799a4f8d2105e3dcdce10, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 2495032728676470459}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b0c1baffd64799a4f8d2105e3dcdce10, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -7654778894374504309}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b0c1baffd64799a4f8d2105e3dcdce10, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6124574762220040754}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b0c1baffd64799a4f8d2105e3dcdce10, type: 3}
       insertIndex: -1
       addedObject: {fileID: -5477669826928630664}
@@ -609,24 +600,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b0c1baffd64799a4f8d2105e3dcdce10, type: 3}
   m_PrefabInstance: {fileID: 4873580926502639673}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4495176634173658877
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5720444375251690856}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 032d8315290a6f848b3358dff52eda79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHp: 100
-  monsterTag: 1
-  monsterDamage: 10
-  monsterChargeAmount: 1
-  hpSlider: {fileID: 7277799918033871743}
-  hpCanvas: {fileID: 5184443142124448073}
 --- !u!136 &2495032728676470459
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -650,43 +623,6 @@ CapsuleCollider:
   m_Height: 1.5398364
   m_Direction: 1
   m_Center: {x: 0.000024437904, y: 1.047292, z: -0.05061978}
---- !u!195 &-7654778894374504309
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5720444375251690856}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
---- !u!114 &6124574762220040754
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5720444375251690856}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c806dfba4269f044ebf734eaeb0d1071, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dashSpeed: 10
-  dashDuration: 0.5
-  dashAcceleration: 1000
 --- !u!54 &-5477669826928630664
 Rigidbody:
   m_ObjectHideFlags: 0

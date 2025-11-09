@@ -4,10 +4,13 @@ using System.Collections;
 
 public abstract class BaseMonster : MonoBehaviour
 {
-    [Header("기본 스탯")]
+    [Header("몬스터 기본 설정")]
+
     [SerializeField] protected float _attackRange = 2.5f;
-    [SerializeField] protected float _attackCooldown = 2f;
-    [SerializeField] protected float _pathUpdateTime = 0.2f; // 플레이어 위치 갱신 시간
+    [SerializeField] protected float _attackCoolDown = 2f;
+
+    [Tooltip("플레이어 위치 갱신 주기")]
+    [SerializeField] protected float _pathUpdateTime = 0.2f;
 
     protected float _playerDistance;
     protected bool _canAttack = true; // 공격 가능 여부
@@ -16,9 +19,6 @@ public abstract class BaseMonster : MonoBehaviour
     protected Transform _player;
     protected NavMeshAgent _agent;
     protected Animator _animator;
-
-    private readonly int _hashIsRunning = Animator.StringToHash("isRunning");
-    private readonly int _hashAttack = Animator.StringToHash("Attack");
 
     protected virtual void Awake()
     {
@@ -34,6 +34,9 @@ public abstract class BaseMonster : MonoBehaviour
             _player = playerObject.transform;
     }
 
+    /// <summary>
+    /// 오브젝트가 비활성화되었다가 활성화될 때마다 호출
+    /// </summary>
     protected virtual void OnEnable()
     {
         if (_player == null)
@@ -43,24 +46,30 @@ public abstract class BaseMonster : MonoBehaviour
                 _player = playerObject.transform;
         }
 
-        // 몬스터가 활성화될 때마다 AI 로직을 다시 시작
+        // NavMeshAgent를 활성화
         if (_agent != null)
         {
             _agent.enabled = true;
             _agent.isStopped = false;
         }
 
+        // 공격 상태 초기화
         _canAttack = true;
         _isAttacking = false;
 
+        // 몬스터 AI 로직 실행
         StartCoroutine(EnemyLogic());
     }
 
+    /// <summary>
+    /// 오브젝트가 비활성화될 때 호출
+    /// </summary>
     protected virtual void OnDisable()
     {
-        // 몬스터가 비활성화될 때, 실행 중이던 모든 코루틴을 멈춥니다.
+        // 모든 코루틴 즉시 정지
         StopAllCoroutines();
 
+        // NavMeshAgent 정지 및 경로 초기화
         if (_agent != null && _agent.isOnNavMesh)
         {
             _agent.isStopped = true;
@@ -71,17 +80,15 @@ public abstract class BaseMonster : MonoBehaviour
 
     protected virtual void Update()
     {
-        // _animator나 _agent가 없으면 실행하지 않음
-        if (_animator == null || _agent == null) return;
+        if (_animator == null || _agent == null)
+            return;
 
-        // NavMeshAgent의 현재 속도(월드 유닛/초)를 계산
+        // NavMeshAgnet의 현재 속도
         float currentSpeed = _agent.velocity.magnitude;
 
-        // 속도가 0.1 (아주 약간)보다 크면 true, 아니면 false
         bool isMoving = currentSpeed > 0.1f;
 
-        // 문자열 대신 캐시된 _hashIsRunning 값을 사용
-        _animator.SetBool(_hashIsRunning, isMoving);
+        _animator.SetBool("isRunning", isMoving);
     }
 
     /// <summary>
@@ -90,16 +97,19 @@ public abstract class BaseMonster : MonoBehaviour
     /// <returns></returns>
     protected IEnumerator EnemyLogic()
     {
+        // _pathUpdateTime(0.2초) 마다 반복
         WaitForSeconds wait = new WaitForSeconds(_pathUpdateTime);
 
         while (true)
         {
+            // 예외 처리
             if (_player == null || !_agent.isActiveAndEnabled || !_agent.isOnNavMesh)
             {
                 yield return wait;
                 continue;
             }
 
+            // 공격이 진행 중이라면 다른 행동을 할 수 없음
             if (_isAttacking)
             {
                 yield return wait;
@@ -108,8 +118,11 @@ public abstract class BaseMonster : MonoBehaviour
 
             _playerDistance = Vector3.Distance(transform.position, _player.position);
 
+            // 플레이어가 공격 범위 안에 있고, 공격이 가능하다면 공격
             if (_playerDistance <= _attackRange && _canAttack)
-                Stop();
+                StartAttack();
+
+            // 플레이어가 공격 범위 밖이 거나, 공격이 불가능하다면 추격
             else
                 Chase();
 
@@ -118,30 +131,32 @@ public abstract class BaseMonster : MonoBehaviour
     }
 
     /// <summary>
-    /// 공격을 시작할 때 호출되는 함수
+    /// 공격 시작
     /// </summary>
-    protected virtual void Stop()
+    protected virtual void StartAttack()
     {
         _canAttack = false;
-        //_agent.isStopped = true;
         _isAttacking = true;
 
         Vector3 lookDir = (_player.position - transform.position).normalized;
         lookDir.y = 0;
+        
+        // 공격 직전 플레이어를 바라보도록 방향을 즉시 회전
         transform.rotation = Quaternion.LookRotation(lookDir);
 
+        // 공격 애니메이션 재생
         if (_animator != null)
         {
-            _animator.SetTrigger(_hashAttack);
+            _animator.SetTrigger("Attack");
         }
 
         Attack();
 
-        StartCoroutine(AttackCooldown());
+        StartCoroutine(AttackCoolDown());
     }
 
     /// <summary>
-    /// 플레이어를 추격할 때 호출되는 함수
+    /// 플레이어 추격
     /// </summary>
     protected virtual void Chase()
     {
@@ -154,17 +169,17 @@ public abstract class BaseMonster : MonoBehaviour
     }
 
     /// <summary>
-    /// 공격 쿨타임을 계산하는 코루틴
+    /// 공격 쿨타임 계산
     /// </summary>
     /// <returns></returns>
-    private IEnumerator AttackCooldown()
+    private IEnumerator AttackCoolDown()
     {
-        yield return new WaitForSeconds(_attackCooldown);
+        yield return new WaitForSeconds(_attackCoolDown);
         _canAttack = true;
     }
 
     /// <summary>
-    /// 
+    /// 공격 종료
     /// </summary>
     protected void FinishAttack()
     {
@@ -172,7 +187,7 @@ public abstract class BaseMonster : MonoBehaviour
     }
 
     /// <summary>
-    /// 상속 받는 자식 클래스에서 구현해야 하는 함수
+    /// 실제 공격 (상속받는 자식 클래스에서 직접 구현)
     /// </summary>
     protected abstract void Attack();
 }
