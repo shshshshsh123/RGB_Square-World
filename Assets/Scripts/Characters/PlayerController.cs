@@ -135,7 +135,11 @@ public class PlayerController : MonoBehaviour
     void PlayerRotate()
     {
         // Slerp를 사용하여 부드러운 회전
-        Quaternion newRotation = Quaternion.Slerp(_rigidBody.rotation, _rotation, rotationSpeed * Time.fixedDeltaTime);
+        //Quaternion newRotation = Quaternion.Slerp(_rigidBody.rotation, _rotation, rotationSpeed * Time.fixedDeltaTime);
+        // 임시로 걷는 방향을 바라보게 해
+        if (_movement.magnitude <= 0.01f) return;
+        Quaternion rot = Quaternion.LookRotation(_movement.normalized);
+        Quaternion newRotation = Quaternion.Slerp(_rigidBody.rotation, rot, rotationSpeed * Time.fixedDeltaTime);
         _rigidBody.MoveRotation(newRotation);
     }
 

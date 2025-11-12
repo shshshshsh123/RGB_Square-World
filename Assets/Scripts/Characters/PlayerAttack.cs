@@ -286,6 +286,23 @@ public class PlayerAttack : MonoBehaviour, IAttackOwner
     public void AddOrUpgradeWeapon(WeaponData weaponData)
     {
         EquippedWeapon existingWeapon = equippedWeapons.FirstOrDefault(w => w.weaponData == weaponData); // 이미 장착된 무기인지 확인
+        // 무기 획득시 일단 차지공격 다 없애고, 타입에 맞게 다시 획득 ㄱㄱ
+        GetComponent<PlayerMeleeChargeAttack>().enabled = false;
+        GetComponent<PlayerRangeChargeAttack>().enabled = false;
+        GetComponent<PlayerMagicChargeAttack>().enabled = false;
+
+        switch (weaponData.weaponType)
+        {
+            case WeaponType.Melee:
+                GetComponent<PlayerMeleeChargeAttack>().enabled = true;
+                break;
+            case WeaponType.Ranged:
+                GetComponent<PlayerRangeChargeAttack>().enabled = true;
+                break;
+            case WeaponType.Magic:
+                GetComponent<PlayerMagicChargeAttack>().enabled = true;
+                break;
+        }
 
         if (existingWeapon != null)
         {
