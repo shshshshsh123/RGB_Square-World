@@ -340,7 +340,6 @@ MonoBehaviour:
   _playerTransform: {fileID: 5691897758151564474}
   _targetTransform: {fileID: 0}
   _arrowTransform: {fileID: 9034511985309621990}
-  _rotateSpeed: 10
 --- !u!1 &1132189616680301515
 GameObject:
   m_ObjectHideFlags: 0
@@ -531,7 +530,7 @@ RectTransform:
   m_GameObject: {fileID: 4219022984256009151}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0}
+  m_LocalScale: {x: 0.006, y: 0.005, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6254418562952693449}
@@ -539,7 +538,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 1.5}
+  m_AnchoredPosition: {x: 0, y: 1}
   m_SizeDelta: {x: 150, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &3621307740055105935
@@ -562,7 +561,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: -1859928157
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &644595605104150929
@@ -1119,7 +1118,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 1
   autoRandomSeed: 1
   startDelay:
@@ -6451,7 +6450,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5023341480702838272}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98a6793c3e2b0624e9ca106525af30ec, type: 3}
   m_Name: 
