@@ -90,7 +90,7 @@ public enum PoolType
     Dummy,
     MeleeMonster,
     RangeMonster,
-    Projectile,
+    MonsterProjectile,
     BasicSlash,
     BasicSlashHitEffect,
     ChargeSlash,

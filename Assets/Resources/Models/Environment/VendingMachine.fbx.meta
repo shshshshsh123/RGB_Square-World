@@ -3,7 +3,92 @@ guid: 6746a3ecf3aa70740a27c1383e817dff
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Black_Letters
+    second: {fileID: 2100000, guid: 9d7c1ec825fbec04a96eaa44f59bd54a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Buttons
+    second: {fileID: 2100000, guid: 592fcdd0bced3524a80bbf4b972f904e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glass
+    second: {fileID: 2100000, guid: c2a404cffb626a841af41f640f4bf55b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Inside lights
+    second: {fileID: 2100000, guid: a65baab6f0a859342a964dbab9fab67e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Items_OutsideBox
+    second: {fileID: 2100000, guid: 16e8726f6c3bee640b043467243ffbda, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Items_OutsideBox.001
+    second: {fileID: 2100000, guid: 9add8b92d8d113b4991dbbee1df556c4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Items_OutsideBox_grey
+    second: {fileID: 2100000, guid: 28067da9e51f11c418949b162b2994e9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Keyhole
+    second: {fileID: 2100000, guid: f5d4a1d13b1642b4a8bce27f992154cb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Main Materials
+    second: {fileID: 2100000, guid: f839dff55b788334f9312a69f412bb46, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Main Materials_black portion
+    second: {fileID: 2100000, guid: fc8065f603dd5424dbaf2098138a496f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Main Materials_black portion_Money slot
+    second: {fileID: 2100000, guid: 90258a15507a52e40b6dac814ebcfae5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Main Materials_products
+    second: {fileID: 2100000, guid: 17043943e2a107f479a423bb418e5f49, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metal_keyhole
+    second: {fileID: 2100000, guid: d93669c4da1b6f9469ef062cc9448c13, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Outside box
+    second: {fileID: 2100000, guid: e022b0035a0d96c499898d49f3438058, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Outside plastic color material
+    second: {fileID: 2100000, guid: 43ec3cb9e5cb0394cba72a2d9c885a56, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Price_Items_emitter
+    second: {fileID: 2100000, guid: df86a701d09fdd1408b38cc0c9904bd8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pricedisplayscreen_emitter
+    second: {fileID: 2100000, guid: 42705410d370778478193240126e6982, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -88,7 +173,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1
+    globalScale: 100
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
