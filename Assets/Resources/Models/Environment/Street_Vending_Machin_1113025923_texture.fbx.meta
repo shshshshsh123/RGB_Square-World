@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4458273954abb4049a4dab337fc4a679
+guid: 55c9119daee447e489ad23aad6869a25
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,33 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: DB2X2_L02
-    second: {fileID: 2100000, guid: 7547145d2b3a8b840986d873313bc7f5, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Trank_bark1
-    second: {fileID: 2100000, guid: 58c7a4410c8083844a7dbd625fe835c9, type: 2}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: DB2X2_L01
-    second: {fileID: 2800000, guid: df9fc5c3a32086542bc514d3fcc61beb, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: DB2X2_L01_Nor
-    second: {fileID: 2800000, guid: 69043485c0553ff4fb931a5784f6c7b8, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: DB2X2_L01_Spec
-    second: {fileID: 2800000, guid: a300e8fc7000f1f4381d8e4752acfb79, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: bark_0021
-    second: {fileID: 2800000, guid: d04fbaf4ce4c10a4faacb3c040de84d6, type: 3}
+      name: Material.001
+    second: {fileID: 2100000, guid: 418cbcf1895d26347944232f6e58e2e1, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -63,7 +38,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 200
+    globalScale: 100
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -118,7 +93,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 200
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
