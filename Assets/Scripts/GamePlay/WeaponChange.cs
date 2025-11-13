@@ -49,23 +49,27 @@ public class WeaponChange : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F) && _canAction)
         {
+            Time.timeScale = 0.0f;  // UI ø≠∏Æ∏È Ω√∞£¿Ã ∏ÿ√·¥Ÿ!
             _weaponPanel.SetActive(true);
-            if (_playerAttack.equippedWeapons[0] != null)
+
+            if (_playerAttack.equippedWeapons == null) _playerAttack.equippedWeapons = new List<PlayerAttack.EquippedWeapon>();
+
+            for (int i = 0; i < 3; i++)
+            {
+                _texts[i].text = "ªı∑Œ »πµÊ!";
+            }
+            if (_playerAttack.equippedWeapons.Count > 0)
             {
                 int type = (int)_playerAttack.equippedWeapons[0].weaponData.weaponType;
-                _texts[type].text = "Lv." + _playerAttack.equippedWeapons[0].currentLevel.ToString() + " -> Lv." + (_playerAttack.equippedWeapons[0].currentLevel + 1).ToString();
+                if (_playerAttack.equippedWeapons[0].currentLevel == 5) _texts[type].text = "√÷∞Ì∑π∫ß!";
+                else _texts[type].text = "Lv." + _playerAttack.equippedWeapons[0].currentLevel.ToString() + " -> Lv." + (_playerAttack.equippedWeapons[0].currentLevel + 1).ToString();
             }
-            Time.timeScale = 0.0f;  // UI ø≠∏Æ∏È Ω√∞£¿Ã ∏ÿ√·¥Ÿ!
         }
     }
 
     public void ChangeWeapon(int type)  // 0: Melee, 1: Range, 2: Magic
     {
         if (_playerAttack.equippedWeapons == null) _playerAttack.equippedWeapons = new List<PlayerAttack.EquippedWeapon>();
-        for (int i = 0; i < 3; i++)
-        {
-            _texts[i].text = "ªı∑Œ »πµÊ!";
-        }
 
         if (_playerAttack.equippedWeapons.Count > 0)
         {

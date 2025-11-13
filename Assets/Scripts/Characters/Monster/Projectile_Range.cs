@@ -84,6 +84,10 @@ public class Projectile_Range : MonoBehaviour
 
             ObjectPooler.Instance.ReturnToPool(projectilePoolType, gameObject);
         }
+        else if (other.CompareTag("PlayerAttack") || other.CompareTag("HitEffect"))
+        {
+            // 이펙트에닿으면 무시하기
+        }
         // 그 외의 오브젝트와 충돌 시 그냥 풀에 반납
         else
         {

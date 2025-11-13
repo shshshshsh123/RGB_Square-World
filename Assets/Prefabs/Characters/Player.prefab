@@ -6504,7 +6504,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chargeAttackTimeRequire: 1
   chargeAttackTarget: 30
-  chargeAttackRange: 5
+  chargeAttackRange: 3
   chargeAttackKeyDownImage: {fileID: 0}
   chargeAttackDamage: 40
   projectileFallDuration: 1
