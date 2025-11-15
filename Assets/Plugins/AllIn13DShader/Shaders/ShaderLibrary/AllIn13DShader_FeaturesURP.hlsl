@@ -128,7 +128,7 @@
 	#endif
 
 	#ifdef ALLIN1_FOG_SUPPORT
-		#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Fog.hlsl"
+		//#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Fog.hlsl"
 	#endif
 	
 #endif
