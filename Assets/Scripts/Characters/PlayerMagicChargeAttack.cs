@@ -11,6 +11,8 @@ public class PlayerMagicChargeAttack : PlayerChargeAttackBase
     public float delayBetweenProjectiles = 0.05f; // 각 투사체 발사 사이의 딜레이
     public PoolType projectilePoolTag = PoolType.MagicChargeProjectile; // 마법 투사체 풀 태그
 
+    public SkillCutInUI skillCutInUI;
+
     private PlayerAttack _playerAttack; // IAttackOwner 구현용 (데미지 처리)
     private LayerMask _groundLayer; // 마법 투사체가 떨어질 지면을 찾기 위한 레이어
 
@@ -32,16 +34,26 @@ public class PlayerMagicChargeAttack : PlayerChargeAttackBase
     protected override IEnumerator PerformChargeAttack()
     {
         // 0. UI 반짝임 (UI는 Time.unscaledDeltaTime/WaitForSecondsRealtime 사용)
+        Time.timeScale = 0.0f;
         if (chargeAttackKeyDownImage != null)
         {
             Color originalColor = chargeAttackKeyDownImage.color;
             chargeAttackKeyDownImage.color = Color.blue; // 마법 공격은 파란색?
             chargeAttackKeyDownImage.rectTransform.localScale = Vector3.one * 1.2f;
-            yield return new WaitForSecondsRealtime(0.3f); // UI 연출은 Realtime으로
+            if (skillCutInUI != null)
+            {
+                skillCutInUI.ShowCutIn(CutInType.Magic);
+            }
+            yield return new WaitForSecondsRealtime(0.8f);
             chargeAttackKeyDownImage.color = originalColor;
             chargeAttackKeyDownImage.fillAmount = 0f;
             chargeAttackKeyDownImage.rectTransform.localScale = Vector3.one;
+            if (skillCutInUI != null)
+            {
+                skillCutInUI.HideCutIn(); // 컷인 숨기기
+            }
         }
+        Time.timeScale = 1.0f;
 
         // 1. 투사체 발사 루프
         for (int i = 0; i < chargeAttackTarget; i++) // chargeAttackTarget 수만큼 투사체 발사

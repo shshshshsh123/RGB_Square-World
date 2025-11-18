@@ -6503,13 +6503,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chargeAttackTimeRequire: 1
-  chargeAttackTarget: 30
-  chargeAttackRange: 3
+  chargeAttackTarget: 20
+  chargeAttackRange: 5
   chargeAttackKeyDownImage: {fileID: 0}
   chargeAttackDamage: 40
   projectileFallDuration: 1
-  projectileScale: 1.5
-  spawnRadius: 10
+  projectileScale: 1.3
+  spawnRadius: 5
   delayBetweenProjectiles: 0.05
   projectilePoolTag: 13
 --- !u!4 &5691897758151564474 stripped

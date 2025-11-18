@@ -12,6 +12,8 @@ public class PlayerRangeChargeAttack : PlayerChargeAttackBase
     public float knockbackForce = 10f;  // 넉백 힘
     public float knockbackDuration = 0.2f;  // 넉백 지속 시간
 
+    public SkillCutInUI skillCutInUI;
+
     private PlayerController _playerController; // 방향 참고용
     private PlayerAttack _playerAttack; // IAttackOwner 구현용
 
@@ -33,16 +35,26 @@ public class PlayerRangeChargeAttack : PlayerChargeAttackBase
     protected override IEnumerator PerformChargeAttack()
     {
         // 0. UI 반짝임 (필요 시 베이스 클래스에서 가져오거나 여기서 구현)
+        Time.timeScale = 0.0f;
         if (chargeAttackKeyDownImage != null)
         {
             Color originalColor = chargeAttackKeyDownImage.color;
             chargeAttackKeyDownImage.color = Color.cyan; // 다른 색상으로 구분
             chargeAttackKeyDownImage.rectTransform.localScale = Vector3.one * 1.2f;
-            yield return new WaitForSeconds(0.3f);
+            if (skillCutInUI != null)
+            {
+                skillCutInUI.ShowCutIn(CutInType.Range); // 컷인 표시
+            }
+            yield return new WaitForSecondsRealtime(0.8f);
             chargeAttackKeyDownImage.color = originalColor;
             chargeAttackKeyDownImage.fillAmount = 0f;
             chargeAttackKeyDownImage.rectTransform.localScale = Vector3.one;
+            if (skillCutInUI != null)
+            {
+                skillCutInUI.HideCutIn(); // 컷인 숨기기
+            }
         }
+        Time.timeScale = 1.0f;
 
         // 1. 발사 준비
         Quaternion launchRotation = _playerController.Rotation;

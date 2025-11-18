@@ -14,7 +14,7 @@ public class PlayerMeleeChargeAttack : PlayerChargeAttackBase, IAttackOwner
     public float effectScale = 1f; // 슬래시 이펙트 크기
     public float teleportDelay = 0.1f; // 각 타겟 이동 사이 딜레이
     public float returnDelay = 0.2f; // 복귀 후 데미지 주기 전 딜레이
-    public SkillCutInUI skillCutInUI; // 스킬 컷인 UI 참조
+    public SkillCutInUI skillCutInUI;
 
     protected override void Start()
     {
