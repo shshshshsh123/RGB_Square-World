@@ -33,8 +33,8 @@ public class PlayerMagicChargeAttack : PlayerChargeAttackBase
     /// </summary>
     protected override IEnumerator PerformChargeAttack()
     {
-        // 0. UI 반짝임 (UI는 Time.unscaledDeltaTime/WaitForSecondsRealtime 사용)
-        Time.timeScale = 0.0f;
+        // 0. UI 반짝임
+        TimeManager.Instance.RequestTimeScale(this, 0.0f);
         if (chargeAttackKeyDownImage != null)
         {
             Color originalColor = chargeAttackKeyDownImage.color;
@@ -53,7 +53,7 @@ public class PlayerMagicChargeAttack : PlayerChargeAttackBase
                 skillCutInUI.HideCutIn(); // 컷인 숨기기
             }
         }
-        Time.timeScale = 1.0f;
+        TimeManager.Instance.RestoreTimeScale(this);
 
         // 1. 투사체 발사 루프
         for (int i = 0; i < chargeAttackTarget; i++) // chargeAttackTarget 수만큼 투사체 발사

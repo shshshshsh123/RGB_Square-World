@@ -31,7 +31,7 @@ public class PlayerMeleeChargeAttack : PlayerChargeAttackBase, IAttackOwner
     protected override IEnumerator PerformChargeAttack()
     {
         // 일단 발동성공했으면 시간 멈추고 시작
-        Time.timeScale = 0.0f;
+        TimeManager.Instance.RequestTimeScale(this, 0.0f);
 
         // 0. UI
         if (chargeAttackKeyDownImage != null)
@@ -61,7 +61,7 @@ public class PlayerMeleeChargeAttack : PlayerChargeAttackBase, IAttackOwner
             Debug.Log("[차지공격] 타겟이 없습니다.");
             _isCharging = false; // 코루틴 종료 전 상태 초기화
             _chargeTimer = 0f;
-            Time.timeScale = 1.0f; // 발동실패했으니 시간 다시 정상화
+            TimeManager.Instance.RestoreTimeScale(this);    // 발동실패했으니 시간 다시 정상화
             yield break;
         }
 
@@ -69,7 +69,8 @@ public class PlayerMeleeChargeAttack : PlayerChargeAttackBase, IAttackOwner
         List<Transform> finalTargets = GetFinalTargets(foundTargets);
 
         // 3. 발동준비
-        Vector3 originalPosition = transform.position;
+        Vector3 originalPosition = transform.position; 
+        float fixedY = originalPosition.y; // Y축 위치 고정값 저장
         Collider playerCollider = GetComponent<Collider>(); // 콜라이더 미리 찾아두기
         if (playerCollider != null) playerCollider.enabled = false;
         if (chargeAttackTrail != null)
@@ -79,39 +80,29 @@ public class PlayerMeleeChargeAttack : PlayerChargeAttackBase, IAttackOwner
         }
 
         // 4. 타겟 위치로 순간이동하며 이펙트 생성
-        Vector3 currentPosition = transform.position;
-        float dashDuration = 0.05f; // 빠른 이동 시간
-
         foreach (Transform target in finalTargets)
         {
             Collider targetCollider = target.GetComponent<Collider>();
             Vector3 targetBounds = targetCollider != null ? targetCollider.bounds.extents : Vector3.one;
             Vector2 randomDirection2D = Random.insideUnitCircle.normalized;
-            Vector3 randomDirection = new Vector3(randomDirection2D.x, 0, randomDirection2D.y);
+            Vector3 randomDirection = new Vector3(randomDirection2D.x, 0, randomDirection2D.y); // Y는 0
             float randomDistance = Random.Range(0.6f, targetBounds.magnitude + 1.0f);
+
             Vector3 teleportPosition = target.position + randomDirection * randomDistance;
+            teleportPosition.y = fixedY; // Y축 위치를 원래 플레이어 높이로 고정
 
-            // --- 빠른 이동 ---
-            float elapsedTime = 0f;
-            Vector3 startPosition = currentPosition;
-            while (elapsedTime < dashDuration)
-            {
-                transform.position = Vector3.Lerp(startPosition, teleportPosition, elapsedTime / dashDuration);
-                elapsedTime += Time.unscaledDeltaTime;
-                yield return null;
-            }
+            // --- 순간 이동 ---
             transform.position = teleportPosition;
-            currentPosition = teleportPosition;
-            // --- 이동 끝 ---
 
-            transform.LookAt(target);
+            Vector3 lookTargetPos = target.position;
+            lookTargetPos.y = fixedY; // 바라보는 방향도 수평으로
+            transform.LookAt(lookTargetPos);
             GameObject effect = ObjectPooler.Instance.SpawnFromPool(chargeSlashEffectTag, transform.position + Vector3.up, transform.rotation);
             if (effect != null)
             {
                 AttackEffect attackEffect = effect.GetComponent<AttackEffect>();
                 if (attackEffect != null)
                 {
-                    // 데미지는 나중에 한 번에 주므로 0, 태그, 지속시간, 스케일 전달
                     attackEffect.InitialValues(this, 0, chargeSlashEffectTag, effectLifetime, effectScale, PoolType.ChargeSlash);
                 }
             }
@@ -120,14 +111,6 @@ public class PlayerMeleeChargeAttack : PlayerChargeAttackBase, IAttackOwner
         }
 
         // 5. 원래 위치로 돌아오기 + 데미지주기
-        float returnElapsedTime = 0f;
-        Vector3 lastPosition = currentPosition;
-        while (returnElapsedTime < dashDuration * 2)
-        {
-            transform.position = Vector3.Lerp(lastPosition, originalPosition, returnElapsedTime / (dashDuration * 2));
-            returnElapsedTime += Time.unscaledDeltaTime;
-            yield return null;
-        }
         transform.position = originalPosition;
 
         yield return new WaitForSecondsRealtime(returnDelay); // 돌아오고 데미지 주기 전 대기
@@ -143,7 +126,7 @@ public class PlayerMeleeChargeAttack : PlayerChargeAttackBase, IAttackOwner
             uniqueTarget.GetComponent<MonsterStatus>()?.TakeDamage(totalDamage);
         }
 
-        Time.timeScale = 1.0f; // 시간 다시 정상화
+        TimeManager.Instance.RestoreTimeScale(this); // 시간 다시 정상화
         if (chargeAttackTrail != null)
         {
             chargeAttackTrail.Stop(true, ParticleSystemStopBehavior.StopEmitting);

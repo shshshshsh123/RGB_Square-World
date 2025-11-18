@@ -34,8 +34,8 @@ public class PlayerRangeChargeAttack : PlayerChargeAttackBase
     /// <returns></returns>
     protected override IEnumerator PerformChargeAttack()
     {
-        // 0. UI 반짝임 (필요 시 베이스 클래스에서 가져오거나 여기서 구현)
-        Time.timeScale = 0.0f;
+        // 0. UI 반짝임
+        TimeManager.Instance.RequestTimeScale(this, 0.0f);
         if (chargeAttackKeyDownImage != null)
         {
             Color originalColor = chargeAttackKeyDownImage.color;
@@ -54,7 +54,7 @@ public class PlayerRangeChargeAttack : PlayerChargeAttackBase
                 skillCutInUI.HideCutIn(); // 컷인 숨기기
             }
         }
-        Time.timeScale = 1.0f;
+        TimeManager.Instance.RestoreTimeScale(this);
 
         // 1. 발사 준비
         Quaternion launchRotation = _playerController.Rotation;
