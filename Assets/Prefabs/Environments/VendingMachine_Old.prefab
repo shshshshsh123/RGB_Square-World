@@ -138,11 +138,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6746a3ecf3aa70740a27c1383e817dff, type: 3}
       propertyPath: m_Name
-      value: VendingMachine
+      value: VendingMachine_Old
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6746a3ecf3aa70740a27c1383e817dff, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6746a3ecf3aa70740a27c1383e817dff, type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
       objectReference: {fileID: 0}
     - target: {fileID: 1555199885638540043, guid: 6746a3ecf3aa70740a27c1383e817dff, type: 3}
       propertyPath: m_Layer

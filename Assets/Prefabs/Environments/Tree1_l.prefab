@@ -66,11 +66,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 645ed8d00100b22428d949e96bfb92c8, type: 3}
       propertyPath: m_Name
-      value: Tree1_l (3)
+      value: Tree1_l
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 645ed8d00100b22428d949e96bfb92c8, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 645ed8d00100b22428d949e96bfb92c8, type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
       objectReference: {fileID: 0}
     - target: {fileID: 1799343526208427792, guid: 645ed8d00100b22428d949e96bfb92c8, type: 3}
       propertyPath: m_Layer
