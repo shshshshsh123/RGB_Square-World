@@ -16,6 +16,9 @@ public class PlayerMeleeChargeAttack : PlayerChargeAttackBase, IAttackOwner
     public float returnDelay = 0.2f; // 복귀 후 데미지 주기 전 딜레이
     public SkillCutInUI skillCutInUI;
 
+    private float _criticalChance;
+    private float _criticalDamage;
+
     protected override void Start()
     {
         base.Start();
@@ -78,10 +81,17 @@ public class PlayerMeleeChargeAttack : PlayerChargeAttackBase, IAttackOwner
             chargeAttackTrail.Clear();
             chargeAttackTrail.Play();
         }
+        _criticalChance = GetComponent<PlayerAttack>().criticalChance;
+        _criticalDamage = GetComponent<PlayerAttack>().criticalDamage;
 
         // 4. 타겟 위치로 순간이동하며 이펙트 생성
         foreach (Transform target in finalTargets)
         {
+            // 타겟이 null이거나(파괴됨), 이미 비활성화되었다면(풀에 반납됨/죽음) 건너뛰기
+            if (target == null || !target.gameObject.activeInHierarchy)
+            {
+                continue;
+            }
             Collider targetCollider = target.GetComponent<Collider>();
             Vector3 targetBounds = targetCollider != null ? targetCollider.bounds.extents : Vector3.one;
             Vector2 randomDirection2D = Random.insideUnitCircle.normalized;
@@ -103,8 +113,17 @@ public class PlayerMeleeChargeAttack : PlayerChargeAttackBase, IAttackOwner
                 AttackEffect attackEffect = effect.GetComponent<AttackEffect>();
                 if (attackEffect != null)
                 {
-                    attackEffect.InitialValues(this, 0, chargeSlashEffectTag, effectLifetime, effectScale, PoolType.ChargeSlash);
+                    // 이펙트는 데미지 없음!!!
+                    attackEffect.InitialValues(this, 0, chargeSlashEffectTag, effectLifetime, effectScale, 0f, 0f, PoolType.ChargeSlash);
                 }
+            }
+
+            // 데미지처리 여기서 하기 (데미지 와바바박 띄우게 할라고)
+            MonsterStatus monsterStatus = target.GetComponent<MonsterStatus>();
+            if (monsterStatus != null)
+            {
+                // 각 타격마다 크리티컬 계산 적용하여 데미지 줌
+                monsterStatus.TakeDamage(chargeAttackDamage, _criticalChance, _criticalDamage);
             }
 
             yield return new WaitForSecondsRealtime(teleportDelay); // 각 이동 사이 대기
@@ -116,15 +135,6 @@ public class PlayerMeleeChargeAttack : PlayerChargeAttackBase, IAttackOwner
         yield return new WaitForSecondsRealtime(returnDelay); // 돌아오고 데미지 주기 전 대기
 
         if (playerCollider != null) playerCollider.enabled = true; // 콜라이더 다시 활성화
-
-        foreach (Transform uniqueTarget in foundTargets) // foundTargets 사용 (고유 타겟)
-        {
-            int hitCount = finalTargets.Count(t => t == uniqueTarget);
-            // 데미지 계산 시 기본 공격력 대신 chargeAttackDamage 사용 또는 WeaponData 참조 필요
-            float totalDamage = chargeAttackDamage * hitCount;
-
-            uniqueTarget.GetComponent<MonsterStatus>()?.TakeDamage(totalDamage);
-        }
 
         TimeManager.Instance.RestoreTimeScale(this); // 시간 다시 정상화
         if (chargeAttackTrail != null)

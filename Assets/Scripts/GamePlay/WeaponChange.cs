@@ -50,6 +50,7 @@ public class WeaponChange : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F) && _canAction)
         {
             Time.timeScale = 0.0f;  // UI 열리면 시간이 멈춘다!
+            _playerAttack.canAttack = false;
             _weaponPanel.SetActive(true);
 
             if (_playerAttack.equippedWeapons == null) _playerAttack.equippedWeapons = new List<PlayerAttack.EquippedWeapon>();
@@ -94,5 +95,6 @@ public class WeaponChange : MonoBehaviour
         // 고르는게 끝나며는?
         _weaponPanel.SetActive(false);
         Time.timeScale = 1.0f;
+        _playerAttack.canAttack = true;
     }
 }

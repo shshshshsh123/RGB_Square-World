@@ -12,6 +12,8 @@ public class RangedProjectile : MonoBehaviour
     private int _penetrationCount;
     private PoolType _poolTag;
     private float _lifeTime;
+    private float _criticalChance;
+    private float _criticalDamage;
 
     // --- 내부 컴포넌트 참조 ---
     private Rigidbody _rb;
@@ -49,7 +51,7 @@ public class RangedProjectile : MonoBehaviour
     /// <summary>
     /// 투사체의 초기값을 설정하고 발사를 시작합니다.
     /// </summary>
-    public void Initialize(IAttackOwner owner, float damage, float speed, int penetrationCount, PoolType poolTag, float lifeTime, PoolType effectPoolType = PoolType.ArrowHitEffect, float knockbackForce = 0f, float knockbackDuration = 0f)
+    public void Initialize(IAttackOwner owner, float damage, float speed, int penetrationCount, PoolType poolTag, float lifeTime, float criticalChance, float criticalDamage, PoolType effectPoolType = PoolType.ArrowHitEffect, float knockbackForce = 0f, float knockbackDuration = 0f)
     {
         // 데이터 할당
         _owner = owner;
@@ -58,6 +60,8 @@ public class RangedProjectile : MonoBehaviour
         _penetrationCount = penetrationCount;
         _poolTag = poolTag;
         _lifeTime = lifeTime;
+        _criticalChance = criticalChance;
+        _criticalDamage = criticalDamage;
         _hitEffectTag = effectPoolType;
         _knockbackForce = knockbackForce;
         _knockbackDuration = knockbackDuration;
@@ -113,7 +117,7 @@ public class RangedProjectile : MonoBehaviour
                 MonsterStatus monsterStatus = other.GetComponent<MonsterStatus>();
                 if (monsterStatus != null)
                 {
-                    monsterStatus.TakeDamage(_damage);
+                    monsterStatus.TakeDamage(_damage, _criticalChance, _criticalDamage);
                 }
 
                 // 넉백 적용 (무한 관통 투사체일 때만)

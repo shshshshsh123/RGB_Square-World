@@ -8,6 +8,8 @@ public class MagicProjectile : MonoBehaviour
     private float _damage;
     private float _fallDuration; // 운석이 떨어지는 총 시간
     private float _scale;
+    private float _criticalChance;
+    private float _criticalDamage;
     private PoolType _selfPoolTag; // 이 오브젝트 자신을 풀에 반납할 때 사용할 태그
     private PoolType _effectPoolTag; // 착지 이펙트 풀 태그
 
@@ -43,13 +45,15 @@ public class MagicProjectile : MonoBehaviour
     /// <summary>
     /// 마법 발사체 초기화 (RangedProjectile과 유사한 시그니처)
     /// </summary>
-    public void Initialize(IAttackOwner owner, float damage, float fallDuration, float scale, PoolType selfPoolTag, PoolType effectPoolTag, Color rangeDisplayColor)
+    public void Initialize(IAttackOwner owner, float damage, float fallDuration, float scale, PoolType selfPoolTag, float criticalChance, float criticalDamage, PoolType effectPoolTag, Color rangeDisplayColor)
     {
         _owner = owner;
         _damage = damage;
         _fallDuration = fallDuration;
         _scale = scale;
         _selfPoolTag = selfPoolTag;
+        _criticalChance = criticalChance;
+        _criticalDamage = criticalDamage;
         _effectPoolTag = effectPoolTag;
         _rangeDisplayColor = rangeDisplayColor;
         _rangeDisplayColor.a = 0.2f; // 반투명 설정
@@ -110,7 +114,7 @@ public class MagicProjectile : MonoBehaviour
             MonsterStatus monsterStatus = hitCollider.GetComponent<MonsterStatus>();
             if (monsterStatus != null)
             {
-                monsterStatus.TakeDamage(_damage);
+                monsterStatus.TakeDamage(_damage, _criticalChance, _criticalDamage);
                 _owner?.NotifyHit();
             }
         }

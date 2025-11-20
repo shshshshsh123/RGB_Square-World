@@ -17,6 +17,9 @@ public class PlayerRangeChargeAttack : PlayerChargeAttackBase
     private PlayerController _playerController; // 방향 참고용
     private PlayerAttack _playerAttack; // IAttackOwner 구현용
 
+    private float _criticalChance;
+    private float _criticalDamage;
+
     private void Awake()
     {
         _playerController = GetComponent<PlayerController>();
@@ -26,6 +29,8 @@ public class PlayerRangeChargeAttack : PlayerChargeAttackBase
     protected override void Start()
     {
         base.Start();
+        _criticalChance = _playerAttack.criticalChance;
+        _criticalDamage = _playerAttack.criticalDamage;
     }
 
     /// <summary>
@@ -74,6 +79,8 @@ public class PlayerRangeChargeAttack : PlayerChargeAttackBase
                     -100, // 무한 관통
                     projectilePoolTag,
                     chargeAttackLifetime,
+                    _criticalChance,
+                    _criticalDamage,
                     PoolType.ChargeArrrowHitEffect,
                     knockbackForce,
                     knockbackDuration

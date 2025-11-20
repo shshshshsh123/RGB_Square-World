@@ -40,6 +40,9 @@ public class PlayerAttack : MonoBehaviour, IAttackOwner
     public float hitStopCooldown = 0.1f; // 히트스톱 쿨타임 (최소 시간)
     public float hitStopDuration = 0.1f; // 히트스톱 지속 시간
     public LayerMask groundLayer; // 마법 공격 시 지면 레이어
+    public bool canAttack = true;
+    public float criticalChance = 0.1f; // 10퍼센트임요
+    public float criticalDamage = 1.5f; // 크리티컬 발동시 데미지 배수
 
     private float _lastAttackTime; // 마지막 공격 시점
     private float _lastHitStopTime; // 마지막 히트스톱 시점
@@ -63,16 +66,12 @@ public class PlayerAttack : MonoBehaviour, IAttackOwner
     {
         // 기본공격
         HandleAutoAttacks();
-
-        // 테스트용!!!!!!!!
-        if (Input.GetKeyDown(KeyCode.Alpha1)) AddOrUpgradeWeapon(weaponDatas[0]);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) AddOrUpgradeWeapon(weaponDatas[1]);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) AddOrUpgradeWeapon(weaponDatas[2]);
     }
 
     void HandleAutoAttacks()
     {
         if (Input.GetMouseButtonUp(0)) _canAttackHitStop = true;    // 좌클릭 뗄 때 히트스톱 가능하도록 리셋
+        if (!canAttack) return;
         if (!Input.GetMouseButton(0)) return;    // 좌클릭 중에만 발동
 
         foreach (EquippedWeapon weapon in equippedWeapons)
@@ -165,6 +164,8 @@ public class PlayerAttack : MonoBehaviour, IAttackOwner
                     levelData.penetrationCount,
                     weapon.weaponData.weaponTag,
                     weapon.weaponData.lifeTime,
+                    criticalChance,
+                    criticalDamage,
                     PoolType.ArrowHitEffect
                 );
                 instance.transform.localScale = Vector3.one * levelData.scale;
@@ -190,7 +191,9 @@ public class PlayerAttack : MonoBehaviour, IAttackOwner
                     levelData.damage, 
                     weapon.weaponData.weaponTag, 
                     weapon.weaponData.lifeTime, 
-                    levelData.scale, 
+                    levelData.scale,
+                    criticalChance,
+                    criticalDamage,
                     PoolType.BasicSlashHitEffect
                 );
             }
@@ -268,6 +271,8 @@ public class PlayerAttack : MonoBehaviour, IAttackOwner
                 weapon.weaponData.lifeTime, // WeaponData의 lifeTime을 운석의 낙하 지속 시간으로 사용
                 levelData.scale,
                 weapon.weaponData.weaponTag, // 운석 발사체 자신을 풀에 반납할 태그
+                criticalChance,
+                criticalDamage,
                 PoolType.MagicHitEffect,
                 Color.blue // 기본공격은 물이니까 파란색으로 합니다람쥐쥐쥐
             );

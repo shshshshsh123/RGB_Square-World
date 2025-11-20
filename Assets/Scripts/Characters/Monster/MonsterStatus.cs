@@ -51,11 +51,24 @@ public class MonsterStatus : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damage)
+    bool CheckCritical(float criticalChance)
+    {
+        float chance = UnityEngine.Random.Range(0.0f, 1.0f);
+        return chance <= criticalChance;
+    }
+
+    public void TakeDamage(float damage, float critcalChance, float criticalDamage)
     {
         if (_isDead) return;    // 2번죽는거 방지
+
+        bool isCritical = CheckCritical(critcalChance);
+        if (isCritical) damage *= criticalDamage;
+
         _currentHp -= (int)damage;
         UpdateHpBar();
+
+        // 데미지 표시
+        ShowDamageText(damage, isCritical);
 
         if (_meleeCoward != null)
         {
@@ -95,5 +108,19 @@ public class MonsterStatus : MonoBehaviour
                 GameManager.Instance.PlayerTakeDamage(monsterDamage, gameObject);
             }
         }
+    }
+
+    private void ShowDamageText(float damage, bool isCritical)
+    {
+        Vector3 spawnPosition = transform.position + Vector3.up * 1.2f; // 몬스터 위에 위치
+        // 랜덤성을 주어 텍스트가 겹치지 않게 (살짝 옆으로 퍼지게)
+        spawnPosition += UnityEngine.Random.insideUnitSphere * 0.5f;
+
+        // 소환
+        GameObject textObj = ObjectPooler.Instance.SpawnFromPool(PoolType.DamageText, spawnPosition, Quaternion.identity);
+
+        // 값 설정
+        DamageText dmgTextScript = textObj.GetComponent<DamageText>();
+        dmgTextScript.SetDamage(damage, isCritical);
     }
 }

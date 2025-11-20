@@ -16,6 +16,9 @@ public class PlayerMagicChargeAttack : PlayerChargeAttackBase
     private PlayerAttack _playerAttack; // IAttackOwner 구현용 (데미지 처리)
     private LayerMask _groundLayer; // 마법 투사체가 떨어질 지면을 찾기 위한 레이어
 
+    private float _criticalChance;
+    private float _criticalDamage;
+
     private void Awake()
     {
         _playerAttack = GetComponent<PlayerAttack>();
@@ -25,6 +28,8 @@ public class PlayerMagicChargeAttack : PlayerChargeAttackBase
     protected override void Start()
     {
         base.Start();
+        _criticalChance = _playerAttack.criticalChance;
+        _criticalChance = _playerAttack.criticalDamage;
     }
 
     /// <summary>
@@ -89,6 +94,8 @@ public class PlayerMagicChargeAttack : PlayerChargeAttackBase
                         projectileFallDuration, // 낙하 시간
                         projectileScale,        // 크기
                         projectilePoolTag,       // 풀 태그 (반납용)
+                        _criticalChance,
+                        _criticalDamage,
                         PoolType.MagicChargeHitEffect,  // 착지 이펙트 풀 태그
                         Color.yellow // 차지공격은 별이니까 노란색입니다람쥐쥐쥐
                     );
