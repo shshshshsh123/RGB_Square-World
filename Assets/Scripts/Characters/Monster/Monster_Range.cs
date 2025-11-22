@@ -2,21 +2,26 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
 
+// 기본 원거리 몬스터
+
 public class Monster_Range : BaseMonster
 {
-    [Tooltip("발사체 생성 위치")]
+    [Header("원거리 몬스터 설정")]
+
+    [Tooltip("발사체의 발사 위치")]
     [SerializeField] private Transform _firePos;
-    
+
+    [Tooltip("풀 타입(오브젝트 풀러)")]
     [SerializeField] private PoolType _projectilePoolType;
 
     private float _fireAnimationTime = 0.5f; // 공격 애니메이션 총 재생 시간
     private float _fireDelay = 0.3f; // 애니메이션 시작 후, 실제로 발사체가 나가는 순간
-    private Rigidbody _rigidBody;
+    private Rigidbody _rigidbody;
 
     protected override void Awake()
     {
         base.Awake();
-        _rigidBody = GetComponent<Rigidbody>();
+        _rigidbody = GetComponent<Rigidbody>();
     }
 
     protected override void Attack()
@@ -34,8 +39,8 @@ public class Monster_Range : BaseMonster
         _agent.isStopped = true;
 
         // 공격하는 동안 플레이어가 와서 부딪혀도 영향을 받지 않도록 Rigidbody 비활성화
-        if (_rigidBody != null)
-            _rigidBody.isKinematic = true;
+        if (_rigidbody != null)
+            _rigidbody.isKinematic = true;
 
         // 0.3초 대기 (발사체가 발사 순간과 던지는 애니메이션을 일치)
         yield return new WaitForSeconds(_fireDelay);
@@ -49,7 +54,7 @@ public class Monster_Range : BaseMonster
             GameObject projectileObject = ObjectPooler.Instance.SpawnFromPool(_projectilePoolType, _firePos.position, _firePos.rotation);
         }
 
-        // 3. 나머지 시간(0.2초)를 기다려서 총 애니메이션 시간(0.5초)과 맞춤
+        // 나머지 시간(0.2초)를 기다려서 총 애니메이션 시간(0.5초)과 맞춤
         float remainAnimationTime = _fireAnimationTime - _fireDelay;
         if (remainAnimationTime > 0)
         {
@@ -57,8 +62,8 @@ public class Monster_Range : BaseMonster
         }
 
         // Rigidbody 활성화
-        if (_rigidBody != null)
-            _rigidBody.isKinematic = false;
+        if (_rigidbody != null)
+            _rigidbody.isKinematic = false;
 
         // 공격 종료(부모 클래스)
         FinishAttack();

@@ -2764,7 +2764,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 62807256015326725, guid: ace0cc9dc15c12f4bbf87e3ac75715f0, type: 3}
       propertyPath: moveSpeed
-      value: 20
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3455885190061386007, guid: ace0cc9dc15c12f4bbf87e3ac75715f0, type: 3}
       propertyPath: m_Enabled
@@ -3069,6 +3069,9 @@ MonoBehaviour:
   - type: 4
     prefab: {fileID: 5503505460791601945, guid: a360efa07fce47847a8e5f7b10d6d418, type: 3}
     initalSize: 10
+  - type: 5
+    prefab: {fileID: 4207911216603373757, guid: 1b229b2dbc7922543b16ebb79a362bcd, type: 3}
+    initalSize: 10
   - type: 7
     prefab: {fileID: 1676683520964337982, guid: 177d742a7431c95428e97dc54eb5d357, type: 3}
     initalSize: 30
@@ -3076,7 +3079,7 @@ MonoBehaviour:
     prefab: {fileID: 8095715445784668538, guid: 2c9d9cb36556196498eb1c65c82703d3, type: 3}
     initalSize: 10
   - type: 2
-    prefab: {fileID: 8095715445784668538, guid: 5c83e6fd4f77d5c4989f1fffaa8f04a0, type: 3}
+    prefab: {fileID: 8095715445784668538, guid: c4e3e52219616f546a662bc3ef64d40a, type: 3}
     initalSize: 10
   - type: 3
     prefab: {fileID: 4816992463432822580, guid: 393bbfeb809ae83479cf52dafb9f2656, type: 3}
@@ -9605,7 +9608,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 44697fd64176f2d41be926df56ff2413, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1001 &1888905763
 PrefabInstance:

@@ -18,13 +18,6 @@ public class MonsterStatus : MonoBehaviour
     [Tooltip("캔버스(회전용)")]
     public Canvas hpCanvas;
 
-    private Monster_Melee_Coward _meleeCoward;
-
-    private void Awake()
-    {
-        _meleeCoward = GetComponent<Monster_Melee_Coward>();
-    }
-
     void OnEnable()
     {
         _currentHp = maxHp;
@@ -32,11 +25,6 @@ public class MonsterStatus : MonoBehaviour
         {
             hpSlider.maxValue = maxHp;
             hpSlider.value = _currentHp;
-        }
-
-        if (_meleeCoward != null)
-        {
-            _meleeCoward.ResetRunAwayStatus();
         }
     }
 
@@ -53,11 +41,6 @@ public class MonsterStatus : MonoBehaviour
     {
         _currentHp -= (int)damage;
         UpdateHpBar();
-
-        if (_meleeCoward != null)
-        {
-            _meleeCoward.RunAwayStatus((float)_currentHp, (float)maxHp);
-        }
 
         if (_currentHp <= 0)
         {

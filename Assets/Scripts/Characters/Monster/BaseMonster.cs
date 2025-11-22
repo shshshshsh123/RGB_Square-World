@@ -4,9 +4,9 @@ using System.Collections;
 
 public abstract class BaseMonster : MonoBehaviour
 {
-    [Header("몬스터 기본 설정")]
+    [Header("몬스터 공통 설정")]
 
-    [Tooltip("공격 가능 사거리")]
+    [Tooltip("공격 사거리")]
     [SerializeField] protected float _attackRange = 3f;
 
     [Tooltip("공격 쿨타임")]
@@ -15,7 +15,7 @@ public abstract class BaseMonster : MonoBehaviour
     [Tooltip("플레이어 위치 갱신 주기")]
     [SerializeField] protected float _pathUpdateTime = 0.2f;
 
-    protected float _playerDistance;
+    protected float _playerDistance; // 플레이어와 몬스터 사이의 거리
     protected bool _canAttack = true; // 공격 가능 여부
     protected bool _isAttacking = false; // 공격 중 여부
     
@@ -29,17 +29,6 @@ public abstract class BaseMonster : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
-    protected virtual void Start()
-    {
-        GameObject playerObject = GameObject.FindWithTag("Player");
-        
-        if (playerObject != null)
-            _player = playerObject.transform;
-    }
-
-    /// <summary>
-    /// 오브젝트가 비활성화되었다가 활성화될 때마다 호출
-    /// </summary>
     protected virtual void OnEnable()
     {
         if (_player == null)
@@ -64,9 +53,14 @@ public abstract class BaseMonster : MonoBehaviour
         StartCoroutine(EnemyLogic());
     }
 
-    /// <summary>
-    /// 오브젝트가 비활성화될 때 호출
-    /// </summary>
+    protected virtual void Start()
+    {
+        GameObject playerObject = GameObject.FindWithTag("Player");
+        
+        if (playerObject != null)
+            _player = playerObject.transform;
+    }
+
     protected virtual void OnDisable()
     {
         // 모든 코루틴 즉시 정지
@@ -100,7 +94,7 @@ public abstract class BaseMonster : MonoBehaviour
     /// <returns></returns>
     protected IEnumerator EnemyLogic()
     {
-        // _pathUpdateTime(0.2초) 마다 반복
+        // 플레이어 위치 갱신 주기(0.2초) 마다 반복
         WaitForSeconds wait = new WaitForSeconds(_pathUpdateTime);
 
         while (true)
@@ -121,11 +115,11 @@ public abstract class BaseMonster : MonoBehaviour
 
             _playerDistance = Vector3.Distance(transform.position, _player.position);
 
-            // 플레이어가 공격 범위 안에 있고, 공격이 가능하다면 공격
+            // 플레이어가 공격 범위 안에 있고, 공격할 수 있다면 공격
             if (_playerDistance <= _attackRange && _canAttack)
                 StartAttack();
 
-            // 플레이어가 공격 범위 밖이 거나, 공격이 불가능하다면 추격
+            // 플레이어가 공격 범위 밖에 있고, 공격할 수 없다면 추격
             else
                 Chase();
 
@@ -144,7 +138,7 @@ public abstract class BaseMonster : MonoBehaviour
         Vector3 lookDir = (_player.position - transform.position).normalized;
         lookDir.y = 0;
         
-        // 공격 직전 플레이어를 바라보도록 방향을 즉시 회전
+        // 공격 직전 플레이어를 바라보도록 즉시 회전
         transform.rotation = Quaternion.LookRotation(lookDir);
 
         // 공격 애니메이션 재생
