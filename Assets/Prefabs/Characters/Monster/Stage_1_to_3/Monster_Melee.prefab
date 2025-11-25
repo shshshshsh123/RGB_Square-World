@@ -738,9 +738,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 032d8315290a6f848b3358dff52eda79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 100
+  maxHp: 150
   monsterTag: 1
-  monsterDamage: 10
+  monsterDamage: 20
   monsterChargeAmount: 1
   hpSlider: {fileID: 717396500907877064}
   hpCanvas: {fileID: 1345487688447106534}

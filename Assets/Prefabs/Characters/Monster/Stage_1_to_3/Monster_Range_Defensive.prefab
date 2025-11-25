@@ -775,7 +775,7 @@ MonoBehaviour:
   maxHp: 100
   monsterTag: 2
   monsterDamage: 10
-  monsterChargeAmount: 1
+  monsterChargeAmount: 3
   hpSlider: {fileID: 717396500907877064}
   hpCanvas: {fileID: 1345487688447106534}
 --- !u!114 &-6142046161192737649
@@ -791,12 +791,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackRange: 12
-  _attackCoolDown: 3
+  _attackCoolDown: 2.5
   _pathUpdateTime: 0.2
   _minSafeDistance: 7
   _runAwaySpeed: 4
   _firePos: {fileID: 2332878145994134991}
   _projectilePoolType: 3
+  _obstacleMask:
+    serializedVersion: 2
+    m_Bits: 511
 --- !u!4 &8868171380501459904 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 62c02b23a01275f46895b45c1202a4d6, type: 3}
