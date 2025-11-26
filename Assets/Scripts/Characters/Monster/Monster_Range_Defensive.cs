@@ -23,11 +23,13 @@ public class Monster_Range_Defensive : BaseMonster
     [Tooltip("도망갈 때 벽이 있는지 감지하기 위한 레이어")]
     [SerializeField] private LayerMask _obstacleMask = -1;
 
+    private float _normalSpeed; // NavMeshAgent 기본 속도
     private float _fireAnimationTime = 0.5f; // 공격 애니메이션 총 재생 시간
     private float _fireDelay = 0.3f; // 애니메이션 시작 후, 실제로 발사체가 나가는 순간
-    private float _normalSpeed; // NavMeshAgent 기본 속도
-    private bool _isRunAway = false; // 도망 중인지 체크
     private float _runAwayBuffer = 3.0f; // 여유 거리 (플레이어와 확실히 멀어지기 위해)
+    private float _resetDistance = 10f; // 다시 도망칠 수 있다고 판단하는 거리
+    private bool _isRunAway = false; // 도망 중인지 체크
+    private bool _isBlocked = false; // 도망칠 수 있는 상태인지 체크
     private Rigidbody _rigidbody;
 
     protected override void Awake()
@@ -45,6 +47,22 @@ public class Monster_Range_Defensive : BaseMonster
     /// </summary>
     protected override void StartAttack()
     {
+        // [공격]
+        // 도망칠 수 없고, 플레이어가 충분히 멀지 않으면 계속 공격
+        if (_isBlocked)
+        {
+            if (_playerDistance > _resetDistance)
+            {
+                _isBlocked = false; // 플레이어가 충분히 멀어졌으므로 다시 도망
+            }
+            else
+            {
+                // 플레이어가 아직 가까우므로 계속 공격
+                PerformAttack();
+                return;
+            }
+        }
+
         // [도망]
         if (_isRunAway)
         {
@@ -61,6 +79,7 @@ public class Monster_Range_Defensive : BaseMonster
                 if (!RunAway())
                 {
                     _isRunAway = false;
+                    _isBlocked = true; // 막혔다고 판단
                 }
 
                 // 도주 경로가 벽에 막혀있지 않으므로 계속해서 도망
@@ -77,7 +96,7 @@ public class Monster_Range_Defensive : BaseMonster
             // 도주 경로가 벽에 막혀있으므로 더이상 도망가지 않고 공격
             if (!RunAway())
             {
-                
+                _isBlocked = true; // 막혔다고 판단
             }
 
             // 도주 경로가 벽에 막혀있지 않으므로 계속해서 도망
@@ -103,7 +122,14 @@ public class Monster_Range_Defensive : BaseMonster
 
         // [공격]
         // (위의 로직을 모두 통과했을 때)
+        PerformAttack();
+    }
 
+    /// <summary>
+    /// 실제 공격 준비 및 실행
+    /// </summary>
+    private void PerformAttack()
+    {
         // NavMeshAgent의 회전, 이동 기능 모두 비활성화
         if (_agent != null)
         {
@@ -184,7 +210,7 @@ public class Monster_Range_Defensive : BaseMonster
                 return false;
             }
 
-            // 벽이 있지만 공간은 좀 있다면? -> 벽 앞까지만 이동
+            // 벽까지 공간이 좀 있으면 벽 앞까지만 이동
             float finalDistance = hit.distance - 1.0f;
             if (finalDistance < 0.5f) finalDistance = 0.5f;
 
@@ -231,6 +257,30 @@ public class Monster_Range_Defensive : BaseMonster
 
         float dist = Vector3.Distance(transform.position, _player.position);
 
+        // [도망칠 수 없는 상태 체크]
+        if (_isBlocked)
+        {
+            if (dist > _resetDistance)
+            {
+                _isBlocked = false; // 플레이어가 충분히 멀어졌으므로 다시 도망 시도 가능
+            }
+            else
+            {
+                // 플레이어가 아직 가까우므로 그 자리에서 바라보기만 함
+                if (_agent != null && _agent.isOnNavMesh)
+                {
+                    _agent.isStopped = true;
+                    _agent.velocity = Vector3.zero;
+                    _agent.updateRotation = false;
+                }
+                Vector3 lookDir = (_player.position - transform.position).normalized;
+                lookDir.y = 0;
+                if (lookDir != Vector3.zero)
+                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(lookDir), Time.deltaTime * 10f);
+                return;
+            }
+        }
+
         if (_isRunAway)
         {
             // 플레이어에게서 충분히 멀어졌으면 더이상 도망가지 않음
@@ -241,18 +291,23 @@ public class Monster_Range_Defensive : BaseMonster
             else
             {
                 if (!RunAway())
+                {
                     _isRunAway = false;
+                    _isBlocked = true;
+                }
                 else
                     return;
             }
         }
-        
+
         // 도망 중이지는 않지만 플레이어와의 거리가 너무 가깝다면
         else if (dist < _minSafeDistance)
         {
             if (!RunAway())
-                _isRunAway = false;
-            
+            {
+                _isBlocked = true; // 막혔다고 기록
+            }
+
             else
             {
                 _isRunAway = true;
@@ -274,7 +329,7 @@ public class Monster_Range_Defensive : BaseMonster
             if (lookDir != Vector3.zero)
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(lookDir), Time.deltaTime * 10f);
         }
-        
+
         // 사거리 밖이거나, 사거리 안이지만 플레이어와 몬스터 사이에 장애물이 있다면 플레이어를 향해 다가감
         else
         {
