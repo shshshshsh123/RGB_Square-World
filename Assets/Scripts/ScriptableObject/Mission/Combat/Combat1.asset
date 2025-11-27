@@ -18,5 +18,13 @@ MonoBehaviour:
   missionType: 1
   targetCount: 10
   timeLimit: 0
-  target: {fileID: 0}
+  destinationID: 
   subCharacterBehavior: 1
+  monsterSpawnInfo:
+    monsterWeights:
+    - monsterType: 1
+      weight: 50
+    - monsterType: 2
+      weight: 50
+    spawnInterval: 0.4
+    maxSpawnCount: 30

@@ -51,7 +51,7 @@ public class Mission
         }
         if (Data.missionType == MissionType.Defense)
         {
-            if (currentProgress == -1)
+            if (currentProgress == -2)
             {
                 Complete();
             }

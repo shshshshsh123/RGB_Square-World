@@ -5406,6 +5406,9 @@ MonoBehaviour:
   - type: 16
     prefab: {fileID: 7839195457383475526, guid: 6df1f32c4635c7e498f2efd13fa90f30, type: 3}
     initalSize: 10
+  - type: 17
+    prefab: {fileID: 5036010086860547054, guid: 39fceb2ba0f848b47a29cf0ac24ee18c, type: 3}
+    initalSize: 1
 --- !u!4 &585381752
 Transform:
   m_ObjectHideFlags: 0
@@ -103784,6 +103787,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2120877475}
   - component: {fileID: 2120877476}
+  - component: {fileID: 2120877477}
   m_Layer: 0
   m_Name: MissionManager
   m_TagString: Untagged
@@ -103824,6 +103828,25 @@ MonoBehaviour:
     isCompleted: 0
     isFailed: 0
   playerNav: {fileID: 788022316}
+  isPlayerReachDestination: 0
+  isSubCharacterReachDestination: 0
+--- !u!114 &2120877477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2120877474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 717d696157d40884992fa7aa4892faa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnDistanceOutsideCamera: 5
+  spawnHeightOffset: 1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1001 &1422676767021470377
 PrefabInstance:
   m_ObjectHideFlags: 0

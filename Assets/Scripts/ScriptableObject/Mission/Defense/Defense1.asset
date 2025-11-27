@@ -20,3 +20,11 @@ MonoBehaviour:
   timeLimit: 0
   destinationID: TestGoal
   subCharacterBehavior: 0
+  monsterSpawnInfo:
+    monsterWeights:
+    - monsterType: 1
+      weight: 30
+    - monsterType: 2
+      weight: 70
+    spawnInterval: 0.4
+    maxSpawnCount: 100

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Mission", menuName = "Data/Mission Data")]
@@ -14,8 +15,11 @@ public class MissionData : ScriptableObject
     public float timeLimit;
     public string destinationID;    // 목적지가 있는 미션이면 사용하는데, 이거 MissionPoint의 ID랑 똑같이 해야됨(string임)
 
-    [Header("# 서브캐릭터 성격")]
+    [Header("# 서브캐릭터 타입")]
     public SubCharacterBehavior subCharacterBehavior;
+    
+    [Header("# 몬스터 스폰")]
+    public MonsterSpawnInfo monsterSpawnInfo;
 }
 
 public enum MissionType
@@ -28,7 +32,29 @@ public enum MissionType
 
 public enum SubCharacterBehavior
 {
-    Autonomous, // 자율형 (아마도 목적지로 쭉 이동하는애?)
+    MoveToDestination, // 목적지로 이동
     Combat, // 전투위주
     Follow, // 플레이어 따라다님
+}
+
+[System.Serializable]
+public struct MonsterWeight
+{
+    public PoolType monsterType;
+    [Range(1, 100)]
+    [Tooltip("상대적 확률 가중치 (높을수록 자주 나옴)")]
+    public int weight;
+}
+
+[System.Serializable]
+public class MonsterSpawnInfo
+{
+    [Header("Monster Mix")]
+    [Tooltip("스폰될 몬스터 종류와 가중치 목록(모든 값 합 100안되도 됩니다. 대신 int값임")]
+    public List<MonsterWeight> monsterWeights; // <- 여기가 핵심 변경점
+
+    [Tooltip("스폰 간격 (초)")]
+    public float spawnInterval;
+    [Tooltip("최대 스폰 마리수 (0이면 무제한)")]
+    public int maxSpawnCount;
 }

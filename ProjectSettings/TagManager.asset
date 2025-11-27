@@ -9,6 +9,7 @@ TagManager:
   - Ground
   - Enviroment
   - HitEffect
+  - SubCharacter
   layers:
   - Default
   - TransparentFX
