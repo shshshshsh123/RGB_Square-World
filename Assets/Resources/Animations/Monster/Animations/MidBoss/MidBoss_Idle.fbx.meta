@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Resources/Models/Guardian/Heavenly_Guardian_1112050903_texture.fbx.meta
-guid: 7138e37163ced96459ba5adb3fc17a70
-========
 guid: 5cbe7a27b54e80546b1a69811c60e698
->>>>>>>> feaure(v1.0.9)/GGH:Assets/Resources/Animations/Monster/Animations/MidBoss/MidBoss_Idle.fbx.meta
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -37,7 +33,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 100
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
