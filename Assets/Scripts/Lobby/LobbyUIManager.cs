@@ -9,9 +9,13 @@ public class LobbyUIManager : MonoBehaviour
     [SerializeField] TMP_Text _chapterText;
     [SerializeField] TMP_Text _chapterIconText;
     [SerializeField] Button _gameStartButton;
+    [SerializeField] TMP_Text _gameStartText;
     [SerializeField] Button _combatStyleButton;
+    [SerializeField] TMP_Text _combatStyleText;
     [SerializeField] Button _costumeButton;
+    [SerializeField] TMP_Text _costumeText;
     [SerializeField] Button _gatchaButton;
+    [SerializeField] TMP_Text _gatchaText;
     [SerializeField] Button _historyButton;
 
     [Header("# ÆË¾÷")]
