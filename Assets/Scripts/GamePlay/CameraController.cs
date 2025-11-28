@@ -123,19 +123,33 @@ public class CameraController : MonoBehaviour
     /// </summary>
     private IEnumerator FadeMaterial(Renderer renderer, float targetAlpha)
     {
-        Material material = renderer.material;
+        // renderer.materials를 사용하여 모든 머티리얼에 적용
+        Material[] materials = renderer.materials;
 
-        Color startColor = material.color;
-        Color endColor = new Color(startColor.r, startColor.g, startColor.b, targetAlpha);
+        // 각 머티리얼의 초기 색상을 저장할 리스트
+        List<Color> startColors = new List<Color>();
+
+        foreach (var mat in materials)
+        {
+            startColors.Add(mat.color);
+        }
 
         float time = 0f;
         while (time < 1f)
         {
-            // Lerp를 사용하여 부드럽게 색상 변경
-            material.color = Color.Lerp(startColor, endColor, time);
             time += Time.deltaTime * fadeSpeed;
+
+            // 모든 머티리얼의 투명도를 조절
+            for (int i = 0; i < materials.Length; i++)
+            {
+                if (materials[i] == null) continue;
+
+                Color newColor = startColors[i];
+                // Mathf.Lerp로 알파값 부드럽게 변경
+                newColor.a = Mathf.Lerp(startColors[i].a, targetAlpha, time);
+                materials[i].color = newColor;
+            }
             yield return null;
         }
-        material.color = endColor; // 최종 색상 보정
     }
 }

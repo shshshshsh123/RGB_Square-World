@@ -8,14 +8,14 @@ public class ObjectPooler : MonoBehaviour
     [System.Serializable]
     public class Pool
     {
-        public PoolType type; // enumÀ¸·Î º¯°æ
+        public PoolType type; // enumï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         public GameObject prefab;
         public int initalSize;
     }
 
     public List<Pool> pools;
     public Dictionary<PoolType, Queue<GameObject>> poolDictionary;
-    private Dictionary<PoolType, GameObject> prefabDictionary; // ÇÁ¸®ÆÕÀ» ºü¸£°Ô Ã£±â À§ÇÑ µñ¼Å³Ê¸®
+    private Dictionary<PoolType, GameObject> prefabDictionary; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å³Ê¸ï¿½
 
     private void Awake()
     {
@@ -25,7 +25,7 @@ public class ObjectPooler : MonoBehaviour
     private void Start()
     {
         poolDictionary = new Dictionary<PoolType, Queue<GameObject>>();
-        prefabDictionary = new Dictionary<PoolType, GameObject>(); // ÃÊ±âÈ­
+        prefabDictionary = new Dictionary<PoolType, GameObject>(); // ï¿½Ê±ï¿½È­
 
         foreach (Pool pool in pools)
         {
@@ -37,7 +37,7 @@ public class ObjectPooler : MonoBehaviour
                 objectPool.Enqueue(obj);
             }
             poolDictionary.Add(pool.type, objectPool);
-            prefabDictionary.Add(pool.type, pool.prefab); // ÇÁ¸®ÆÕ Á¤º¸µµ µñ¼Å³Ê¸®¿¡ ÀúÀå
+            prefabDictionary.Add(pool.type, pool.prefab); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å³Ê¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
     }
 
@@ -45,7 +45,7 @@ public class ObjectPooler : MonoBehaviour
     {
         if (!poolDictionary.ContainsKey(type))
         {
-            Debug.LogWarning($"[¿ÀºêÁ§Æ®Ç®·¯] Å¸ÀÔ {type} À» Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+            Debug.LogWarning($"[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®Ç®ï¿½ï¿½] Å¸ï¿½ï¿½ {type} ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
             return null;
         }
 
@@ -57,7 +57,7 @@ public class ObjectPooler : MonoBehaviour
         }
         else
         {
-            // foreach ·çÇÁ ´ë½Å µñ¼Å³Ê¸®¿¡¼­ Áï½Ã ÇÁ¸®ÆÕÀ» Ã£¾Æ »õ·Î »ý¼º
+            // foreach ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Å³Ê¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             GameObject prefabToInstantiate = prefabDictionary[type];
             objectToSpawn = Instantiate(prefabToInstantiate, position, rotation, transform);
         }
@@ -73,8 +73,8 @@ public class ObjectPooler : MonoBehaviour
     {
         if (!poolDictionary.ContainsKey(type))
         {
-            Debug.LogWarning($"[¿ÀºêÁ§Æ®Ç®·¯] Å¸ÀÔ {type} À» Ã£À» ¼ö ¾ø½À´Ï´Ù.");
-            Destroy(objectToReturn); // Ç®ÀÌ ¾øÀ¸¸é ±×³É ÆÄ±«
+            Debug.LogWarning($"[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®Ç®ï¿½ï¿½] Å¸ï¿½ï¿½ {type} ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
+            Destroy(objectToReturn); // Ç®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×³ï¿½ ï¿½Ä±ï¿½
             return;
         }
 
@@ -105,4 +105,6 @@ public enum PoolType
     AttackRange,
     DamageText,
     SubCharacter,
+    RangedMonster_Defensive,
+    MidBoss,
 }

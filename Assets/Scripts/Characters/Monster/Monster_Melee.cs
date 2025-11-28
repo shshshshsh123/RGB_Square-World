@@ -2,9 +2,11 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
 
+// 기본 근거리 몬스터
+
 public class Monster_Melee : BaseMonster
 {
-    [Header("근접 몬스터 설정")]
+    [Header("근거리 몬스터 설정")]
 
     [Tooltip("돌진 속도")]
     public float dashSpeed = 7f;
@@ -23,7 +25,7 @@ public class Monster_Melee : BaseMonster
     private float _normalAcceleration;
     private float _normalStoppingDistance;
 
-    private Rigidbody _rigidBody;
+    private Rigidbody _rigidbody;
     private CapsuleCollider _collider; // 충돌용 콜라이더
 
     protected override void Awake()
@@ -31,7 +33,7 @@ public class Monster_Melee : BaseMonster
         // 부모의 Awake() 호출
         base.Awake();
 
-        _rigidBody = GetComponent<Rigidbody>();
+        _rigidbody = GetComponent<Rigidbody>();
 
         // 몬스터의 모든 콜라이더를 가져와서 isTrigger가 아닌 콜라이더를 비활성화 시키기 위해 저장 (플레이어와 부딪히지 않고 통과하게 만들기 위해서)
         CapsuleCollider[] colliders = GetComponents<CapsuleCollider>();
@@ -63,17 +65,17 @@ public class Monster_Melee : BaseMonster
     /// </summary>
     private IEnumerator Dash()
     {
-        // 몬스터를 Rigidbody의 물리 효과를 받지 않는 상태로 만들고 NavMeshAgent의 움직임을 우선시
-        if (_rigidBody != null)
-            _rigidBody.isKinematic = true;
+        // 몬스터를 Rigidbody 물리 효과를 받지 않는 상태로 만들고, NavMeshAgent의 움직임을 우선시
+        if (_rigidbody != null)
+            _rigidbody.isKinematic = true;
         if (_collider != null)
             _collider.enabled = false;
 
-        // NavMeshAgent의 기본 설정값이 아닌 돌진 용도로 설정된 값으로 변경
+        // NavMeshAgent의 기본 설정값이 아닌 돌진용 설정값으로 변경
         _agent.stoppingDistance = 0f;
         _agent.acceleration = dashAcceleration;
         _agent.speed = dashSpeed;
-        _agent.updateRotation = true;  // 돌진 방향을 바라보도록 설정
+        _agent.updateRotation = true;
         _agent.isStopped = false;
 
         // 돌진 방향, 거리 계산
@@ -103,8 +105,8 @@ public class Monster_Melee : BaseMonster
         }
 
         // 다시 물리 효과를 받고 충돌할 수 있도록 복구 (돌진이 끝났으면 다시 벽에 부딪히고 플레이어와 충돌할 수 있도록)
-        if (_rigidBody != null)
-            _rigidBody.isKinematic = false;
+        if (_rigidbody != null)
+            _rigidbody.isKinematic = false;
         if (_collider != null)
             _collider.enabled = true;
 

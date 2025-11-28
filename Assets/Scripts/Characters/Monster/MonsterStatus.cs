@@ -5,26 +5,19 @@ using UnityEngine.UI;
 [RequireComponent(typeof(MonsterKnockBack))]
 public class MonsterStatus : MonoBehaviour
 {
-    [Header("# ¸ó½ºÅÍ ½ºÅÈ Á¤º¸")]
+    [Header("# ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")]
     public int maxHp = 100;
     public PoolType monsterTag;
     public float monsterDamage = 10f;
-    public int monsterChargeAmount = 1; // ¸ó½ºÅÍ ¶§¸®¸é Â÷´Â Â÷Áö¾ç (Å³ÇÏ¸é 3¹è? ÀÏ´Ü ±×°Ç º¸·ù)
+    public int monsterChargeAmount = 1; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (Å³ï¿½Ï¸ï¿½ 3ï¿½ï¿½? ï¿½Ï´ï¿½ ï¿½×°ï¿½ ï¿½ï¿½ï¿½ï¿½)
     private int _currentHp;
     private bool _isDead = false;
 
-    [Header("UI ¿¬°á")]
-    [Tooltip("Ã¼·ÂÀ» Ç¥½ÃÇÒ ½½¶óÀÌ´õ UI")]
+    [Header("UI ï¿½ï¿½ï¿½ï¿½")]
+    [Tooltip("Ã¼ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ UI")]
     public Slider hpSlider;
-    [Tooltip("Äµ¹ö½º(È¸Àü¿ë)")]
+    [Tooltip("Äµï¿½ï¿½ï¿½ï¿½(È¸ï¿½ï¿½ï¿½ï¿½)")]
     public Canvas hpCanvas;
-
-    private Monster_Melee_Coward _meleeCoward;
-
-    private void Awake()
-    {
-        _meleeCoward = GetComponent<Monster_Melee_Coward>();
-    }
 
     void OnEnable()
     {
@@ -35,16 +28,11 @@ public class MonsterStatus : MonoBehaviour
             hpSlider.maxValue = maxHp;
             hpSlider.value = _currentHp;
         }
-
-        if (_meleeCoward != null)
-        {
-            _meleeCoward.ResetRunAwayStatus();
-        }
     }
 
     private void LateUpdate()
     {
-        // Ã¼·Â ¹Ù°¡ Ç×»ó ¸ÞÀÎ Ä«¸Þ¶ó¸¦ Á¤¸éÀ¸·Î ¹Ù¶óº¸°Ô
+        // Ã¼ï¿½ï¿½ ï¿½Ù°ï¿½ ï¿½×»ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶óº¸°ï¿½
         if (Camera.main != null)
         {
             hpCanvas.transform.LookAt(hpCanvas.transform.position + Camera.main.transform.forward);
@@ -59,7 +47,7 @@ public class MonsterStatus : MonoBehaviour
 
     public void TakeDamage(float damage, float critcalChance, float criticalDamage)
     {
-        if (_isDead) return;    // 2¹øÁ×´Â°Å ¹æÁö
+        if (_isDead) return;    // 2ï¿½ï¿½ï¿½×´Â°ï¿½ ï¿½ï¿½ï¿½ï¿½
 
         bool isCritical = CheckCritical(critcalChance);
         if (isCritical) damage *= criticalDamage;
@@ -67,13 +55,8 @@ public class MonsterStatus : MonoBehaviour
         _currentHp -= (int)damage;
         UpdateHpBar();
 
-        // µ¥¹ÌÁö Ç¥½Ã
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½
         ShowDamageText(damage, isCritical);
-
-        if (_meleeCoward != null)
-        {
-            _meleeCoward.RunAwayStatus((float)_currentHp, (float)maxHp);
-        }
 
         if (_currentHp <= 0)
         {
@@ -112,14 +95,14 @@ public class MonsterStatus : MonoBehaviour
 
     private void ShowDamageText(float damage, bool isCritical)
     {
-        Vector3 spawnPosition = transform.position + Vector3.up * 1.2f; // ¸ó½ºÅÍ À§¿¡ À§Ä¡
-        // ·£´ý¼ºÀ» ÁÖ¾î ÅØ½ºÆ®°¡ °ãÄ¡Áö ¾Ê°Ô (»ìÂ¦ ¿·À¸·Î ÆÛÁö°Ô)
+        Vector3 spawnPosition = transform.position + Vector3.up * 1.2f; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¾ï¿½ ï¿½Ø½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ê°ï¿½ (ï¿½ï¿½Â¦ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
         spawnPosition += UnityEngine.Random.insideUnitSphere * 0.5f;
 
-        // ¼ÒÈ¯
+        // ï¿½ï¿½È¯
         GameObject textObj = ObjectPooler.Instance.SpawnFromPool(PoolType.DamageText, spawnPosition, Quaternion.identity);
 
-        // °ª ¼³Á¤
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         DamageText dmgTextScript = textObj.GetComponent<DamageText>();
         dmgTextScript.SetDamage(damage, isCritical);
     }
