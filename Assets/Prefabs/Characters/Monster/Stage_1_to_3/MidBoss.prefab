@@ -711,12 +711,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _attackCoolDown: 3
   _moveSpeed: 5
-  _dashSpeed: 5
+  _dashSpeed: 10
   _chaseRange: 20
   _ragePercentage: 30
-  _enrageColor: {r: 1, g: 0.3, b: 0.3, a: 1}
-  _colorTransitionDuration: 1
-  _targetRenderer: {fileID: 1391114552611625369}
 --- !u!114 &7210821830409669160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -747,8 +744,3 @@ MonoBehaviour:
   monsterChargeAmount: 5
   hpSlider: {fileID: 1170281784822720275}
   hpCanvas: {fileID: 5771130155753989520}
---- !u!137 &1391114552611625369 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7749320957280469214, guid: c7038a7b8150d644eb5e884853528190, type: 3}
-  m_PrefabInstance: {fileID: 520969452926559931}
-  m_PrefabAsset: {fileID: 0}
