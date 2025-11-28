@@ -11537,6 +11537,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: MidBoss
       objectReference: {fileID: 0}
+    - target: {fileID: 1637184380965076159, guid: 76de3221be4819d47a3663f333c020c7, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1637184380965076159, guid: 76de3221be4819d47a3663f333c020c7, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8357141131732895882, guid: 76de3221be4819d47a3663f333c020c7, type: 3}
+      propertyPath: _dashSpeed
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

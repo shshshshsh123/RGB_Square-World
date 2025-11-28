@@ -1,45 +1,48 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 using System.Collections;
 
 public class MidBoss : MonoBehaviour
 {
-    [Header("º¸½º ¼³Á¤")]
+    [Header("ë³´ìŠ¤ ì„¤ì •")]
 
-    [Tooltip("°ø°İ ÄğÅ¸ÀÓ")]
+    [Tooltip("ê³µê²© ì¿¨íƒ€ì„")]
     [SerializeField] public float _attackCoolDown = 3.0f;
 
-    [Tooltip("ÀÌµ¿ ¼Óµµ")]
+    [Tooltip("ì¼ë°˜ ì´ë™ ì†ë„")]
     [SerializeField] public float _moveSpeed = 4.0f;
 
-    [Tooltip("ÃßÀû ½ÃÀÛ °Å¸®")]
+    [Tooltip("ê³µê²© ì‹œ ì´ë™ ì†ë„")]
+    [SerializeField] public float _dashSpeed = 12.0f;
+
+    [Tooltip("í”Œë ˆì´ì–´ë¥¼ ì¶”ì í•˜ê¸° ì‹œì‘í•˜ëŠ” ê±°ë¦¬")]
     [SerializeField] public float _chaseRange = 15f;
 
-    [Tooltip("ÃÖ´ë Ã¼·Â")]
-    [SerializeField] public float _maxHealth = 100f;
-
-    [Tooltip("º¸½º Ã¼·ÂÀÌ ÀÌ ÀÌÇÏÀÏ ¶§ ±¤ÆøÈ­")]
-    [SerializeField] public float _rageThreshold = 30f; // Ã¼·ÂÀÌ ÀÌ ¼öÄ¡ ÀÌÇÏÀÏ ¶§ ±¤ÆøÈ­
+    [Tooltip("ê´‘í­í™” ë°œë™ HP ë¹„ìœ¨")]
+    [Range(0, 100)]
+    [SerializeField] public float _ragePercentage = 30f;
 
     private float _lastAttackTime;
-    private float _stoppingDistance = 2.0f; // °ø°İÇÏ±â Àü ¸ØÃß´Â °Å¸®
-    private float _currentHealth;
+    private float _stoppingDistance = 4f; // í”Œë ˆì´ì–´ ì•ì—ì„œ ë©ˆì¶”ëŠ” ê±°ë¦¬
 
     private bool _isAttacking = false;
-    private bool _isEnraged = false;
+    private bool _isRaged = false; // ê´‘í­í™” ìƒíƒœì¸ì§€ ì—¬ë¶€
+    private bool _hasDealtDamage = false; // ê³µê²©ìœ¼ë¡œ ë°ë¯¸ì§€ë¥¼ ì£¼ì—ˆëŠ”ì§€ ì—¬ë¶€ (ì¤‘ë³µ ë°©ì§€)
 
     private Transform _player;
     private Animator _animator;
     private NavMeshAgent _navMeshAgent;
+    private CapsuleCollider _collider;
+    private MonsterStatus _monsterStatus;
 
     void Awake()
     {
         _animator = GetComponent<Animator>();
         _navMeshAgent = GetComponent<NavMeshAgent>();
+        _collider = GetComponent<CapsuleCollider>();
+        _monsterStatus = GetComponent<MonsterStatus>();
 
-        _currentHealth = _maxHealth;
-
-        // NavMeshAgentÀÇ ±âº» ¼³Á¤°ª ÀúÀå
         _navMeshAgent.speed = _moveSpeed;
         _navMeshAgent.stoppingDistance = _stoppingDistance;
 
@@ -53,115 +56,211 @@ public class MidBoss : MonoBehaviour
 
     void Update()
     {
+        if (!_isRaged && _monsterStatus != null && _monsterStatus.hpSlider != null)
+        {
+            // ìµœëŒ€ ì²´ë ¥
+            float maxHp = _monsterStatus.hpSlider.maxValue;
+
+            // í˜„ì¬ ì²´ë ¥
+            float currentHp = _monsterStatus.hpSlider.value;
+
+            // ê´‘í­í™” ë°œë™ ì²´ë ¥
+            float thresholdHp = maxHp * (_ragePercentage / 100f);
+
+            if (currentHp <= thresholdHp)
+            {
+                StartCoroutine(EnterRagePhase());
+            }
+        }
+
         if (_player == null)
             return;
 
-        // ÇÃ·¹ÀÌ¾î¿ÍÀÇ °Å¸® °è»ê
+        // ê³µê²© ì¤‘ì´ê±°ë‚˜ ê´‘í­í™” ì¤‘ì´ë©´ ë‹¤ë¥¸ í–‰ë™ X
+        if (_isAttacking || (_isRaged && _animator.GetCurrentAnimatorStateInfo(0).IsName("Roar")))
+            return;
+
         float distanceToPlayer = Vector3.Distance(transform.position, _player.position);
 
-        // °ø°İ ÁßÀÌ°Å³ª Æ÷È¿ ÁßÀÏ ¶§´Â ¿òÁ÷ÀÓ Áß´Ü
-        if (_isAttacking || (_isEnraged && _animator.GetCurrentAnimatorStateInfo(0).IsName("Roar")))
-        {
-            _navMeshAgent.isStopped = true;
-            return;
-        }
-
-        // 1. ÃßÀû ·ÎÁ÷ (°Å¸®°¡ ¹üÀ§ ¾ÈÀÌ°í, °ø°İ ¹üÀ§º¸´Ù ¸Ö ¶§)
+        // ì¶”ê²© ë²”ìœ„ ë‚´ì´ê³  ì •ì§€ ê±°ë¦¬ ë°–ì´ë©´ ì¶”ê²©
         if (distanceToPlayer <= _chaseRange && distanceToPlayer > _stoppingDistance)
         {
             ChasePlayer();
         }
-        // 2. °ø°İ ·ÎÁ÷ (°ø°İ ¹üÀ§ ¾ÈÀÏ ¶§)
+
+        // ì •ì§€ ê±°ë¦¬ ì´ë‚´ë©´ ë©ˆì¶”ê³  ê³µê²©
         else if (distanceToPlayer <= _stoppingDistance)
         {
             StopAndAttack();
         }
-        // 3. ´ë±â (¹üÀ§ ¹Û)
+
+        // ì¶”ê²© ë²”ìœ„ ë°–ì´ë©´ ëŒ€ê¸°
         else
         {
             Idle();
         }
     }
 
+    /// <summary>
+    /// í”Œë ˆì´ì–´ ì¶”ê²©
+    /// </summary>
     void ChasePlayer()
     {
+        if (!_navMeshAgent.enabled || !_navMeshAgent.isOnNavMesh)
+            return;
         _navMeshAgent.isStopped = false;
         _navMeshAgent.SetDestination(_player.position);
-        _animator.SetBool("isRunning", true); // Run ¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı
+        _animator.SetBool("isRunning", true);
     }
 
+    /// <summary>
+    /// í”Œë ˆì´ì–´ ê³µê²©
+    /// </summary>
     void StopAndAttack()
     {
-        // ¸ØÃã
-        _navMeshAgent.isStopped = true;
-        _animator.SetBool("isRunning", false); // Idle »óÅÂ·Î ÀüÈ¯ ÈÄ °ø°İ ÁØºñ
+        if (!_navMeshAgent.enabled || !_navMeshAgent.isOnNavMesh)
+            return;
 
-        // ÄğÅ¸ÀÓ Ã¼Å©
+        _navMeshAgent.isStopped = true;
+        _animator.SetBool("isRunning", false);
+
         if (Time.time - _lastAttackTime > _attackCoolDown)
         {
             StartCoroutine(PerformAttack());
         }
     }
 
+    /// <summary>
+    /// ëŒ€ê¸°
+    /// </summary>
     void Idle()
     {
+        if (!_navMeshAgent.enabled || !_navMeshAgent.isOnNavMesh)
+            return;
         _navMeshAgent.isStopped = true;
         _animator.SetBool("isRunning", false);
     }
 
+    /// <summary>
+    /// ì‹¤ì œ ê³µê²© ì‹¤í–‰ ì½”ë£¨í‹´
+    /// </summary>
+    /// <returns></returns>
     IEnumerator PerformAttack()
     {
         _isAttacking = true;
         _lastAttackTime = Time.time;
+        _hasDealtDamage = false;
 
-        // ÇÃ·¹ÀÌ¾î¸¦ ¹Ù¶óº½ (°©ÀÚ±â µÚµ¹¾Æ¼­ ¶§¸®±â À§ÇØ)
-        transform.LookAt(_player);
+        if (_player != null)
+        {
+            Vector3 targetPosition = new Vector3(_player.position.x, transform.position.y, _player.position.z);
+            transform.LookAt(targetPosition); // í”Œë ˆì´ì–´ ë°©í–¥ìœ¼ë¡œ íšŒì „
+        }
 
-        // ·£´ı °ø°İ (0: 360µµ °ø°İ, 1: ¹ßÂ÷±â)
-        int randomPattern = Random.Range(0, 2);
-        _animator.SetInteger("attackIndex", randomPattern);
+        int attackIndex = Random.Range(0, 2); // ëœë¤ ê³µê²© (0ì´ë©´ - ì í”„ í›„ ë‚´ë ¤ì°ê¸°, 1ì´ë©´ ì í”„ í›„ ë°œì°¨ê¸°)
+        _animator.SetInteger("attackIndex", attackIndex);
         _animator.SetTrigger("doAttack");
 
-        // ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÃÀÛµÉ Æ´À» ÁÜ
-        yield return new WaitForSeconds(0.2f);
+        // ë”œë ˆì´ ê¸°ë³¸ê°’
+        float startDelay = 0.4f;
+        float dashDuration = 0.4f;
 
-        // °ø°İ ¾Ö´Ï¸ŞÀÌ¼Ç ±æÀÌ¸¸Å­ ´ë±â (´ë·«ÀûÀÎ ½Ã°£, ÇÊ¿ä½Ã Á¶Àı)
-        float attackDuration = 1.5f;
-        yield return new WaitForSeconds(attackDuration);
+        // ê³µê²© íŒ¨í„´ì— ë”°ë¼ ì• ë‹ˆë©”ì´ì…˜ì´ ë‹¤ë¥´ë¯€ë¡œ ë”œë ˆì´ ê°ê° ì¡°ì •
+        switch (attackIndex)
+        {
+            case 0:
+                startDelay = 0.4f;
+                dashDuration = 0.4f;
+                break;
+            case 1:
+                startDelay = 0.2f;
+                dashDuration = 0.6f;
+                break;
+        }
+
+        yield return new WaitForSeconds(startDelay);
+        yield return StartCoroutine(DashMove(dashDuration));
+        yield return new WaitForSeconds(1.0f);
 
         _isAttacking = false;
-    }
 
-    // µ¥¹ÌÁö ¹Ş´Â ÇÔ¼ö (¿ÜºÎ¿¡¼­ È£Ãâ ÇÊ¿ä)
-    public void TakeDamage(float amount)
-    {
-        _currentHealth -= amount;
-        Debug.Log("Boss HP: " + _currentHealth);
-
-        // Ã¼·ÂÀÌ ³·¾ÆÁö¸é 2ÆäÀÌÁî ÁøÀÔ (ÇÑ ¹ø¸¸ ½ÇÇà)
-        if (_currentHealth <= _rageThreshold && !_isEnraged)
+        if (_navMeshAgent != null)
         {
-            StartCoroutine(EnterEnragePhase());
+            if (!_navMeshAgent.enabled)
+            {
+                _navMeshAgent.enabled = true;
+            }
+
+            if (_navMeshAgent.isOnNavMesh)
+            {
+                _navMeshAgent.isStopped = false;
+            }
         }
     }
 
-    IEnumerator EnterEnragePhase()
+    /// <summary>
+    /// ê°€ë§Œíˆ ì„œì„œ ê³µê²©í•˜ì§€ ì•Šê³  í”Œë ˆì´ì–´ë¥¼ ì§€ë‚˜ì„œ ê³µê²©í•˜ê¸° ìœ„í•œ ì½”ë£¨í‹´
+    /// </summary>
+    /// <param name="duration"></param>
+    /// <returns></returns>
+    IEnumerator DashMove(float duration)
     {
-        _isEnraged = true;
-        _isAttacking = true; // Æ÷È¿ Áß ´Ù¸¥ Çàµ¿ ±İÁö
+        // NavMeshAgent ë¹„í™œì„±í™”
+        _navMeshAgent.enabled = false;
 
-        // ¿òÁ÷ÀÓ ¸ØÃã ¹× Æ÷È¿
-        _navMeshAgent.isStopped = true;
+        // ì½œë¼ì´ë”ë¥¼ íŠ¸ë¦¬ê±°ë¡œ ë³€ê²½
+        if (_collider != null)
+            _collider.isTrigger = true;
+
+        float elapsedTime = 0f;
+        Vector3 dashDirection = transform.forward;
+
+        while (elapsedTime < duration)
+        {
+            transform.Translate(dashDirection * _dashSpeed * Time.deltaTime, Space.World);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // ì½œë¼ì´ë” ì„¤ì • ë³µêµ¬
+        if (_collider != null)
+            _collider.isTrigger = false;
+
+        // NavMeshAgent í™œì„±í™”
+        _navMeshAgent.enabled = true;
+    }
+
+    /// <summary>
+    /// ì²´ë ¥ì´ ì¼ì • ë¹„ìœ¨ ì´í•˜ë¡œ ë–¨ì–´ì§€ë©´ ê´‘í­í™”
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator EnterRagePhase()
+    {
+        _isRaged = true;
+        _isAttacking = true;
+        if (_navMeshAgent.enabled && _navMeshAgent.isOnNavMesh)
+        {
+            _navMeshAgent.isStopped = true;
+        }
         _animator.SetTrigger("doRoar");
-        Debug.Log("BOSS ENRAGED! Speed UP!");
 
-        // Æ÷È¿ ¾Ö´Ï¸ŞÀÌ¼Ç ½Ã°£¸¸Å­ ´ë±â (¿¹: 2.5ÃÊ)
         yield return new WaitForSeconds(2.5f);
 
-        // ¼Óµµ 2¹è Áõ°¡
-        _navMeshAgent.speed = _moveSpeed * 2;
-        _animator.speed = 1.5f; // ¾Ö´Ï¸ŞÀÌ¼Ç ¼Óµµµµ ¾à°£ ºü¸£°Ô (¹ÚÁø°¨)
+        // ë³´ìŠ¤ ìŠ¤íƒ¯ ê°•í™”
+        _moveSpeed *= 1.5f;
+        _dashSpeed *= 1.3f;
+        _navMeshAgent.speed = _moveSpeed;
+        _animator.speed = 1.3f;
+        _attackCoolDown *= 0.7f;
 
         _isAttacking = false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (_isAttacking && !_hasDealtDamage && other.CompareTag("Player"))
+        {
+            _hasDealtDamage = true; // ë°ë¯¸ì§€ ì²˜ë¦¬ ì™„ë£Œ (ì¤‘ë³µ ë°©ì§€)
+        }
     }
 }

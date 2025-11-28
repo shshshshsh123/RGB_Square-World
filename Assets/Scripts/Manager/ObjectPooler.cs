@@ -103,4 +103,6 @@ public enum PoolType
     MagicChargeProjectile,
     MagicChargeHitEffect,
     AttackRange,
+    RangedMonster_Defensive,
+    MidBoss,
 }
