@@ -7,7 +7,7 @@ public class LobbyUIManager : MonoBehaviour
     [Header("# 메인 로비")]
     [SerializeField] GameObject _mainLobbyContent;
     [SerializeField] TMP_Text _chapterText;
-    [SerializeField] TMP_Text _chapterIconText;
+    [SerializeField] TMP_Text _chapterDescText;
     [SerializeField] Button _gameStartButton;
     [SerializeField] TMP_Text _gameStartText;
     [SerializeField] Button _combatStyleButton;
@@ -41,7 +41,10 @@ public class LobbyUIManager : MonoBehaviour
     [SerializeField] TMP_Text _fairyStoneAmountText;
     [SerializeField] TMP_Text _levelUpText;
     [SerializeField] Button _upgradeButton;
+    [SerializeField] TMP_Text _upgradeGoldText;
+    [SerializeField] TMP_Text _upgradeFairyStoneText;
     [SerializeField] Button _backButton;
+    [SerializeField] Button _startButton;   // 여기에도 전투시작 버튼 있음
     enum CombatStyleType { Melee, Range, Magic, Mix };
 
     void Start()
@@ -94,28 +97,47 @@ public class LobbyUIManager : MonoBehaviour
     {
         _combatStyleContent.SetActive(true);
         _popupContent.gameObject.SetActive(false);
+        Outline outline = _upgradeButton.GetComponent<Outline>();
+        Outline startOutline = _startButton.GetComponent<Outline>();
 
+        // TODO: 여기 레벨이랑 필요골드 등등 나중에 데이터에서 가져오도록 바꾸기
         switch (combatStyle)
         {
             case CombatStyleType.Melee:
                 _currentCombatStyleImage.sprite = _combatStyleImages[0];
-                _combatStyleLevelText.text = "근접 Lv.1";
+                _combatStyleLevelText.text = "근접 전투";
                 _levelUpText.text = "LV.1 -> LV.2";
+                _upgradeGoldText.text = string.Format("{0:#,###}", 5000);
+                _upgradeFairyStoneText.text = string.Format("{0:#,###}", 200);
+                outline.effectColor = new Color32(200, 40, 40, 100);
+                startOutline.effectColor = new Color32(200, 40, 40, 100);
                 break;
             case CombatStyleType.Range:
                 _currentCombatStyleImage.sprite = _combatStyleImages[1];
-                _combatStyleLevelText.text = "원거리 Lv.3";
+                _combatStyleLevelText.text = "원거리 전투";
                 _levelUpText.text = "LV.3 -> LV.4";
+                _upgradeGoldText.text = string.Format("{0:#,###}", 20000);
+                _upgradeFairyStoneText.text = string.Format("{0:#,###}", 800);
+                outline.effectColor = new Color32(40, 40, 200, 100);
+                startOutline.effectColor = new Color32(40, 40, 200, 100);
                 break;
             case CombatStyleType.Magic:
                 _currentCombatStyleImage.sprite = _combatStyleImages[2];
-                _combatStyleLevelText.text = "마법 Lv.2";
+                _combatStyleLevelText.text = "마법 전투";
                 _levelUpText.text = "LV.2 -> LV.3";
+                _upgradeGoldText.text = string.Format("{0:#,###}", 10000);
+                _upgradeFairyStoneText.text = string.Format("{0:#,###}", 500);
+                outline.effectColor = new Color32(200, 40, 200, 100);
+                startOutline.effectColor = new Color32(200, 40, 200, 100);
                 break;
             case CombatStyleType.Mix:
                 _currentCombatStyleImage.sprite = _combatStyleImages[Random.Range(0, _combatStyleImages.Length)];
-                _combatStyleLevelText.text = "혼합 Lv.5";
+                _combatStyleLevelText.text = "혼합 전투";
                 _levelUpText.text = "LV.5 -> LV.6";
+                _upgradeGoldText.text = string.Format("{0:#,###}", 50000);
+                _upgradeFairyStoneText.text = string.Format("{0:#,###}", 2000);
+                outline.effectColor = new Color32(0, 0, 0, 100);
+                startOutline.effectColor = new Color32(0, 0, 0, 100);
                 break;
         }
 
