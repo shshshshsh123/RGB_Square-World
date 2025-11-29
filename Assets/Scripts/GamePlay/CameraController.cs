@@ -87,11 +87,17 @@ public class CameraController : MonoBehaviour
         List<Renderer> currentlyHitRenderers = new List<Renderer>();
         foreach (var hit in hits)
         {
-            // 오브젝트와 그 자식들로부터 모든 Renderer 컴포넌트를 가져옴
-            Renderer[] renderers = hit.collider.GetComponentsInChildren<Renderer>();
+            // 안전하게 부모부터 찾기
+            Transform root = hit.collider.transform.parent;
+
+            // 만약 부모가 없으면 자기 자신을 기준으로 함
+            if (root == null) root = hit.collider.transform;
+
+            // 모든 렌더러 검색
+            Renderer[] renderers = root.GetComponentsInChildren<Renderer>();
+
             if (renderers != null && renderers.Length > 0)
             {
-                // 찾은 모든 렌더러를 리스트에 추가
                 currentlyHitRenderers.AddRange(renderers);
             }
         }
