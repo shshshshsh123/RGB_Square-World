@@ -45,6 +45,7 @@ public class LobbyUIManager : MonoBehaviour
     [SerializeField] TMP_Text _upgradeFairyStoneText;
     [SerializeField] Button _backButton;
     [SerializeField] Button _startButton;   // 여기에도 전투시작 버튼 있음
+    private WeaponType selectedWeaponType = WeaponType.Melee;
     enum CombatStyleType { Melee, Range, Magic, Mix };
 
     void Start()
@@ -68,6 +69,7 @@ public class LobbyUIManager : MonoBehaviour
         // 전투스타일 팝업 버튼 이벤트 설정
         _upgradeButton.onClick.AddListener(() => Upgrade());
         _backButton.onClick.AddListener(() => BackButtonCombatStyle());
+        _startButton.onClick.AddListener(() => StartButtonCombatStyle());
     }
 
     void StartGame()
@@ -112,6 +114,7 @@ public class LobbyUIManager : MonoBehaviour
                 _upgradeFairyStoneText.text = string.Format("{0:#,###}", 200);
                 outline.effectColor = new Color32(200, 40, 40, 100);
                 startOutline.effectColor = new Color32(200, 40, 40, 100);
+                selectedWeaponType = WeaponType.Melee;
                 break;
             case CombatStyleType.Range:
                 _currentCombatStyleImage.sprite = _combatStyleImages[1];
@@ -121,6 +124,7 @@ public class LobbyUIManager : MonoBehaviour
                 _upgradeFairyStoneText.text = string.Format("{0:#,###}", 800);
                 outline.effectColor = new Color32(40, 40, 200, 100);
                 startOutline.effectColor = new Color32(40, 40, 200, 100);
+                selectedWeaponType = WeaponType.Ranged;
                 break;
             case CombatStyleType.Magic:
                 _currentCombatStyleImage.sprite = _combatStyleImages[2];
@@ -130,6 +134,7 @@ public class LobbyUIManager : MonoBehaviour
                 _upgradeFairyStoneText.text = string.Format("{0:#,###}", 500);
                 outline.effectColor = new Color32(200, 40, 200, 100);
                 startOutline.effectColor = new Color32(200, 40, 200, 100);
+                selectedWeaponType = WeaponType.Magic;
                 break;
             case CombatStyleType.Mix:
                 _currentCombatStyleImage.sprite = _combatStyleImages[Random.Range(0, _combatStyleImages.Length)];
@@ -139,6 +144,7 @@ public class LobbyUIManager : MonoBehaviour
                 _upgradeFairyStoneText.text = string.Format("{0:#,###}", 2000);
                 outline.effectColor = new Color32(0, 0, 0, 100);
                 startOutline.effectColor = new Color32(0, 0, 0, 100);
+                //selectedWeaponType = WeaponType.Mix;  // 혼합전투는 일단 미구현
                 break;
         }
 
@@ -156,5 +162,11 @@ public class LobbyUIManager : MonoBehaviour
     {
         _combatStyleContent.SetActive(false);
         _popupContent.gameObject.SetActive(true);
+    }
+
+    void StartButtonCombatStyle()
+    {
+        DataManager.Instance.CurrentWeaponType = selectedWeaponType;
+        SceneLoader.LoadScene(SceneLoader.Scene.GameScene);
     }
 }

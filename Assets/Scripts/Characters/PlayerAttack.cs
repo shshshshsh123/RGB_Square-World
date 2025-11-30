@@ -60,12 +60,19 @@ public class PlayerAttack : MonoBehaviour, IAttackOwner
         // 내부 변수 초기화
         _lastAttackTime = Time.time;
         _canAttackHitStop = true;
+        CurrentWeaponData();
     }
 
     void Update()
     {
         // 기본공격
         HandleAutoAttacks();
+    }
+
+    void CurrentWeaponData()
+    {
+        // DataManager에서 현재 무기 타입 가져와서 장착하기
+        AddOrUpgradeWeapon(weaponDatas[(int)DataManager.Instance.CurrentWeaponType]);
     }
 
     void HandleAutoAttacks()
