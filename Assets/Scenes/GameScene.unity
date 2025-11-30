@@ -6598,7 +6598,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fda9fc40330895c41b1c229637e84db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageMission: []
+  stageMission:
+  - {fileID: 11400000, guid: caf9a3b4bba008947aef4bf815b998dc, type: 2}
+  - {fileID: 11400000, guid: 5e33dc2fd6aea034f9fc9d3294c2f8f4, type: 2}
+  - {fileID: 11400000, guid: f6a9d3d22c3b15e47b4a85b5e4341f1c, type: 2}
 --- !u!4 &792309964
 Transform:
   m_ObjectHideFlags: 0

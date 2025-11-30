@@ -73,6 +73,7 @@ public class LobbyUIManager : MonoBehaviour
     void StartGame()
     {
         // TODO: 씬로더 만들고나서 구현
+        SceneLoader.LoadScene(SceneLoader.Scene.GameScene);
     }
 
     void PopUpUI(GameObject popup, bool doActive)

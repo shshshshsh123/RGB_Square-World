@@ -5,7 +5,7 @@ using UnityEngine;
 public class MissionData : ScriptableObject
 {
     [Header("# 기본 정보")]
-    public int id;  // 1000~1999: Defense, 2000~2999: Combat, 3000~3999: Exploration, 4000~4999: Survival
+    public int id;  // 1000~1999: Defense, 2000~2999: Combat, 3000~3999: Exploration, 4000~4999: Survival, 5000~5999: Boss
     public string title;
     [TextArea] public string description;
     public MissionType missionType;
@@ -28,6 +28,7 @@ public enum MissionType
     Combat, // 전투형 (몬스터 처치)
     Exploration,    // 탐험형 (아이템 수집)
     Survival,   // 버티기 (시간제한)
+    Boss    // 보스전 (보스 몬스터 처치)
 }
 
 public enum SubCharacterBehavior
