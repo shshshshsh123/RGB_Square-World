@@ -17,6 +17,7 @@ MonoBehaviour:
     - 99c9720ab356a0642a771bea13969a05
     - b8d06f69bf683a14b9d2cbcadaf8cab6
     - d22bcc05c9f37344ea29bcf7422ca3f4
+    - e1cd9679393f8d14fa1c69bd307333b5
     values:
     - goDatas_byGlobalId:
         keys:
@@ -117,5 +118,8 @@ MonoBehaviour:
           iconNameOrGuid: Settings Icon
           isIconRecursive: 0
           isColorRecursive: 0
+    - goDatas_byGlobalId:
+        keys: []
+        values: []
   bookmarks: []
   bookmarkedScenePaths: []

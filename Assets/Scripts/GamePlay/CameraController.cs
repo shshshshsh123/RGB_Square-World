@@ -34,7 +34,6 @@ public class CameraController : MonoBehaviour
     public float obstacleIntensity = 0.5f;
 
     private List<Renderer> _fadedRenderers = new List<Renderer>();
-
     void LateUpdate()
     {
         if (target == null) return;
@@ -87,12 +86,30 @@ public class CameraController : MonoBehaviour
         List<Renderer> currentlyHitRenderers = new List<Renderer>();
         foreach (var hit in hits)
         {
-            // 오브젝트와 그 자식들로부터 모든 Renderer 컴포넌트를 가져옴
-            Renderer[] renderers = hit.collider.GetComponentsInChildren<Renderer>();
-            if (renderers != null && renderers.Length > 0)
+            // 충돌한 오브젝트 자신의 Renderer 확인
+            Renderer selfRenderer = hit.collider.GetComponent<Renderer>();
+
+            if (selfRenderer != null)
             {
-                // 찾은 모든 렌더러를 리스트에 추가
-                currentlyHitRenderers.AddRange(renderers);
+                currentlyHitRenderers.Add(selfRenderer);
+            }
+
+            // 자식 Renderer 확인
+            Renderer[] childRenderers = hit.collider.GetComponentsInChildren<Renderer>();
+            if (childRenderers != null && childRenderers.Length > 0)
+            {
+                currentlyHitRenderers.AddRange(childRenderers);
+            }
+
+            // 부모 Renderer 확인
+            Transform parent = hit.collider.transform.parent;
+            if (parent != null)
+            {
+                Renderer parentRenderer = parent.GetComponent<Renderer>();
+                if (parentRenderer != null && !currentlyHitRenderers.Contains(parentRenderer))
+                {
+                    currentlyHitRenderers.Add(parentRenderer);
+                }
             }
         }
 

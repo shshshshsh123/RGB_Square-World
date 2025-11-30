@@ -773,7 +773,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHp: 100
-  monsterTag: 16
+  monsterTag: 18
   monsterDamage: 10
   monsterChargeAmount: 3
   hpSlider: {fileID: 717396500907877064}
