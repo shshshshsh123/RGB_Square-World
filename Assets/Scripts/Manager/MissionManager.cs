@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class MissionManager : MonoBehaviour
@@ -7,6 +8,9 @@ public class MissionManager : MonoBehaviour
 
     [Header("# 현재 미션")]
     public Mission currentMission;
+    public TMP_Text missionTitleText;
+    //public TMP_Text missionDescText;
+    public TMP_Text missionProgressText;
 
     [Header("# 플레이어 네비게이션")]
     public GameObject playerNav;
@@ -76,6 +80,11 @@ public class MissionManager : MonoBehaviour
         {
             playerNav.SetActive(false);
         }
+
+        // 4. UI 업데이트
+        missionTitleText.text = missionData.title;
+        //missionDescText.text = missionData.description;
+        missionProgressText.text = currentMission.GetProgressText();
     }
 
     // --- 외부에서 수신받는 함수들 ---
@@ -87,6 +96,7 @@ public class MissionManager : MonoBehaviour
         {
             currentMission.AddProgress(1);
         }
+        missionProgressText.text = currentMission.GetProgressText();
     }
 
     // 퀘스트 아이템 습득시
@@ -96,6 +106,7 @@ public class MissionManager : MonoBehaviour
         {
             currentMission.AddProgress(1);
         }
+        missionProgressText.text = currentMission.GetProgressText();
     }
 
     // 목적지 도착 시 호출
@@ -107,6 +118,7 @@ public class MissionManager : MonoBehaviour
             currentMission.AddProgress(-1); // 목표치를 -2로 설정할거임
             isPlayerReachDestination = true;
         }
+        missionProgressText.text = currentMission.GetProgressText();
     }
 
     // 서브캐릭터가 목적지 도착시 호출
@@ -117,6 +129,7 @@ public class MissionManager : MonoBehaviour
             currentMission.AddProgress(-1); // 목표치를 -2로 설정할거임
             isSubCharacterReachDestination = true;
         }
+        missionProgressText.text = currentMission.GetProgressText();
     }
 
     // 서브 캐릭터 사망 시 호출

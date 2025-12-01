@@ -65,7 +65,7 @@ public class MonsterStatus : MonoBehaviour
             if (MissionManager.Instance != null && MissionManager.Instance.currentMission != null)
             {
                 if (MissionManager.Instance.currentMission.Data.missionType == MissionType.Combat)
-                    MissionManager.Instance.currentMission.AddProgress(1);
+                    MissionManager.Instance.OnEnemyKilled();
             }
 
             ObjectPooler.Instance.ReturnToPool(monsterTag, gameObject);

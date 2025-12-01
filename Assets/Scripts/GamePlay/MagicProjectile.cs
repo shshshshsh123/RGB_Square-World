@@ -5,7 +5,7 @@ using System.Collections.Generic; // List를 위해 필요
 public class MagicProjectile : MonoBehaviour
 {
     private IAttackOwner _owner; // 공격 주체를 통해 HitStop 등을 통지
-    private float _damage;
+    [SerializeField] private float _damage;
     private float _fallDuration; // 운석이 떨어지는 총 시간
     private float _scale;
     private float _criticalChance;
@@ -109,15 +109,24 @@ public class MagicProjectile : MonoBehaviour
         explosionRadius = 1.5f * _scale;
 
         Collider[] hitColliders = Physics.OverlapSphere(_targetGroundPosition, explosionRadius, enemyLayer);
-        foreach (Collider hitCollider in hitColliders)
+
+        // 처리한 몬스터 저장
+        HashSet<MonsterStatus> processed = new HashSet<MonsterStatus>();
+
+        foreach (Collider col in hitColliders)
         {
-            MonsterStatus monsterStatus = hitCollider.GetComponent<MonsterStatus>();
-            if (monsterStatus != null)
-            {
-                monsterStatus.TakeDamage(_damage, _criticalChance, _criticalDamage);
-                _owner?.NotifyHit();
-            }
+            MonsterStatus monster = col.GetComponentInParent<MonsterStatus>();
+            if (monster == null) continue;
+
+            if (processed.Contains(monster))
+                continue; // 이미 처리한 몬스터면 스킵
+
+            processed.Add(monster);
+
+            monster.TakeDamage(_damage, _criticalChance, _criticalDamage);
+            _owner?.NotifyHit();
         }
+
         // 착지 이펙트 재생
         GameObject effet = ObjectPooler.Instance.SpawnFromPool(_effectPoolTag, _targetGroundPosition, Quaternion.identity);
         effet.transform.localScale = Vector3.one * _scale;
@@ -133,9 +142,7 @@ public class MagicProjectile : MonoBehaviour
             MeshRenderer meshRenderer = cylinderInstance.GetComponent<MeshRenderer>();
             if (meshRenderer != null)
             {
-                // MaterialPropertyBlock을 적용하기 전에 이전 속성을 클리어
                 _mpb.Clear();
-                // URP의 _BaseColor 속성을 변경 (Built-in 렌더 파이프라인에서는 _Color)
                 _mpb.SetColor("_BaseColor", _rangeDisplayColor); // MaterialPropertyBlock에 색상 설정
                 meshRenderer.SetPropertyBlock(_mpb); // MeshRenderer에 MaterialPropertyBlock 적용
             }

@@ -28,6 +28,27 @@ public class Mission
         CheckCompletion();
     }
 
+    // UI업데이트용
+    public string GetProgressText()
+    {
+        if (Data.missionType == MissionType.Survival)
+        {
+            float timeLeft = Data.timeLimit - currentTime;
+            return $"남은 시간: {timeLeft:F1}s / {Data.timeLimit}s";
+        }
+        else if (Data.missionType == MissionType.Defense)
+        {
+            if (currentProgress == -2)
+                return "도착!";
+            else
+                return "이동중...";
+        }
+        else
+        {
+            return $"처치 수: {currentProgress} / {Data.targetCount}";
+        }
+    }
+
     // 시간업데이트
     public void UpdateTime(float deltaTime)
     {

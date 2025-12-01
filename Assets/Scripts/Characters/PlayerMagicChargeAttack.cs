@@ -16,8 +16,8 @@ public class PlayerMagicChargeAttack : PlayerChargeAttackBase
     private PlayerAttack _playerAttack; // IAttackOwner 구현용 (데미지 처리)
     private LayerMask _groundLayer; // 마법 투사체가 떨어질 지면을 찾기 위한 레이어
 
-    private float _criticalChance;
-    private float _criticalDamage;
+    [SerializeField] private float _criticalChance;
+    [SerializeField] private float _criticalDamage;
 
     private void Awake()
     {
@@ -29,7 +29,7 @@ public class PlayerMagicChargeAttack : PlayerChargeAttackBase
     {
         base.Start();
         _criticalChance = _playerAttack.criticalChance;
-        _criticalChance = _playerAttack.criticalDamage;
+        _criticalDamage = _playerAttack.criticalDamage;
     }
 
     /// <summary>
@@ -115,8 +115,6 @@ public class PlayerMagicChargeAttack : PlayerChargeAttackBase
 
             yield return new WaitForSeconds(delayBetweenProjectiles); // 각 투사체 발사 사이 딜레이 (Time.timeScale 영향 받음)
         }
-
-        // Debug.Log("[PlayerMagicChargeAttack] 모든 투사체 발사 완료. 정리 시작.");
 
         // 3. 여러가지 정상화들
         GameManager.Instance.IncreaseChargeAttack(-100);    // 게이지 초기화

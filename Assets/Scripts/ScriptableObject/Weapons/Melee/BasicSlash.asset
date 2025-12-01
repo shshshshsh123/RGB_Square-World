@@ -23,35 +23,35 @@ MonoBehaviour:
   - level: 1
     damage: 10
     attackDelay: 0.5
-    scale: 1
+    scale: 0.7
     projectileCount: 1
     penetrationCount: 1
     projectileSpeed: 0
   - level: 2
     damage: 15
     attackDelay: 0.5
-    scale: 1
+    scale: 0.7
     projectileCount: 1
     penetrationCount: 1
     projectileSpeed: 0
   - level: 3
     damage: 20
     attackDelay: 0.5
-    scale: 1
+    scale: 0.7
     projectileCount: 1
     penetrationCount: 1
     projectileSpeed: 0
   - level: 4
     damage: 20
     attackDelay: 0.3
-    scale: 1
+    scale: 0.7
     projectileCount: 1
     penetrationCount: 1
     projectileSpeed: 0
   - level: 5
     damage: 20
     attackDelay: 0.3
-    scale: 1.5
+    scale: 1
     projectileCount: 1
     penetrationCount: 1
     projectileSpeed: 0
