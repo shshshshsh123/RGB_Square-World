@@ -11,7 +11,7 @@ public class MidBoss : MonoBehaviour
     [SerializeField] public float _attackCoolDown = 3.0f;
 
     [Tooltip("일반 이동 속도")]
-    [SerializeField] public float _moveSpeed = 4.0f;
+    [SerializeField] public float _moveSpeed = 6.0f;
 
     [Tooltip("공격 시 이동 속도")]
     [SerializeField] public float _dashSpeed = 12.0f;
@@ -24,7 +24,7 @@ public class MidBoss : MonoBehaviour
     [SerializeField] public float _ragePercentage = 30f;
 
     private float _lastAttackTime;
-    private float _stoppingDistance = 4f; // 플레이어 앞에서 멈추는 거리
+    private float _stoppingDistance = 3f; // 플레이어 앞에서 멈추는 거리
 
     private bool _isAttacking = false;
     private bool _isRaged = false; // 광폭화 상태인지 여부
@@ -174,7 +174,7 @@ public class MidBoss : MonoBehaviour
                 break;
             case 1:
                 startDelay = 0.2f;
-                dashDuration = 0.6f;
+                dashDuration = 0.3f;
                 break;
         }
 
