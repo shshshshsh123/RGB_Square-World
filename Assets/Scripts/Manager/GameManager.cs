@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int _maxChargeAttack = 100;
     [SerializeField] private float _invincibilityDuration = 0.3f;
     public bool CanChargeAttack => _currentChargeAttack == 100;
+    public bool IsPlayerDead => _playerCurrentHp <= 0f;
     bool isInvincibility = false;
 
     [Header("# MMF Player")]

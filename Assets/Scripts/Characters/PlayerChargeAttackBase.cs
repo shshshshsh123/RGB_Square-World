@@ -40,6 +40,18 @@ public abstract class PlayerChargeAttackBase : MonoBehaviour
     /// </summary>
     protected virtual void HandleChargeAttackInput() // virtual로 변경
     {
+        // 플레이어 죽었나?
+        if (GameManager.Instance.IsPlayerDead)
+        {
+            _isCharging = false;
+            _chargeTimer = 0f;
+            if (chargeAttackKeyDownImage != null)
+            {
+                chargeAttackKeyDownImage.fillAmount = 0f;
+            }
+            return;
+        }
+
         // 게이지 다찼나?
         if (!GameManager.Instance.CanChargeAttack) return;
 

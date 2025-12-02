@@ -7968,10 +7968,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 951536867}
     - target: {fileID: 8848263072225109602, guid: fd0f956e1e7caae41920bfd16f430111, type: 3}
-      propertyPath: _texts.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8848263072225109602, guid: fd0f956e1e7caae41920bfd16f430111, type: 3}
       propertyPath: '_texts.Array.data[0]'
       value: 
       objectReference: {fileID: 1067430330}
@@ -10681,6 +10677,10 @@ PrefabInstance:
       propertyPath: skillCutInUI
       value: 
       objectReference: {fileID: 1618887471}
+    - target: {fileID: 3326539419270293232, guid: ace0cc9dc15c12f4bbf87e3ac75715f0, type: 3}
+      propertyPath: chargeAttackRange
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3326539419270293232, guid: ace0cc9dc15c12f4bbf87e3ac75715f0, type: 3}
       propertyPath: chargeAttackKeyDownImage
       value: 
