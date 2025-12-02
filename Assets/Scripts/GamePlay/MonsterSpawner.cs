@@ -16,6 +16,9 @@ public class MonsterSpawner : MonoBehaviour
     private int _totalWeight;
     private Camera _mainCamera;
 
+    // 스폰한 몬스터 저장(킬올용) 딕셔너리쓰는이유: 오브젝트 풀러에서 풀타입도 요구함
+    private Dictionary<GameObject, PoolType> _spawnedMonsters = new Dictionary<GameObject, PoolType>();
+
     private void Awake()
     {
         groundLayer = LayerMask.GetMask("Ground");
@@ -26,6 +29,7 @@ public class MonsterSpawner : MonoBehaviour
     {
         // 이전 스폰 중지하기
         StopSpawning();
+        ClearAllMonsters();
 
         // 스폰 몬스터 없으면 시작안함
         if (info.monsterWeights == null || info.monsterWeights.Count == 0) return;
@@ -90,6 +94,7 @@ public class MonsterSpawner : MonoBehaviour
             {
                 monsterObj.transform.position = hit.point;
             }
+            _spawnedMonsters[monsterObj] = selectedType;
             _spawnCount++;
         }
     }
@@ -162,5 +167,28 @@ public class MonsterSpawner : MonoBehaviour
         finalPos.y = spawnHeightOffset;
 
         return finalPos;
+    }
+
+    /// <summary>
+    /// 현재 스포너가 관리하는 모든 몬스터를 풀로 반환합니다.
+    /// </summary>
+    public void ClearAllMonsters()
+    {
+        // 딕셔너리에 있는 모든 몬스터를 순회
+        foreach (var pair in _spawnedMonsters)
+        {
+            GameObject monster = pair.Key;
+            PoolType type = pair.Value;
+
+            // 몬스터가 존재하고 활성화되어 있다면 반환
+            if (monster != null && monster.activeSelf)
+            {
+                ObjectPooler.Instance.ReturnToPool(type, monster);
+            }
+        }
+
+        // 딕셔너리 비우기 및 카운트 초기화
+        _spawnedMonsters.Clear();
+        _spawnCount = 0;
     }
 }

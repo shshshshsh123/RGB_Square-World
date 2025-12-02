@@ -52,7 +52,7 @@ public class MonsterSpawnInfo
 {
     [Header("Monster Mix")]
     [Tooltip("스폰될 몬스터 종류와 가중치 목록(모든 값 합 100안되도 됩니다. 대신 int값임")]
-    public List<MonsterWeight> monsterWeights; // <- 여기가 핵심 변경점
+    public List<MonsterWeight> monsterWeights;
 
     [Tooltip("스폰 간격 (초)")]
     public float spawnInterval;

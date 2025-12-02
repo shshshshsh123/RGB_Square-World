@@ -81,6 +81,8 @@ MonoBehaviour:
         - globalObjectIdString: GlobalObjectId_V1-2-d22bcc05c9f37344ea29bcf7422ca3f4-2120877474-0
         - globalObjectIdString: GlobalObjectId_V1-2-d22bcc05c9f37344ea29bcf7422ca3f4-792309962-0
         - globalObjectIdString: GlobalObjectId_V1-2-d22bcc05c9f37344ea29bcf7422ca3f4-1901547087-0
+        - globalObjectIdString: GlobalObjectId_V1-2-d22bcc05c9f37344ea29bcf7422ca3f4-1799464793-0
+        - globalObjectIdString: GlobalObjectId_V1-2-d22bcc05c9f37344ea29bcf7422ca3f4-1453799581-0
         values:
         - colorIndex: 5
           iconNameOrGuid: AvatarMask On Icon
@@ -118,8 +120,19 @@ MonoBehaviour:
           iconNameOrGuid: Settings Icon
           isIconRecursive: 0
           isColorRecursive: 0
+        - colorIndex: 3
+          iconNameOrGuid: Settings Icon
+          isIconRecursive: 0
+          isColorRecursive: 0
+        - colorIndex: 2
+          iconNameOrGuid: Settings Icon
+          isIconRecursive: 0
+          isColorRecursive: 0
     - goDatas_byGlobalId:
         keys: []
         values: []
   bookmarks: []
-  bookmarkedScenePaths: []
+  bookmarkedScenePaths:
+  - Assets/Scenes/GameScene.unity
+  - Assets/Scenes/LobbyScene.unity
+  - Assets/Scenes/LoadingScene.unity

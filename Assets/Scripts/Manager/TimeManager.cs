@@ -158,4 +158,28 @@ public class TimeManager : Singleton<TimeManager>
             RestoreTimeScale(requester);
         }
     }
+
+    /// <summary>
+    /// 씬 이동이나 게임 재시작 시, 모든 시간 조작 요청을 강제로 초기화합니다.
+    /// </summary>
+    public void ResetAllTimeScales()
+    {
+        // 1. 모든 요청 기록 삭제
+        _activeTimeScaleRequests.Clear();
+
+        // 2. 실행 중인 모든 코루틴 정지 및 목록 비우기
+        foreach (var coroutine in _activeCoroutines.Values)
+        {
+            if (coroutine != null) StopCoroutine(coroutine);
+        }
+        _activeCoroutines.Clear();
+
+        // 3. Stopper 정보 초기화
+        _stopperRequester = null;
+
+        // 4. 시간 스케일 즉시 1.0f로 복구
+        ApplyHighestPriorityTimeScale();
+
+        // Debug.Log("[타임매니저] 모든 타임스케일 요청이 초기화되었습니다.");
+    }
 }

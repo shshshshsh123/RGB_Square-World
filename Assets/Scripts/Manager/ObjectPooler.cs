@@ -8,14 +8,14 @@ public class ObjectPooler : MonoBehaviour
     [System.Serializable]
     public class Pool
     {
-        public PoolType type; // enum���� ����
+        public PoolType type; // enum으로 관리
         public GameObject prefab;
         public int initalSize;
     }
 
     public List<Pool> pools;
     public Dictionary<PoolType, Queue<GameObject>> poolDictionary;
-    private Dictionary<PoolType, GameObject> prefabDictionary; // �������� ������ ã�� ���� ��ųʸ�
+    private Dictionary<PoolType, GameObject> prefabDictionary; // 프리팹을 빠르게 찾기 위한 딕셔너리
 
     private void Awake()
     {
@@ -25,7 +25,7 @@ public class ObjectPooler : MonoBehaviour
     private void Start()
     {
         poolDictionary = new Dictionary<PoolType, Queue<GameObject>>();
-        prefabDictionary = new Dictionary<PoolType, GameObject>(); // �ʱ�ȭ
+        prefabDictionary = new Dictionary<PoolType, GameObject>(); // 초기화
 
         foreach (Pool pool in pools)
         {
@@ -37,7 +37,7 @@ public class ObjectPooler : MonoBehaviour
                 objectPool.Enqueue(obj);
             }
             poolDictionary.Add(pool.type, objectPool);
-            prefabDictionary.Add(pool.type, pool.prefab); // ������ ������ ��ųʸ��� ����
+            prefabDictionary.Add(pool.type, pool.prefab); // 프리팹 참조 딕셔너리 저장
         }
     }
 
@@ -45,7 +45,7 @@ public class ObjectPooler : MonoBehaviour
     {
         if (!poolDictionary.ContainsKey(type))
         {
-            Debug.LogWarning($"[������ƮǮ��] Ÿ�� {type} �� ã�� �� �����ϴ�.");
+            Debug.LogWarning($"[오브젝트풀러] 타입 {type} 을 찾을 수 없습니다.");
             return null;
         }
 
@@ -57,7 +57,7 @@ public class ObjectPooler : MonoBehaviour
         }
         else
         {
-            // foreach ���� ��� ��ųʸ����� ��� �������� ã�� ���� ����
+            // foreach 대신 딕셔너리에서 바로 프리팹을 찾아 생성 (성능 개선)
             GameObject prefabToInstantiate = prefabDictionary[type];
             objectToSpawn = Instantiate(prefabToInstantiate, position, rotation, transform);
         }
@@ -73,8 +73,8 @@ public class ObjectPooler : MonoBehaviour
     {
         if (!poolDictionary.ContainsKey(type))
         {
-            Debug.LogWarning($"[������ƮǮ��] Ÿ�� {type} �� ã�� �� �����ϴ�.");
-            Destroy(objectToReturn); // Ǯ�� ������ �׳� �ı�
+            Debug.LogWarning($"[오브젝트풀러] 타입 {type} 을 찾을 수 없습니다.");
+            Destroy(objectToReturn); // 풀에 없으면 그냥 파괴
             return;
         }
 

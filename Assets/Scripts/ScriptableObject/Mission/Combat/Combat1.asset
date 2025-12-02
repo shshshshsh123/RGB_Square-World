@@ -26,5 +26,7 @@ MonoBehaviour:
       weight: 50
     - monsterType: 2
       weight: 50
+    - monsterType: 18
+      weight: 50
     spawnInterval: 0.7
     maxSpawnCount: 30

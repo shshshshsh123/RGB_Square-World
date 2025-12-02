@@ -86,9 +86,9 @@ public class Mission
         StageManager.Instance.OnMissionCompleted();
     }
 
-    public void Fail()
+    public void Fail(string text)
     {
         isFailed = true;
-        // TODO: 실패하면 뭐하지
+        GameUIManager.Instance.ShowGameOverUI(text);
     }
 }

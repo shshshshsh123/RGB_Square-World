@@ -336,6 +336,8 @@ public class PlayerAttack : MonoBehaviour, IAttackOwner
             equippedWeapons.Add(new EquippedWeapon(weaponData));
             Debug.Log($"{weaponData.name} 새로 획득!");
         }
+
+        DataManager.Instance.CurrentWeaponType = weaponData.weaponType; // 데이터 매니저에도 값 전달해주고잉
     }
 
     void IAttackOwner.NotifyHit()

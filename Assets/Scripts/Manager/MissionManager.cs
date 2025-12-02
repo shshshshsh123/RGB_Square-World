@@ -52,9 +52,12 @@ public class MissionManager : MonoBehaviour
         // 1. 미션 생성
         currentMission = new Mission(missionData);
 
+        // 1.5. AIDirector 적용하기
+        MonsterSpawnInfo adjustedSpawnInfo = AIDirector.Instance.GetAdjustedSpawnInfo(missionData.monsterSpawnInfo);
+
         // 2. 이전 미션의 몬스터 스폰 초기화 및 스폰 시작
         _monsterSpawner.StopSpawning();
-        _monsterSpawner.StartSpawning(missionData.monsterSpawnInfo);
+        _monsterSpawner.StartSpawning(adjustedSpawnInfo);
 
         // 3. 이동미션이면 설정해주기
         if (missionData.missionType == MissionType.Defense)
@@ -70,6 +73,7 @@ public class MissionManager : MonoBehaviour
                 GameObject subCharObj = ObjectPooler.Instance.SpawnFromPool(PoolType.SubCharacter, playerNav.transform.position, Quaternion.identity);
                 _subCharacterAI = subCharObj.GetComponent<SubCharacterAI>();
                 _subCharacterAI.SetDestination(targetTransform.position);
+                subCharObj.GetComponent<SubCharacterStatus>().Initialize(500f); // 예시로 체력 500으로 초기화 TODO: 나중에 미션별로받기? 모르것네
             }
             else
             {
@@ -137,7 +141,7 @@ public class MissionManager : MonoBehaviour
     {
         if (currentMission != null)
         {
-            currentMission.Fail();
+            currentMission.Fail("서브 캐릭터 쓰러짐");
         }
     }
 }

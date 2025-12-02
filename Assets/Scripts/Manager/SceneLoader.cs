@@ -27,6 +27,7 @@ public class SceneLoader : MonoBehaviour
     {
         nextSceneName = scene.ToString();
         Debug.Log($"[씬 로더] {nextSceneName} 씬 로딩 시작");
+        TimeManager.Instance.ResetAllTimeScales();  // 씬 전환 시 타임스케일 초기화
         SceneManager.LoadScene("LoadingScene");
     }
 

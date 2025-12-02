@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] Canvas playerHUDCanvas;
     [SerializeField] Image playerHpAmountHUD;
 
+
     // UI Manager에서는 직접 연결보다는 다른곳 함수발생->구독하고 있다가 실행 형식으로 사용할듯??
     #region 구독구독
     private void OnEnable()

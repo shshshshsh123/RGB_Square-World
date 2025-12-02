@@ -69,6 +69,7 @@ public class MonsterStatus : MonoBehaviour
             }
 
             ObjectPooler.Instance.ReturnToPool(monsterTag, gameObject);
+            DataManager.Instance.RecordEnemyKill();
         }
         GameManager.Instance.IncreaseChargeAttack(monsterChargeAmount);
     }
@@ -89,6 +90,10 @@ public class MonsterStatus : MonoBehaviour
             if (other.CompareTag("Player"))
             {
                 GameManager.Instance.PlayerTakeDamage(monsterDamage, gameObject);
+            }
+            else if (other.CompareTag("SubCharacter"))
+            {
+                other.GetComponent<SubCharacterStatus>()?.TakeDamage(monsterDamage);
             }
         }
     }
