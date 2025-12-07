@@ -5,10 +5,18 @@ using System.Linq;
 public class AIDirector : MonoBehaviour
 {
     public static AIDirector Instance;
+    public float CurrentMonsterSpacingRadius { get; private set; } = 0.3f;  // 기본값 0.3입니다다다.
+
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
+    }
+
+    // 미션 시작 시 초기화
+    public void InitializeAIState()
+    {
+        CurrentMonsterSpacingRadius = 0.3f; // 기본값으로 초기화
     }
 
     /// <summary>
@@ -35,6 +43,12 @@ public class AIDirector : MonoBehaviour
         {
             Debug.Log("[AI 디렉터] 플레이어가 원거리 공격을 선호합니다. 근접 몬스터 비율을 높입니다.");
             ModifyWeight(adjustedInfo, PoolType.MeleeMonster, 2.0f); // 가중치 2배
+            // (A-1) 마법무기라면 몬스터간의 간격을 벌려서 범위공격에 쓸리지 않도록 함
+            if (magicKills > rangedKills)
+            {
+                Debug.Log("[AI 디렉터] 플레이어가 마법 무기를 선호합니다. 몬스터 간격을 벌립니다.");
+                CurrentMonsterSpacingRadius = 1.0f; // 마법 무기 선호 시 간격 1.0f로 증가
+            }
         }
         // (B) 플레이어가 근접(칼) 위주로 플레이 중 -> 도망 다니는 원거리 몬스터 비중 증가 (카운터)
         else if (meleeKills > totalKills * 0.6f)

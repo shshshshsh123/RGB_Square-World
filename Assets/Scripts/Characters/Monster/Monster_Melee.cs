@@ -24,6 +24,7 @@ public class Monster_Melee : BaseMonster
     private float _normalSpeed;
     private float _normalAcceleration;
     private float _normalStoppingDistance;
+    private ObstacleAvoidanceType _normalAvoidanceType; // 기본 회피 타입 저장용
 
     private Rigidbody _rigidbody;
     private CapsuleCollider _collider; // 충돌용 콜라이더
@@ -50,6 +51,7 @@ public class Monster_Melee : BaseMonster
         _normalSpeed = _agent.speed;
         _normalAcceleration = _agent.acceleration;
         _normalStoppingDistance = _agent.stoppingDistance;
+        _normalAvoidanceType = _agent.obstacleAvoidanceType;
     }
 
     /// <summary>
@@ -78,6 +80,9 @@ public class Monster_Melee : BaseMonster
         _agent.updateRotation = true;
         _agent.isStopped = false;
 
+        // 돌진 중에는 회피 기능 비활성화
+        _agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
+
         // 돌진 방향, 거리 계산
         Vector3 startPosition = transform.position;
         Vector3 targetPosition = _player.position;
@@ -102,6 +107,9 @@ public class Monster_Melee : BaseMonster
             _agent.velocity = Vector3.zero;
             _agent.isStopped = true;
             _agent.ResetPath(); // 경로 초기화
+
+            // 회피 기능 원래대로 복구
+            _agent.obstacleAvoidanceType = _normalAvoidanceType;
         }
 
         // 다시 물리 효과를 받고 충돌할 수 있도록 복구 (돌진이 끝났으면 다시 벽에 부딪히고 플레이어와 충돌할 수 있도록)

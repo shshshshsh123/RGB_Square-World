@@ -12543,6 +12543,71 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 698307922652239698, guid: 0734fc416be8ab54f83c409154fe1475, type: 3}
   m_PrefabInstance: {fileID: 1788671688}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1789258876
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4362522453143130960, guid: 2c9d9cb36556196498eb1c65c82703d3, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4362522453143130960, guid: 2c9d9cb36556196498eb1c65c82703d3, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8095715445784668538, guid: 2c9d9cb36556196498eb1c65c82703d3, type: 3}
+      propertyPath: m_Name
+      value: Monster_Melee
+      objectReference: {fileID: 0}
+    - target: {fileID: 8868171380501459904, guid: 2c9d9cb36556196498eb1c65c82703d3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -77.72827
+      objectReference: {fileID: 0}
+    - target: {fileID: 8868171380501459904, guid: 2c9d9cb36556196498eb1c65c82703d3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.159
+      objectReference: {fileID: 0}
+    - target: {fileID: 8868171380501459904, guid: 2c9d9cb36556196498eb1c65c82703d3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -30.191578
+      objectReference: {fileID: 0}
+    - target: {fileID: 8868171380501459904, guid: 2c9d9cb36556196498eb1c65c82703d3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.07347846
+      objectReference: {fileID: 0}
+    - target: {fileID: 8868171380501459904, guid: 2c9d9cb36556196498eb1c65c82703d3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8868171380501459904, guid: 2c9d9cb36556196498eb1c65c82703d3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.99729687
+      objectReference: {fileID: 0}
+    - target: {fileID: 8868171380501459904, guid: 2c9d9cb36556196498eb1c65c82703d3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8868171380501459904, guid: 2c9d9cb36556196498eb1c65c82703d3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8868171380501459904, guid: 2c9d9cb36556196498eb1c65c82703d3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -171.572
+      objectReference: {fileID: 0}
+    - target: {fileID: 8868171380501459904, guid: 2c9d9cb36556196498eb1c65c82703d3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2c9d9cb36556196498eb1c65c82703d3, type: 3}
 --- !u!114 &1795437559 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8848263072225109602, guid: fd0f956e1e7caae41920bfd16f430111, type: 3}
@@ -15643,3 +15708,4 @@ SceneRoots:
   - {fileID: 1969168564}
   - {fileID: 1103055565}
   - {fileID: 567939585}
+  - {fileID: 1789258876}
