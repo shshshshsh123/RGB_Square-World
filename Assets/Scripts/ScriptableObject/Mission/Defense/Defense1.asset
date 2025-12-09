@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Defense1
   m_EditorClassIdentifier: 
   id: 1000
-  title: TestDefense
+  title: "\uD638\uC704\uBBF8\uC158"
   description: "\uD638\uC704"
   missionType: 0
   targetCount: 1

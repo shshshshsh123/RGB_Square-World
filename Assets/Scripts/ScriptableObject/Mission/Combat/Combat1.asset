@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Combat1
   m_EditorClassIdentifier: 
   id: 2000
-  title: "\uD14C\uC2A4\uD2B8\uC6A9 \uC804\uD22C \uBBF8\uC158"
+  title: "\uC804\uD22C\uBBF8\uC158"
   description: "\uBAAC\uC2A4\uD130 10\uB9C8\uB9AC \uC7A1\uAE30"
   missionType: 1
   targetCount: 10
