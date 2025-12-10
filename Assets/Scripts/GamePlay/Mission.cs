@@ -84,6 +84,7 @@ public class Mission
         isCompleted = true;
         // TODO: 미션완료 하면뭐함??
         StageManager.Instance.OnMissionCompleted();
+        isCompleted = false;
     }
 
     public void Fail(string text)
