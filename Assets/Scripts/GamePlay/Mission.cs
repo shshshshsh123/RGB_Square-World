@@ -8,8 +8,8 @@ public class Mission
     // 현재 상황
     public int currentProgress;
     public float currentTime;
-    public bool isCompleted;
-    public bool isFailed;
+    public bool isCompleted = false;
+    public bool isFailed = false;
 
     // 생성자
     public Mission(MissionData data)

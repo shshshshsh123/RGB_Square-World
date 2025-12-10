@@ -16,7 +16,7 @@ MonoBehaviour:
   title: "\uD638\uC704\uBBF8\uC158"
   description: "\uD638\uC704"
   missionType: 0
-  targetCount: 1
+  targetCount: -2
   timeLimit: 0
   destinationID: TestGoal
   subCharacterBehavior: 0
